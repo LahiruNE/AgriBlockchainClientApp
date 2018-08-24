@@ -12,7 +12,7 @@
  * limitations under the License.
  */
 
-import { Component, AfterViewInit } from '@angular/core';
+import { Component, AfterViewInit, OnInit } from '@angular/core';
 import $ from 'jquery';
 import {LOCAL_STORAGE, WebStorageService} from 'angular-webstorage-service';
 
@@ -21,25 +21,11 @@ import {LOCAL_STORAGE, WebStorageService} from 'angular-webstorage-service';
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.css']
 })
-export class AppComponent implements AfterViewInit {
-  title = 'app works!';
+export class AppComponent implements OnInit {
+  private isLoggedIn = true;
+  private signUpInProgress = true;
 
-  ngAfterViewInit() {
-    $('.nav a').on('click', function(){
-      $('.nav').find('.active').removeClass('active');
-      $(this).parent().addClass('active');
-    });
 
-    $('.dropdown').on('show.bs.dropdown', function(e){
-      $(this).find('.dropdown-menu').first().stop(true, true).slideDown(300);
-    });
+  ngOnInit(){}
 
-    $('.dropdown').on('hide.bs.dropdown', function(e){
-      $(this).find('.dropdown-menu').first().stop(true, true).slideUp(200);
-    });
-
-    $('.dropdown-menu li').on('click', function(){
-      $(this).parent().parent().addClass('active');
-    });
-  }
 }

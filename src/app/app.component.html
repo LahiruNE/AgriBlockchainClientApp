@@ -11,6 +11,56 @@
  See the License for the specific language governing permissions and
  limitations under the License.
 -->
-  <navbar></navbar>  
-  
+<section *ngIf='!isLoggedIn'>
+  <h2>Sign up</h2>
+  <form (ngSubmit)="onSignUp()" #signupForm="ngForm">
+    <table>
+      <colgroup>
+        <col span="1" style="width: 11%;">
+        <col span="1" style="width: 89%;">
+      </colgroup>
+      <tr>
+        <td>
+          <label>ID</label>
+        </td>
+        <td>
+          <input type="text" [(ngModel)]="signUp.id" #id="ngModel" name="id">
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <label>First Name</label>
+        </td>
+        <td>
+          <input type="text" [(ngModel)]="signUp.firstName" #firstName="ngModel" name="firstName">
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <label>Surname</label>
+        </td>
+        <td>
+          <input type="text" [(ngModel)]="signUp.surname" #surname="ngModel" name="surname">
+        </td>
+      </tr>
+    </table>
+    <button type="submit"
+            class="primary">
+      <div *ngIf="!signUpInProgress">
+        <span>Sign up</span>
+      </div>
+      <div *ngIf="signUpInProgress" class="ibm-spinner-indeterminate small loop">
+        <div class="loader">
+          <svg class="circular" viewBox="25 25 50 50">
+            <circle class="circle-path" cx="50" cy="50" r="20"/>
+          </svg>
+        </div>
+      </div>
+    </button>
+  </form>
+</section>
+
+<section *ngIf="isLoggedIn">
+  <app-navbar></app-navbar>  
   <router-outlet></router-outlet>
+</section>

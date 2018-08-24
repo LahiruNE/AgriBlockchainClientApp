@@ -74,8 +74,7 @@ import { NavbarComponent } from './navbar/navbar.component';
     PHReadingComponent,
     ActivityComponent,
     AdminComponent,
-    FarmerregisterComponent
-    ActivityComponent,
+    FarmerregisterComponent,
     NavbarComponent
   ],
   imports: [
