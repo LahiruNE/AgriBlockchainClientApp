@@ -44,6 +44,7 @@ import { MergeAssetComponent } from './MergeAsset/MergeAsset.component';
 import { PHReadingComponent } from './PHReading/PHReading.component';
 import { ActivityComponent } from './Activity/Activity.component';
 import { AdminComponent } from './admin/admin.component';
+import { FarmerregisterComponent } from './farmerregister/farmerregister.component';
 
   @NgModule({
   declarations: [
@@ -69,7 +70,8 @@ import { AdminComponent } from './admin/admin.component';
     MergeAssetComponent,
     PHReadingComponent,
     ActivityComponent,
-    AdminComponent
+    AdminComponent,
+    FarmerregisterComponent
   ],
   imports: [
     BrowserModule,
