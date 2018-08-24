@@ -14,6 +14,7 @@
 
 import { Component, AfterViewInit } from '@angular/core';
 import $ from 'jquery';
+import {LOCAL_STORAGE, WebStorageService} from 'angular-webstorage-service';
 
 @Component({
   selector: 'app-root',

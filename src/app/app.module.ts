@@ -46,6 +46,9 @@ import { ActivityComponent } from './Activity/Activity.component';
 import { AdminComponent } from './admin/admin.component';
 import { FarmerregisterComponent } from './farmerregister/farmerregister.component';
 
+import { StorageServiceModule} from 'angular-webstorage-service';
+import { NavbarComponent } from './navbar/navbar.component';
+
   @NgModule({
   declarations: [
     AppComponent,
@@ -72,9 +75,12 @@ import { FarmerregisterComponent } from './farmerregister/farmerregister.compone
     ActivityComponent,
     AdminComponent,
     FarmerregisterComponent
+    ActivityComponent,
+    NavbarComponent
   ],
   imports: [
     BrowserModule,
+    StorageServiceModule,
     FormsModule,
     ReactiveFormsModule,
     HttpModule,
