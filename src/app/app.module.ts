@@ -43,6 +43,7 @@ import { DivideAssetComponent } from './DivideAsset/DivideAsset.component';
 import { MergeAssetComponent } from './MergeAsset/MergeAsset.component';
 import { PHReadingComponent } from './PHReading/PHReading.component';
 import { ActivityComponent } from './Activity/Activity.component';
+import { AdminComponent } from './admin/admin.component';
 
   @NgModule({
   declarations: [
@@ -67,7 +68,8 @@ import { ActivityComponent } from './Activity/Activity.component';
     DivideAssetComponent,
     MergeAssetComponent,
     PHReadingComponent,
-    ActivityComponent
+    ActivityComponent,
+    AdminComponent
   ],
   imports: [
     BrowserModule,

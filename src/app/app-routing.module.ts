@@ -39,6 +39,7 @@ import { DivideAssetComponent } from './DivideAsset/DivideAsset.component';
 import { MergeAssetComponent } from './MergeAsset/MergeAsset.component';
 import { PHReadingComponent } from './PHReading/PHReading.component';
 import { ActivityComponent } from './Activity/Activity.component';
+import { AdminComponent } from './admin/admin.component';
 
 const routes: Routes = [
   { path: '', component: HomeComponent },
@@ -62,6 +63,7 @@ const routes: Routes = [
   { path: 'MergeAsset', component: MergeAssetComponent },
   { path: 'PHReading', component: PHReadingComponent },
   { path: 'Activity', component: ActivityComponent },
+  { path: 'Admin', component: AdminComponent },
   { path: '**', redirectTo: '' }
 ];
 
