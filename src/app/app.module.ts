@@ -48,6 +48,7 @@ import { FarmerregisterComponent } from './farmerregister/farmerregister.compone
 
 import { StorageServiceModule} from 'angular-webstorage-service';
 import { NavbarComponent } from './navbar/navbar.component';
+import { LocalStorageService } from './services/local-storage.service';
 
   @NgModule({
   declarations: [
@@ -86,7 +87,8 @@ import { NavbarComponent } from './navbar/navbar.component';
     AppRoutingModule
   ],
   providers: [
-    DataService
+    DataService,
+    LocalStorageService,
   ],
   bootstrap: [AppComponent]
 })

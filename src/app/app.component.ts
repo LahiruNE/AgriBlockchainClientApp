@@ -12,20 +12,53 @@
  * limitations under the License.
  */
 
-import { Component, AfterViewInit, OnInit } from '@angular/core';
+import { Component, AfterViewInit, OnInit, Inject } from '@angular/core';
 import $ from 'jquery';
-import {LOCAL_STORAGE, WebStorageService} from 'angular-webstorage-service';
+import {LocalStorageService} from './services/local-storage.service';
+import { NgModel } from '@angular/forms';
 
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.css']
 })
+
 export class AppComponent implements OnInit {
-  private isLoggedIn = true;
-  private signUpInProgress = true;
+  constructor( private localStorageService: LocalStorageService) {
+     
+  }
 
+  public data:any=[]
 
-  ngOnInit(){}
+  private isLoggedIn = this.localStorageService.getFromLocal('isLoggedIn');
+  private isError = false;
+  private error = "";
+
+  private loginData = {
+    username : "",
+    password : ""
+  }
+
+  ngOnInit(){
+  }
+
+  onLogIn(username:NgModel, password:NgModel){
+    if(!username.valid || !password.valid){
+      this.isError = true;
+      this.error = "Username or Password cannot be empty!";
+    }
+    else{
+      this.isError = false;
+      this.localStorageService.saveInLocal("loginData",this.loginData);
+      this.localStorageService.saveInLocal("isLoggedIn",true);
+      this.isLoggedIn = this.localStorageService.getFromLocal('isLoggedIn');
+    }
+    
+  }  
 
 }
+
+
+
+
+

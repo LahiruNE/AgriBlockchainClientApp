@@ -1,6 +1,6 @@
 import { Component, OnInit, AfterViewInit } from '@angular/core';
 import $ from 'jquery';
-import {LOCAL_STORAGE, WebStorageService} from 'angular-webstorage-service';
+import { LocalStorageService } from '../services/local-storage.service';
 
 @Component({
   selector: 'app-navbar',
@@ -9,7 +9,7 @@ import {LOCAL_STORAGE, WebStorageService} from 'angular-webstorage-service';
 })
 export class NavbarComponent implements AfterViewInit {
 
-  constructor() { }
+  constructor(private localStorageService : LocalStorageService) { }
 
   ngAfterViewInit() {
       $('.navbar-nav a').on('click', function(){
@@ -23,6 +23,11 @@ export class NavbarComponent implements AfterViewInit {
       });
   
     
+  }
+
+  logOut(){
+    this.localStorageService.saveInLocal('isLoggedIn', false);
+    location.reload();
   }
 
 }

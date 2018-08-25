@@ -12,16 +12,27 @@
  * limitations under the License.
  */
 
-import { Component } from '@angular/core';
+import { Component, AfterViewInit, OnInit, Inject } from '@angular/core';
+import $ from 'jquery';
+import {LocalStorageService} from '../services/local-storage.service'
+
 
 @Component({
   selector: 'app-home',
   templateUrl: './home.component.html',
   styleUrls: ['./home.component.css']
 })
-export class HomeComponent {
+export class HomeComponent implements OnInit{
 
-  constructor () {
+  
+  constructor(private localStorageService: LocalStorageService) {
+     
+  }
+
+  private store = this.localStorageService.getFromLocal("isLoggedIn");
+
+  ngOnInit(): void {
+    alert(this.store);
   }
 
 }
