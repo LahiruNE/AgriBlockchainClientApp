@@ -1,6 +1,8 @@
 import { Component, OnInit, AfterViewInit } from '@angular/core';
 import $ from 'jquery';
 import { LocalStorageService } from '../services/local-storage.service';
+import {DataService} from '../data.service';
+import { Stakeholder } from '../org.ucsc.agriblockchain';
 
 @Component({
   selector: 'app-navbar',
@@ -9,7 +11,7 @@ import { LocalStorageService } from '../services/local-storage.service';
 })
 export class NavbarComponent implements AfterViewInit {
 
-  constructor(private localStorageService : LocalStorageService) { }
+  constructor(private localStorageService : LocalStorageService, private dataService: DataService<Stakeholder>) { }
 
   ngAfterViewInit() {
     $('.navbar-nav a').on('click', function(){
@@ -26,8 +28,16 @@ export class NavbarComponent implements AfterViewInit {
   }
 
   logOut(){
-    this.localStorageService.saveInLocal('isLoggedIn', false);
-    location.reload();
+    this.setUser()
+      .then((stat) => {
+        this.localStorageService.saveInLocal('isLoggedIn', false);
+        location.reload();
+      })  
+    
+  }
+
+  setUser(){
+    return this.dataService.setUser('admin').toPromise();
   }
 
 }

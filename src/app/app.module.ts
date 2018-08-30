@@ -70,7 +70,7 @@ import { AdminComponent } from './admin/admin.component';
   ],
   providers: [
     DataService,
-    LocalStorageService
+    LocalStorageService,
   ],
   bootstrap: [AppComponent]
 })

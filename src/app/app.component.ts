@@ -2,6 +2,8 @@ import { Component, AfterViewInit, OnInit, Inject } from '@angular/core';
 import $ from 'jquery';
 import {LocalStorageService} from './services/local-storage.service';
 import { NgModel } from '@angular/forms';
+import {DataService} from './data.service';
+import { Stakeholder } from './org.ucsc.agriblockchain';
 
 @Component({
   selector: 'app-root',
@@ -10,7 +12,7 @@ import { NgModel } from '@angular/forms';
 })
 
 export class AppComponent implements OnInit {
-  constructor( private localStorageService: LocalStorageService) {
+  constructor( private localStorageService: LocalStorageService, private dataService: DataService<Stakeholder>) {
      
   }
 
@@ -30,46 +32,35 @@ export class AppComponent implements OnInit {
 
   onLogIn(username:NgModel, password:NgModel){
 
-    let status = this.validate(username, password);
-
-    if(status['isError'] == true){
-      this.isError = true;
-      this.error = status['error'];
-    }    
+    if(username.valid && password.valid){
+      this.isUserAvailable(username.value, password.value)
+        .then((result) => {
+          if(Object.keys(result).length > 0){
+            this.setUser(username.value)
+              .then((stat) => {
+                this.isError = false;
+                this.localStorageService.saveInLocal("currentUser", result[0]);
+                this.localStorageService.saveInLocal("isLoggedIn",true);
+                this.isLoggedIn = this.localStorageService.getFromLocal('isLoggedIn');
+              })                      
+          }
+          else{
+            this.isError = true;;
+            this.error = "Wrong username password combination!";
+          }
+        })
+    }
     else{
-      this.isError = false;
-      this.localStorageService.saveInLocal("loginData",this.loginData);
-      this.localStorageService.saveInLocal("isLoggedIn",true);
-      this.isLoggedIn = this.localStorageService.getFromLocal('isLoggedIn');
-    }
-    
+      this.isError = true;;
+      this.error = "Username or Password cannot be empty!";
+    }  
   } 
-  
-  validate(username:NgModel, password:NgModel){
-    let validStatus = {};
-    
-    if(!username.valid || !password.valid){
-      validStatus['isError'] = true;
-      validStatus['error'] = "Username or Password cannot be empty!";
-    }
-    else if(!this.isUsernameAvailable()){
-      validStatus['isError'] = true;
-      validStatus['error'] = "Entered username is not valid!";
-    }
-    else if(!this.isPasswordMatch()){
-      validStatus['isError'] = true;
-      validStatus['error'] = "Incorrect password!";
-    }
 
-    return validStatus;
+  isUserAvailable(username:String, password:String){
+    return this.dataService.getUsernamePassword(username, password).toPromise();
   }
 
-  isUsernameAvailable(){
-    return true;
+  setUser(username:String){
+    return this.dataService.setUser(username).toPromise();
   }
-
-  isPasswordMatch(){
-    return true;
-  }
-
 }

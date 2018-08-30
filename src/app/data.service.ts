@@ -17,6 +17,7 @@ import { Http, Response, Headers } from '@angular/http';
 import { Observable } from 'rxjs/Observable';
 import 'rxjs/add/operator/map';
 import 'rxjs/add/operator/catch';
+import { NgModel } from '@angular/forms';
 
 @Injectable()
 export class DataService<Type> {
@@ -87,4 +88,25 @@ export class DataService<Type> {
         return res.json();
     }
 
+
+    public getUsernamePassword(username: String, password: String): Observable<Type> {
+        let ns = '/queries/getUserFromUsernamePassword'; 
+        let param = 'username='+username+'&password='+password;
+
+        console.log(this.actionUrl + ns + '?' + param);
+
+        return this.http.get(this.actionUrl + ns + '?' + param)
+          .map(this.extractData)
+          .catch(this.handleError);          
+    }
+
+    public setUser(username: String): Observable<Type> {
+        let ns = '/wallet/'+username+'/setDefault'; 
+
+        console.log(this.actionUrl + ns);
+
+        return this.http.post(this.actionUrl + ns, username)
+          .map(this.extractData)
+          .catch(this.handleError);          
+    }
 }
