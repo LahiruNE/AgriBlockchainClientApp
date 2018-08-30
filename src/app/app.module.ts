@@ -39,6 +39,7 @@ import { ActivityComponent } from './Activity/Activity.component';
 import { StorageServiceModule} from 'angular-webstorage-service';
 import { NavbarComponent } from './navbar/navbar.component';
 import { LocalStorageService } from './services/local-storage.service';
+import { AdminComponent } from './admin/admin.component';
 
   @NgModule({
   declarations: [
@@ -56,7 +57,8 @@ import { LocalStorageService } from './services/local-storage.service';
     MergeAssetComponent,
     PHReadingComponent,
     ActivityComponent,
-    NavbarComponent
+    NavbarComponent,
+    AdminComponent
   ],
   imports: [
     BrowserModule,
