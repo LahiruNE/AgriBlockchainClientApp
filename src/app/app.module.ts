@@ -40,6 +40,7 @@ import { StorageServiceModule} from 'angular-webstorage-service';
 import { NavbarComponent } from './navbar/navbar.component';
 import { LocalStorageService } from './services/local-storage.service';
 import { AdminComponent } from './admin/admin.component';
+import { FarmerDashboardComponent } from './farmer-dashboard/farmer-dashboard.component';
 
   @NgModule({
   declarations: [
@@ -58,7 +59,8 @@ import { AdminComponent } from './admin/admin.component';
     PHReadingComponent,
     ActivityComponent,
     NavbarComponent,
-    AdminComponent
+    AdminComponent,
+    FarmerDashboardComponent
   ],
   imports: [
     BrowserModule,

@@ -13,6 +13,8 @@ export class NavbarComponent implements AfterViewInit {
 
   constructor(private localStorageService : LocalStorageService, private dataService: DataService<Stakeholder>) { }
 
+  private user = this.localStorageService.getFromLocal('currentUser').name;
+  
   ngAfterViewInit() {
     $('.navbar-nav a').on('click', function(){
       $('.navbar-nav').find('.active').removeClass('active');
