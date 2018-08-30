@@ -47,9 +47,15 @@
   
               
                 <div class="form-group text-left">
-                  <label for="address">address</label>
+                  <label for="city">city</label>
                   
-                      <textarea formControlName="address" class="form-control" rows="3"></textarea>
+                      <textarea formControlName="city" class="form-control" rows="3"></textarea>
+                  
+                </div>
+                <div class="form-group text-left">
+                  <label for="country">country</label>
+                  
+                      <textarea formControlName="country" class="form-control" rows="3"></textarea>
                   
                 </div>
               
@@ -97,9 +103,23 @@
   
               
                 <div class="form-group text-left">
-                  <label for="company">company</label>
+                  <label for="companyname">companyname</label>
                   
-                      <textarea formControlName="company" class="form-control" rows="3"></textarea>
+                      <textarea formControlName="companyname" class="form-control" rows="3"></textarea>
+                  
+                </div>
+
+                <div class="form-group text-left">
+                  <label for="companycity">companycity</label>
+                  
+                      <textarea formControlName="companycity" class="form-control" rows="3"></textarea>
+                  
+                </div>
+
+                <div class="form-group text-left">
+                  <label for="companycountry">companycountry</label>
+                  
+                      <textarea formControlName="companycountry" class="form-control" rows="3"></textarea>
                   
                 </div>
               
@@ -386,17 +406,27 @@
                 <label for="name">name</label>
   
                 
-                  <input [ngModel]="name"formControlName="name" type="text" class="form-control">
+                  <input [ngModel]="name" formControlName="name" type="text" class="form-control">
                 
   
               </div>
             
               <div class="form-group text-left">
-                <label for="address">address</label>
+                <label for="city">city</label>
   
                 
                   
-                    <textarea [ngModel]="address" formControlName="address" class="form-control" rows="3"></textarea>
+                    <textarea [ngModel]="city" formControlName="city" class="form-control" rows="3"></textarea>
+                  
+                
+  
+              </div>
+              <div class="form-group text-left">
+                <label for="country">country</label>
+  
+                
+                  
+                    <textarea [ngModel]="country" formControlName="country" class="form-control" rows="3"></textarea>
                   
                 
   
@@ -406,7 +436,7 @@
                 <label for="email">email</label>
   
                 
-                  <input [ngModel]="email"formControlName="email" type="text" class="form-control">
+                  <input [ngModel]="email" formControlName="email" type="text" class="form-control">
                 
   
               </div>
@@ -415,7 +445,7 @@
                 <label for="telephone">telephone</label>
   
                 
-                  <input [ngModel]="telephone"formControlName="telephone" type="text" class="form-control">
+                  <input [ngModel]="telephone" formControlName="telephone" type="text" class="form-control">
                 
   
               </div>
@@ -435,17 +465,37 @@
                 <label for="images">images</label>
   
                 
-                  <input [ngModel]="images"formControlName="images" type="text" class="form-control">
+                  <input [ngModel]="images" formControlName="images" type="text" class="form-control">
                 
   
               </div>
             
               <div class="form-group text-left">
-                <label for="company">company</label>
+                <label for="companyname">companyname</label>
   
                 
                   
-                    <textarea [ngModel]="company" formControlName="company" class="form-control" rows="3"></textarea>
+                    <textarea [ngModel]="companyname" formControlName="companyname" class="form-control" rows="3"></textarea>
+                  
+                
+  
+              </div>
+              <div class="form-group text-left">
+                <label for="companycity">companycity</label>
+  
+                
+                  
+                    <textarea [ngModel]="companycity" formControlName="companycity" class="form-control" rows="3"></textarea>
+                  
+                
+  
+              </div>
+              <div class="form-group text-left">
+                <label for="companycountry">companycountry</label>
+  
+                
+                  
+                    <textarea [ngModel]="companycountry" formControlName="companycountry" class="form-control" rows="3"></textarea>
                   
                 
   
@@ -455,7 +505,7 @@
                 <label for="username">username</label>
   
                 
-                  <input [ngModel]="username"formControlName="username" type="text" class="form-control">
+                  <input [ngModel]="username" formControlName="username" type="text" class="form-control">
                 
   
               </div>
@@ -758,7 +808,7 @@
   
   
   
-  <div class="container">
+  <div class="col-md-12">
       <div *ngIf="errorMessage" class="alert alert-danger" role="alert">
           <strong>Error:</strong> {{errorMessage}}
       </div>
@@ -781,15 +831,17 @@
     <br>
     <div class="row">
       <div class="col-md-12">
-        <table class="table table-responsive">
+        <table class="table table-responsive table-bordered">
           <thead class="thead">
             <tr class="thead-cols">
               
-                  <th class="info">stakeholderId</th>
+                  <th class="info">Id</th>
               
                   <th class="info">name</th>
               
-                  <th class="info">address</th>
+                  <th class="info">city</th>
+
+                  <th class="info">country</th>
               
                   <th class="info">email</th>
               
@@ -799,7 +851,11 @@
               
                   <th class="info">images</th>
               
-                  <th class="info">company</th>
+                  <th class="info">companyname</th>
+
+                  <th class="info">companycity</th>
+
+                  <th class="info">companycountry</th>
               
                   <th class="info">username</th>
               
@@ -830,7 +886,9 @@
               
                   <td class="participant-properties">{{participant.name}}</td>
               
-                  <td class="participant-properties">{{participant.address}}</td>
+                  <td class="participant-properties">{{participant.address.city}}</td>
+
+                  <td class="participant-properties">{{participant.address.country}}</td>
               
                   <td class="participant-properties">{{participant.email}}</td>
               
@@ -840,7 +898,11 @@
               
                   <td class="participant-properties">{{participant.images}}</td>
               
-                  <td class="participant-properties">{{participant.company}}</td>
+                  <td class="participant-properties">{{participant.company.name}}</td>
+
+                  <td class="participant-properties">{{participant.company.address.city}}</td>
+
+                  <td class="participant-properties">{{participant.company.address.country}}</td>
               
                   <td class="participant-properties">{{participant.username}}</td>
               

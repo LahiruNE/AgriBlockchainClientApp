@@ -31,15 +31,19 @@ export class StakeholderComponent implements OnInit {
   private participant;
   private currentId;
   private errorMessage;
+  
 
   stakeholderId = new FormControl('', Validators.required);
   name = new FormControl('', Validators.required);
-  address = new FormControl('', Validators.required);
+  city = new FormControl('', Validators.required);
+  country = new FormControl('', Validators.required);
   email = new FormControl('', Validators.required);
   telephone = new FormControl('', Validators.required);
   certification = new FormControl('', Validators.required);
   images = new FormControl('', Validators.required);
-  company = new FormControl('', Validators.required);
+  companyname = new FormControl('', Validators.required);
+  companycity = new FormControl('', Validators.required);
+  companycountry = new FormControl('', Validators.required);
   username = new FormControl('', Validators.required);
   password = new FormControl('', Validators.required);
   type = new FormControl('', Validators.required);
@@ -55,12 +59,15 @@ export class StakeholderComponent implements OnInit {
     this.myForm = fb.group({
       stakeholderId: this.stakeholderId,
       name: this.name,
-      address: this.address,
+      city: this.city,
+      country: this.country,
       email: this.email,
       telephone: this.telephone,
       certification: this.certification,
       images: this.images,
-      company: this.company,
+      companyname: this.companyname,
+      companycity: this.companycity,
+      companycountry: this.companycountry,
       username: this.username,
       password: this.password,
       type: this.type,
@@ -128,18 +135,32 @@ export class StakeholderComponent implements OnInit {
       $class: 'org.ucsc.agriblockchain.Stakeholder',
       'stakeholderId': this.stakeholderId.value,
       'name': this.name.value,
-      'address': this.address.value,
+      'address': {
+        '$class': 'org.ucsc.agriblockchain.Address',
+        'city': this.city.value,
+        'country': this.country.value
+      },
       'email': this.email.value,
       'telephone': this.telephone.value,
       'certification': this.certification.value,
       'images': this.images.value,
-      'company': this.company.value,
+      'company': {
+        '$class': 'org.ucsc.agriblockchain.Company',
+        'name': this.companyname.value,
+        'address': {
+          '$class': 'org.ucsc.agriblockchain.Address',
+          'city': this.companycity.value,
+          'country': this.companycountry.value
+        }
+      },
       'username': this.username.value,
       'password': this.password.value,
       'type': this.type.value,
       'description': this.description.value,
       'authPerson': this.authPerson.value,
-      'farms': this.farms.value,
+      'farms':[ 
+        this.farms.value
+      ],
       'vehicleNo': this.vehicleNo.value,
       'distributionType': this.distributionType.value,
       'branchNo': this.branchNo.value
@@ -148,12 +169,15 @@ export class StakeholderComponent implements OnInit {
     this.myForm.setValue({
       'stakeholderId': null,
       'name': null,
-      'address': null,
+      'city': null,
+      'country': null,
       'email': null,
       'telephone': null,
       'certification': null,
       'images': null,
-      'company': null,
+      'companyname': null,
+      'companycity': null,
+      'companycountry': null,
       'username': null,
       'password': null,
       'type': null,
@@ -172,12 +196,15 @@ export class StakeholderComponent implements OnInit {
       this.myForm.setValue({
         'stakeholderId': null,
         'name': null,
-        'address': null,
+        'city': null,
+        'country': null,
         'email': null,
         'telephone': null,
         'certification': null,
         'images': null,
-        'company': null,
+        'companyname': null,
+        'companycity': null,
+        'companycountry': null,
         'username': null,
         'password': null,
         'type': null,
@@ -200,27 +227,40 @@ export class StakeholderComponent implements OnInit {
   }
 
 
-   updateParticipant(form: any): Promise<any> {
+/*    updateParticipant(form: any): Promise<any> {
     this.participant = {
       $class: 'org.ucsc.agriblockchain.Stakeholder',
       'name': this.name.value,
-      'address': this.address.value,
+      'address': {
+        '$class': 'org.ucsc.agriblockchain.Address',
+        'city': this.city.value,
+        'country': this.country.value
+      },
       'email': this.email.value,
       'telephone': this.telephone.value,
       'certification': this.certification.value,
       'images': this.images.value,
-      'company': this.company.value,
+      'company': {
+        '$class': 'org.ucsc.agriblockchain.Company',
+        'name': this.companyname.value,
+        'address': {
+          '$class': 'org.ucsc.agriblockchain.Address',
+          'city': this.companycity.value,
+          'country': this.companycountry.value
+        }
+      },
       'username': this.username.value,
       'password': this.password.value,
       'type': this.type.value,
       'description': this.description.value,
       'authPerson': this.authPerson.value,
-      'farms': this.farms.value,
+      'farms': [ 
+        this.companyname.value
+      ],
       'vehicleNo': this.vehicleNo.value,
       'distributionType': this.distributionType.value,
       'branchNo': this.branchNo.value
     };
-
     return this.serviceStakeholder.updateParticipant(form.get('stakeholderId').value, this.participant)
     .toPromise()
     .then(() => {
@@ -237,7 +277,7 @@ export class StakeholderComponent implements OnInit {
       }
     });
   }
-
+ */
 
   deleteParticipant(): Promise<any> {
 
@@ -271,12 +311,15 @@ export class StakeholderComponent implements OnInit {
       const formObject = {
         'stakeholderId': null,
         'name': null,
-        'address': null,
+        'city': null,
+        'country': null,
         'email': null,
         'telephone': null,
         'certification': null,
         'images': null,
-        'company': null,
+        'companyname': null,
+        'companycity': null,
+        'companycountry': null,
         'username': null,
         'password': null,
         'type': null,
@@ -300,10 +343,15 @@ export class StakeholderComponent implements OnInit {
         formObject.name = null;
       }
 
-      if (result.address) {
-        formObject.address = result.address;
+      if (result.address.city) {
+        formObject.city = result.address.city;
       } else {
-        formObject.address = null;
+        formObject.city = null;
+      }
+      if (result.address.country) {
+        formObject.country = result.address.country;
+      } else {
+        formObject.country = null;
       }
 
       if (result.email) {
@@ -330,10 +378,15 @@ export class StakeholderComponent implements OnInit {
         formObject.images = null;
       }
 
-      if (result.company) {
-        formObject.company = result.company;
+      if (result.company.address.city) {
+        formObject.city = result.company.address.city;
       } else {
-        formObject.company = null;
+        formObject.city = null;
+      }
+      if (result.company.address.country) {
+        formObject.country = result.company.address.country;
+      } else {
+        formObject.country = null;
       }
 
       if (result.username) {
@@ -408,12 +461,15 @@ export class StakeholderComponent implements OnInit {
     this.myForm.setValue({
       'stakeholderId': null,
       'name': null,
-      'address': null,
+      'city': null,
+      'country': null,
       'email': null,
       'telephone': null,
       'certification': null,
       'images': null,
-      'company': null,
+      'companyname': null,
+      'companycity': null,
+      'companycountry': null,
       'username': null,
       'password': null,
       'type': null,
