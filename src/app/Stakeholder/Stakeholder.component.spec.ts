@@ -21,25 +21,25 @@ import { HttpModule } from '@angular/http';
 import { FormsModule, ReactiveFormsModule, FormGroup, FormControl } from '@angular/forms';
 import * as sinon from 'sinon';
 import { DataService } from '../data.service';
-import { FertilizerProviderComponent } from './FertilizerProvider.component';
-import { FertilizerProviderService } from './FertilizerProvider.service';
+import { StakeholderComponent } from './Stakeholder.component';
+import { StakeholderService } from './Stakeholder.service';
 import { Observable } from 'rxjs';
 
-describe('FertilizerProviderComponent', () => {
-  let component: FertilizerProviderComponent;
-  let fixture: ComponentFixture<FertilizerProviderComponent>;
+describe('StakeholderComponent', () => {
+  let component: StakeholderComponent;
+  let fixture: ComponentFixture<StakeholderComponent>;
 
-  let mockFertilizerProviderService;
+  let mockStakeholderService;
   let mockDataService
 
   beforeEach(async(() => {
 
-    mockFertilizerProviderService = sinon.createStubInstance(FertilizerProviderService);
-    mockFertilizerProviderService.getAll.returns([]);
+    mockStakeholderService = sinon.createStubInstance(StakeholderService);
+    mockStakeholderService.getAll.returns([]);
     mockDataService = sinon.createStubInstance(DataService);
 
     TestBed.configureTestingModule({
-      declarations: [ FertilizerProviderComponent ],
+      declarations: [ StakeholderComponent ],
       imports: [
         BrowserModule,
         FormsModule,
@@ -47,12 +47,12 @@ describe('FertilizerProviderComponent', () => {
         HttpModule
       ],
       providers: [
-        {provide: FertilizerProviderService, useValue: mockFertilizerProviderService },
+        {provide: StakeholderService, useValue: mockStakeholderService },
         {provide: DataService, useValue: mockDataService },
       ]
     });
 
-    fixture = TestBed.createComponent(FertilizerProviderComponent);
+    fixture = TestBed.createComponent(StakeholderComponent);
     component = fixture.componentInstance;
 
   }));
@@ -61,9 +61,9 @@ describe('FertilizerProviderComponent', () => {
     expect(component).toBeTruthy();
   });
 
-  it('should update the table when a FertilizerProvider is added', fakeAsync(() => {
+  it('should update the table when a Stakeholder is added', fakeAsync(() => {
     let loadAllSpy = sinon.stub(component, 'loadAll');
-    sinon.stub(component.serviceFertilizerProvider, 'addParticipant').returns(new Observable(observer => {
+    sinon.stub(component.serviceStakeholder, 'addParticipant').returns(new Observable(observer => {
       observer.next('');
       observer.complete();
     }));
@@ -77,16 +77,16 @@ describe('FertilizerProviderComponent', () => {
     loadAllSpy.restore();
   }));
 
-  it('should update the table when a FertilizerProvider is updated', fakeAsync(() => {
+  it('should update the table when a Stakeholder is updated', fakeAsync(() => {
     let loadAllSpy = sinon.stub(component, 'loadAll');
-    sinon.stub(component.serviceFertilizerProvider, 'updateParticipant').returns(new Observable(observer => {
+    sinon.stub(component.serviceStakeholder, 'updateParticipant').returns(new Observable(observer => {
       observer.next('');
       observer.complete();
     }));
 
     // mock form to be passed to the update function
     let mockForm = new FormGroup({
-      fertilizerProviderId: new FormControl('id')
+      stakeholderId: new FormControl('id')
     });
     
     component.updateParticipant(mockForm);
@@ -98,9 +98,9 @@ describe('FertilizerProviderComponent', () => {
     loadAllSpy.restore();
   }));
   
-  it('should update the table when a FertilizerProvider is deleted', fakeAsync(() => {
+  it('should update the table when a Stakeholder is deleted', fakeAsync(() => {
     let loadAllSpy = sinon.stub(component, 'loadAll');
-    sinon.stub(component.serviceFertilizerProvider, 'deleteParticipant').returns(new Observable(observer => {
+    sinon.stub(component.serviceStakeholder, 'deleteParticipant').returns(new Observable(observer => {
       observer.next('');
       observer.complete();
     }));

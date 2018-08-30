@@ -17,37 +17,37 @@ import { ExpectedConditions, browser, element, by } from 'protractor';
 import {} from 'jasmine';
 
 
-describe('Starting tests for AgriBlockchainAngularApp', function() {
+describe('Starting tests for AgriClientApp', function() {
   let page: AngularTestPage;
 
   beforeEach(() => {
     page = new AngularTestPage();
   });
 
-  it('website title should be AgriBlockchainAngularApp', () => {
+  it('website title should be AgriClientApp', () => {
     page.navigateTo('/');
     return browser.getTitle().then((result)=>{
-      expect(result).toBe('AgriBlockchainAngularApp');
+      expect(result).toBe('AgriClientApp');
     })
   });
 
-  it('network-name should be backend@0.0.6',() => {
+  it('network-name should be backend@0.0.8',() => {
     element(by.css('.network-name')).getWebElement()
     .then((webElement) => {
       return webElement.getText();
     })
     .then((txt) => {
-      expect(txt).toBe('backend@0.0.6.bna');
+      expect(txt).toBe('backend@0.0.8.bna');
     });
   });
 
-  it('navbar-brand should be AgriBlockchainAngularApp',() => {
+  it('navbar-brand should be AgriClientApp',() => {
     element(by.css('.navbar-brand')).getWebElement()
     .then((webElement) => {
       return webElement.getText();
     })
     .then((txt) => {
-      expect(txt).toBe('AgriBlockchainAngularApp');
+      expect(txt).toBe('AgriClientApp');
     });
   });
 
@@ -99,10 +99,10 @@ describe('Starting tests for AgriBlockchainAngularApp', function() {
       });
     });
 
-    it('Farm table should have 8 columns',() => {
+    it('Farm table should have 9 columns',() => {
       page.navigateTo('/Farm');
       element.all(by.css('.thead-cols th')).then(function(arr) {
-        expect(arr.length).toEqual(8); // Addition of 1 for 'Action' column
+        expect(arr.length).toEqual(9); // Addition of 1 for 'Action' column
       });
     });
   
@@ -162,165 +162,21 @@ describe('Starting tests for AgriBlockchainAngularApp', function() {
   
 
   
-    it('Farmer component should be loadable',() => {
-      page.navigateTo('/Farmer');
+    it('Stakeholder component should be loadable',() => {
+      page.navigateTo('/Stakeholder');
       browser.findElement(by.id('participantName'))
       .then((participantName) => {
         return participantName.getText();
       })
       .then((txt) => {
-        expect(txt).toBe('Farmer');
+        expect(txt).toBe('Stakeholder');
       });
     });
 
-    it('Farmer table should have 11 columns',() => {
-      page.navigateTo('/Farmer');
+    it('Stakeholder table should have 18 columns',() => {
+      page.navigateTo('/Stakeholder');
       element.all(by.css('.thead-cols th')).then(function(arr) {
-        expect(arr.length).toEqual(11); // Addition of 1 for 'Action' column
-      });
-    });
-  
-    it('Distribution component should be loadable',() => {
-      page.navigateTo('/Distribution');
-      browser.findElement(by.id('participantName'))
-      .then((participantName) => {
-        return participantName.getText();
-      })
-      .then((txt) => {
-        expect(txt).toBe('Distribution');
-      });
-    });
-
-    it('Distribution table should have 13 columns',() => {
-      page.navigateTo('/Distribution');
-      element.all(by.css('.thead-cols th')).then(function(arr) {
-        expect(arr.length).toEqual(13); // Addition of 1 for 'Action' column
-      });
-    });
-  
-    it('Packaging component should be loadable',() => {
-      page.navigateTo('/Packaging');
-      browser.findElement(by.id('participantName'))
-      .then((participantName) => {
-        return participantName.getText();
-      })
-      .then((txt) => {
-        expect(txt).toBe('Packaging');
-      });
-    });
-
-    it('Packaging table should have 11 columns',() => {
-      page.navigateTo('/Packaging');
-      element.all(by.css('.thead-cols th')).then(function(arr) {
-        expect(arr.length).toEqual(11); // Addition of 1 for 'Action' column
-      });
-    });
-  
-    it('Warehouse component should be loadable',() => {
-      page.navigateTo('/Warehouse');
-      browser.findElement(by.id('participantName'))
-      .then((participantName) => {
-        return participantName.getText();
-      })
-      .then((txt) => {
-        expect(txt).toBe('Warehouse');
-      });
-    });
-
-    it('Warehouse table should have 11 columns',() => {
-      page.navigateTo('/Warehouse');
-      element.all(by.css('.thead-cols th')).then(function(arr) {
-        expect(arr.length).toEqual(11); // Addition of 1 for 'Action' column
-      });
-    });
-  
-    it('Retail component should be loadable',() => {
-      page.navigateTo('/Retail');
-      browser.findElement(by.id('participantName'))
-      .then((participantName) => {
-        return participantName.getText();
-      })
-      .then((txt) => {
-        expect(txt).toBe('Retail');
-      });
-    });
-
-    it('Retail table should have 12 columns',() => {
-      page.navigateTo('/Retail');
-      element.all(by.css('.thead-cols th')).then(function(arr) {
-        expect(arr.length).toEqual(12); // Addition of 1 for 'Action' column
-      });
-    });
-  
-    it('SeedProvider component should be loadable',() => {
-      page.navigateTo('/SeedProvider');
-      browser.findElement(by.id('participantName'))
-      .then((participantName) => {
-        return participantName.getText();
-      })
-      .then((txt) => {
-        expect(txt).toBe('SeedProvider');
-      });
-    });
-
-    it('SeedProvider table should have 11 columns',() => {
-      page.navigateTo('/SeedProvider');
-      element.all(by.css('.thead-cols th')).then(function(arr) {
-        expect(arr.length).toEqual(11); // Addition of 1 for 'Action' column
-      });
-    });
-  
-    it('FertilizerProvider component should be loadable',() => {
-      page.navigateTo('/FertilizerProvider');
-      browser.findElement(by.id('participantName'))
-      .then((participantName) => {
-        return participantName.getText();
-      })
-      .then((txt) => {
-        expect(txt).toBe('FertilizerProvider');
-      });
-    });
-
-    it('FertilizerProvider table should have 11 columns',() => {
-      page.navigateTo('/FertilizerProvider');
-      element.all(by.css('.thead-cols th')).then(function(arr) {
-        expect(arr.length).toEqual(11); // Addition of 1 for 'Action' column
-      });
-    });
-  
-    it('PesticideProvider component should be loadable',() => {
-      page.navigateTo('/PesticideProvider');
-      browser.findElement(by.id('participantName'))
-      .then((participantName) => {
-        return participantName.getText();
-      })
-      .then((txt) => {
-        expect(txt).toBe('PesticideProvider');
-      });
-    });
-
-    it('PesticideProvider table should have 11 columns',() => {
-      page.navigateTo('/PesticideProvider');
-      element.all(by.css('.thead-cols th')).then(function(arr) {
-        expect(arr.length).toEqual(11); // Addition of 1 for 'Action' column
-      });
-    });
-  
-    it('CertificationBody component should be loadable',() => {
-      page.navigateTo('/CertificationBody');
-      browser.findElement(by.id('participantName'))
-      .then((participantName) => {
-        return participantName.getText();
-      })
-      .then((txt) => {
-        expect(txt).toBe('CertificationBody');
-      });
-    });
-
-    it('CertificationBody table should have 11 columns',() => {
-      page.navigateTo('/CertificationBody');
-      element.all(by.css('.thead-cols th')).then(function(arr) {
-        expect(arr.length).toEqual(11); // Addition of 1 for 'Action' column
+        expect(arr.length).toEqual(18); // Addition of 1 for 'Action' column
       });
     });
   

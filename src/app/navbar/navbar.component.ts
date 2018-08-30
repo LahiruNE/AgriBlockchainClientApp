@@ -12,17 +12,17 @@ export class NavbarComponent implements AfterViewInit {
   constructor(private localStorageService : LocalStorageService) { }
 
   ngAfterViewInit() {
-      $('.navbar-nav a').on('click', function(){
-        $('.navbar-nav').find('.active').removeClass('active');
-        $(this).addClass('active');
-      });
-      
-      $('.dropdown-item').on('click', function(){
-        $('.navbar-nav').find('.active').removeClass('active');
-        $(this).parent.addClass('active');
-      });
-  
+    $('.navbar-nav a').on('click', function(){
+      $('.navbar-nav').find('.active').removeClass('active');
+      $(this).addClass('active');
+    });
     
+    $('.dropdown-item').on('click', function(){
+      $('.navbar-nav').find('.active').removeClass('active');
+      $(this).parent.addClass('active');
+    });
+
+  
   }
 
   logOut(){

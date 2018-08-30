@@ -36,6 +36,7 @@ import {Event} from './org.hyperledger.composer.system';
       nearFactories: string[];
       otherDescription: string;
       certification: Certification;
+      owner: Stakeholder;
    }
    export class Seed extends Asset {
       seedId: string;
@@ -47,7 +48,7 @@ import {Event} from './org.hyperledger.composer.system';
       price: number;
       activeChemicals: string[];
       certification: Certification;
-      vendor: SeedProvider;
+      vendor: Stakeholder;
    }
    export class Fertilizer extends Asset {
       fertilizerId: string;
@@ -59,7 +60,7 @@ import {Event} from './org.hyperledger.composer.system';
       price: number;
       activeChemicals: string[];
       certification: Certification;
-      vendor: FertilizerProvider;
+      vendor: Stakeholder;
    }
    export class Pesticide extends Asset {
       pesticideId: string;
@@ -71,7 +72,7 @@ import {Event} from './org.hyperledger.composer.system';
       price: number;
       activeChemicals: string[];
       certification: Certification;
-      vendor: PesticideProvider;
+      vendor: Stakeholder;
    }
    export class CloserPlots {
       North: string;
@@ -97,7 +98,7 @@ import {Event} from './org.hyperledger.composer.system';
    }
    export class Certification {
       certificationNo: string;
-      certificationBody: CertificationBody;
+      certificationBody: Stakeholder;
       from: Date;
       to: Date;
       images: string[];
@@ -134,7 +135,19 @@ import {Event} from './org.hyperledger.composer.system';
       LANDSCAPING,
       WATERING,
    }
-   export abstract class Stakeholder extends Participant {
+   export enum StakeholderType {
+      FARMER,
+      DISTRIBUTION,
+      PACKAGING,
+      WAREHOUSE,
+      RETAIL,
+      FERTILIZER,
+      SEED,
+      PESTICIDE,
+      CERTIFICATION,
+   }
+   export class Stakeholder extends Participant {
+      stakeholderId: string;
       name: string;
       address: Address;
       email: string;
@@ -142,54 +155,15 @@ import {Event} from './org.hyperledger.composer.system';
       certification: Certification;
       images: string[];
       company: Company;
-   }
-   export class Farmer extends Stakeholder {
-      stakeholderId: string;
+      username: string;
+      password: string;
+      type: StakeholderType;
       description: string;
+      authPerson: string;
       farms: Farm[];
-   }
-   export class Distribution extends Stakeholder {
-      stakeholderId: string;
-      description: string;
-      authPerson: string;
       vehicleNo: string;
-      type: DistType;
-   }
-   export class Packaging extends Stakeholder {
-      stakeholderId: string;
-      description: string;
-      authPerson: string;
-   }
-   export class Warehouse extends Stakeholder {
-      stakeholderId: string;
-      description: string;
-      authPerson: string;
-   }
-   export class Retail extends Stakeholder {
-      stakeholderId: string;
-      description: string;
-      authPerson: string;
+      distributionType: DistType;
       branchNo: string;
-   }
-   export class SeedProvider extends Stakeholder {
-      seedProviderId: string;
-      description: string;
-      authPerson: string;
-   }
-   export class FertilizerProvider extends Stakeholder {
-      fertilizerProviderId: string;
-      description: string;
-      authPerson: string;
-   }
-   export class PesticideProvider extends Stakeholder {
-      pesticideProviderId: string;
-      description: string;
-      authPerson: string;
-   }
-   export class CertificationBody extends Stakeholder {
-      certificationBodyId: string;
-      description: string;
-      authPerson: string;
    }
    export class TransferPackage extends Transaction {
       product: Product;

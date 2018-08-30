@@ -11,50 +11,6 @@
  See the License for the specific language governing permissions and
  limitations under the License.
 -->
-<nav class="navbar navbar-inverse">
-    <div class="container-fluid">
-      <div class="navbar-header">
-        <p class="network-name">backend@0.0.6.bna</p>
-        <p class="navbar-brand">Farmer Dashboard </p>
-      </div>
-      <ul class="nav navbar-nav">
-        <li class="dropdown active">
-            <a class="dropdown-toggle" data-toggle="dropdown">Assets</a>
-            <ul class="dropdown-menu scrollable-menu">
-             
-              <li><a [routerLink]="['/Product']">Product</a></li>
-              
-              <li><a [routerLink]="['/Plot']">Plot</a></li>
-              
-              <li><a [routerLink]="['/Farm']">Farm</a></li>
-              
-              <li><a [routerLink]="['/Seed']">Seed</a></li>
-              
-              <li><a [routerLink]="['/Fertilizer']">Fertilizer</a></li>
-              
-              <li><a [routerLink]="['/Pesticide']">Pesticide</a></li>
-              
-            </ul>
-        </li>
-      <li class="dropdown active">
-        <a class="dropdown-toggle" data-toggle="dropdown">Transactions</a>
-        <ul class="dropdown-menu scrollable-menu">
-          
-          <li><a [routerLink]="['/TransferPackage']">TransferPackage</a></li>
-          
-          <li><a [routerLink]="['/DivideAsset']">DivideAsset</a></li>
-          
-          <li><a [routerLink]="['/MergeAsset']">MergeAsset</a></li>
-          
-          <li><a [routerLink]="['/PHReading']">PHReading</a></li>
-          
-          <li><a [routerLink]="['/Activity']">Activity</a></li>
-          
-        </ul>
-    </li>
-      </ul>
-    </div>
-  </nav>
 <div class="modal fade" id="addAssetModal" tabindex="-1" role="dialog" aria-labelledby="addAssetModalLabel">
   <div class="modal-dialog" role="document">
     <div class="modal-content">
@@ -134,6 +90,16 @@
                 <label for="certification">certification</label>
                 
                     <textarea formControlName="certification" class="form-control" rows="3"></textarea>
+                
+              </div>
+            
+          
+
+            
+              <div class="form-group text-left">
+                <label for="owner">owner</label>
+                
+                    <textarea formControlName="owner" class="form-control" rows="3"></textarea>
                 
               </div>
             
@@ -230,6 +196,17 @@
 
             </div>
           
+            <div class="form-group text-left">
+              <label for="owner">owner</label>
+              
+              
+                
+                  <textarea [ngModel]="owner" formControlName="owner" class="form-control" rows="3"></textarea>
+                
+              
+
+            </div>
+          
 
 
         </div>
@@ -315,6 +292,8 @@
             
                 <th class="info">certification</th>
             
+                <th class="info">owner</th>
+            
               <th class="info-actions">Actions</th>
           </tr>
         </thead>
@@ -335,6 +314,8 @@
                 <td class="asset-properties">{{asset.otherDescription}}</td>
             
                 <td class="asset-properties">{{asset.certification}}</td>
+            
+                <td class="asset-properties">{{asset.owner}}</td>
             
             <td>
               <button (click)="getForm(asset.farmId);" type="button" class="btn btn-update" data-toggle="modal" data-target="#updateAssetModal">

@@ -1,15 +1,30 @@
+/*
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ * http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
 import { Component, OnInit, Input } from '@angular/core';
 import { FormGroup, FormControl, Validators, FormBuilder } from '@angular/forms';
-import { FarmerRegisterService } from './farmer-register.service';
+import { StakeholderService } from './Stakeholder.service';
 import 'rxjs/add/operator/toPromise';
 
 @Component({
-  selector: 'app-farmerregister',
-  templateUrl: './farmerregister.component.html',
-  styleUrls: ['./farmerregister.component.css'],
-  providers: [FarmerRegisterService]
+  selector: 'app-stakeholder',
+  templateUrl: './Stakeholder.component.html',
+  styleUrls: ['./Stakeholder.component.css'],
+  providers: [StakeholderService]
 })
-export class FarmerregisterComponent implements OnInit {
+export class StakeholderComponent implements OnInit {
+
   myForm: FormGroup;
 
   private allParticipants;
@@ -18,8 +33,6 @@ export class FarmerregisterComponent implements OnInit {
   private errorMessage;
 
   stakeholderId = new FormControl('', Validators.required);
-  description = new FormControl('', Validators.required);
-  farms = new FormControl('', Validators.required);
   name = new FormControl('', Validators.required);
   address = new FormControl('', Validators.required);
   email = new FormControl('', Validators.required);
@@ -27,28 +40,46 @@ export class FarmerregisterComponent implements OnInit {
   certification = new FormControl('', Validators.required);
   images = new FormControl('', Validators.required);
   company = new FormControl('', Validators.required);
+  username = new FormControl('', Validators.required);
+  password = new FormControl('', Validators.required);
+  type = new FormControl('', Validators.required);
+  description = new FormControl('', Validators.required);
+  authPerson = new FormControl('', Validators.required);
+  farms = new FormControl('', Validators.required);
+  vehicleNo = new FormControl('', Validators.required);
+  distributionType = new FormControl('', Validators.required);
+  branchNo = new FormControl('', Validators.required);
 
-  constructor(public serviceFarmer: FarmerRegisterService, fb: FormBuilder) { 
+
+  constructor(public serviceStakeholder: StakeholderService, fb: FormBuilder) {
     this.myForm = fb.group({
       stakeholderId: this.stakeholderId,
-      description: this.description,
-      farms: this.farms,
       name: this.name,
       address: this.address,
       email: this.email,
       telephone: this.telephone,
       certification: this.certification,
       images: this.images,
-      company: this.company
+      company: this.company,
+      username: this.username,
+      password: this.password,
+      type: this.type,
+      description: this.description,
+      authPerson: this.authPerson,
+      farms: this.farms,
+      vehicleNo: this.vehicleNo,
+      distributionType: this.distributionType,
+      branchNo: this.branchNo
     });
   };
 
-  ngOnInit() {
+  ngOnInit(): void {
     this.loadAll();
   }
+
   loadAll(): Promise<any> {
     const tempList = [];
-    return this.serviceFarmer.getAll()
+    return this.serviceStakeholder.getAll()
     .toPromise()
     .then((result) => {
       this.errorMessage = null;
@@ -66,7 +97,8 @@ export class FarmerregisterComponent implements OnInit {
       }
     });
   }
-  	/**
+
+	/**
    * Event handler for changing the checked state of a checkbox (handles array enumeration values)
    * @param {String} name - the name of the participant field to update
    * @param {any} value - the enumeration value for which to toggle the checked state
@@ -93,47 +125,68 @@ export class FarmerregisterComponent implements OnInit {
 
   addParticipant(form: any): Promise<any> {
     this.participant = {
-      $class: 'org.ucsc.agriblockchain.Farmer',
+      $class: 'org.ucsc.agriblockchain.Stakeholder',
       'stakeholderId': this.stakeholderId.value,
-      'description': this.description.value,
-      'farms': this.farms.value,
       'name': this.name.value,
       'address': this.address.value,
       'email': this.email.value,
       'telephone': this.telephone.value,
       'certification': this.certification.value,
       'images': this.images.value,
-      'company': this.company.value
+      'company': this.company.value,
+      'username': this.username.value,
+      'password': this.password.value,
+      'type': this.type.value,
+      'description': this.description.value,
+      'authPerson': this.authPerson.value,
+      'farms': this.farms.value,
+      'vehicleNo': this.vehicleNo.value,
+      'distributionType': this.distributionType.value,
+      'branchNo': this.branchNo.value
     };
 
     this.myForm.setValue({
       'stakeholderId': null,
-      'description': null,
-      'farms': null,
       'name': null,
       'address': null,
       'email': null,
       'telephone': null,
       'certification': null,
       'images': null,
-      'company': null
+      'company': null,
+      'username': null,
+      'password': null,
+      'type': null,
+      'description': null,
+      'authPerson': null,
+      'farms': null,
+      'vehicleNo': null,
+      'distributionType': null,
+      'branchNo': null
     });
 
-    return this.serviceFarmer.addParticipant(this.participant)
+    return this.serviceStakeholder.addParticipant(this.participant)
     .toPromise()
     .then(() => {
       this.errorMessage = null;
       this.myForm.setValue({
         'stakeholderId': null,
-        'description': null,
-        'farms': null,
         'name': null,
         'address': null,
         'email': null,
         'telephone': null,
         'certification': null,
         'images': null,
-        'company': null
+        'company': null,
+        'username': null,
+        'password': null,
+        'type': null,
+        'description': null,
+        'authPerson': null,
+        'farms': null,
+        'vehicleNo': null,
+        'distributionType': null,
+        'branchNo': null
       });
       this.loadAll(); 
     })
@@ -149,19 +202,26 @@ export class FarmerregisterComponent implements OnInit {
 
    updateParticipant(form: any): Promise<any> {
     this.participant = {
-      $class: 'org.ucsc.agriblockchain.Farmer',
-      'description': this.description.value,
-      'farms': this.farms.value,
+      $class: 'org.ucsc.agriblockchain.Stakeholder',
       'name': this.name.value,
       'address': this.address.value,
       'email': this.email.value,
       'telephone': this.telephone.value,
       'certification': this.certification.value,
       'images': this.images.value,
-      'company': this.company.value
+      'company': this.company.value,
+      'username': this.username.value,
+      'password': this.password.value,
+      'type': this.type.value,
+      'description': this.description.value,
+      'authPerson': this.authPerson.value,
+      'farms': this.farms.value,
+      'vehicleNo': this.vehicleNo.value,
+      'distributionType': this.distributionType.value,
+      'branchNo': this.branchNo.value
     };
 
-    return this.serviceFarmer.updateParticipant(form.get('stakeholderId').value, this.participant)
+    return this.serviceStakeholder.updateParticipant(form.get('stakeholderId').value, this.participant)
     .toPromise()
     .then(() => {
       this.errorMessage = null;
@@ -181,7 +241,7 @@ export class FarmerregisterComponent implements OnInit {
 
   deleteParticipant(): Promise<any> {
 
-    return this.serviceFarmer.deleteParticipant(this.currentId)
+    return this.serviceStakeholder.deleteParticipant(this.currentId)
     .toPromise()
     .then(() => {
       this.errorMessage = null;
@@ -204,39 +264,34 @@ export class FarmerregisterComponent implements OnInit {
 
   getForm(id: any): Promise<any> {
 
-    return this.serviceFarmer.getparticipant(id)
+    return this.serviceStakeholder.getparticipant(id)
     .toPromise()
     .then((result) => {
       this.errorMessage = null;
       const formObject = {
         'stakeholderId': null,
-        'description': null,
-        'farms': null,
         'name': null,
         'address': null,
         'email': null,
         'telephone': null,
         'certification': null,
         'images': null,
-        'company': null
+        'company': null,
+        'username': null,
+        'password': null,
+        'type': null,
+        'description': null,
+        'authPerson': null,
+        'farms': null,
+        'vehicleNo': null,
+        'distributionType': null,
+        'branchNo': null
       };
 
       if (result.stakeholderId) {
         formObject.stakeholderId = result.stakeholderId;
       } else {
         formObject.stakeholderId = null;
-      }
-
-      if (result.description) {
-        formObject.description = result.description;
-      } else {
-        formObject.description = null;
-      }
-
-      if (result.farms) {
-        formObject.farms = result.farms;
-      } else {
-        formObject.farms = null;
       }
 
       if (result.name) {
@@ -281,6 +336,60 @@ export class FarmerregisterComponent implements OnInit {
         formObject.company = null;
       }
 
+      if (result.username) {
+        formObject.username = result.username;
+      } else {
+        formObject.username = null;
+      }
+
+      if (result.password) {
+        formObject.password = result.password;
+      } else {
+        formObject.password = null;
+      }
+
+      if (result.type) {
+        formObject.type = result.type;
+      } else {
+        formObject.type = null;
+      }
+
+      if (result.description) {
+        formObject.description = result.description;
+      } else {
+        formObject.description = null;
+      }
+
+      if (result.authPerson) {
+        formObject.authPerson = result.authPerson;
+      } else {
+        formObject.authPerson = null;
+      }
+
+      if (result.farms) {
+        formObject.farms = result.farms;
+      } else {
+        formObject.farms = null;
+      }
+
+      if (result.vehicleNo) {
+        formObject.vehicleNo = result.vehicleNo;
+      } else {
+        formObject.vehicleNo = null;
+      }
+
+      if (result.distributionType) {
+        formObject.distributionType = result.distributionType;
+      } else {
+        formObject.distributionType = null;
+      }
+
+      if (result.branchNo) {
+        formObject.branchNo = result.branchNo;
+      } else {
+        formObject.branchNo = null;
+      }
+
       this.myForm.setValue(formObject);
     })
     .catch((error) => {
@@ -298,16 +407,22 @@ export class FarmerregisterComponent implements OnInit {
   resetForm(): void {
     this.myForm.setValue({
       'stakeholderId': null,
-      'description': null,
-      'farms': null,
       'name': null,
       'address': null,
       'email': null,
       'telephone': null,
       'certification': null,
       'images': null,
-      'company': null
+      'company': null,
+      'username': null,
+      'password': null,
+      'type': null,
+      'description': null,
+      'authPerson': null,
+      'farms': null,
+      'vehicleNo': null,
+      'distributionType': null,
+      'branchNo': null
     });
   }
-  
 }

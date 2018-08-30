@@ -39,6 +39,7 @@ export class FarmComponent implements OnInit {
   nearFactories = new FormControl('', Validators.required);
   otherDescription = new FormControl('', Validators.required);
   certification = new FormControl('', Validators.required);
+  owner = new FormControl('', Validators.required);
 
   constructor(public serviceFarm: FarmService, fb: FormBuilder) {
     this.myForm = fb.group({
@@ -48,7 +49,8 @@ export class FarmComponent implements OnInit {
       waterSources: this.waterSources,
       nearFactories: this.nearFactories,
       otherDescription: this.otherDescription,
-      certification: this.certification
+      certification: this.certification,
+      owner: this.owner
     });
   };
 
@@ -112,7 +114,8 @@ export class FarmComponent implements OnInit {
       'waterSources': this.waterSources.value,
       'nearFactories': this.nearFactories.value,
       'otherDescription': this.otherDescription.value,
-      'certification': this.certification.value
+      'certification': this.certification.value,
+      'owner': this.owner.value
     };
 
     this.myForm.setValue({
@@ -122,7 +125,8 @@ export class FarmComponent implements OnInit {
       'waterSources': null,
       'nearFactories': null,
       'otherDescription': null,
-      'certification': null
+      'certification': null,
+      'owner': null
     });
 
     return this.serviceFarm.addAsset(this.asset)
@@ -136,7 +140,8 @@ export class FarmComponent implements OnInit {
         'waterSources': null,
         'nearFactories': null,
         'otherDescription': null,
-        'certification': null
+        'certification': null,
+        'owner': null
       });
       this.loadAll();
     })
@@ -158,7 +163,8 @@ export class FarmComponent implements OnInit {
       'waterSources': this.waterSources.value,
       'nearFactories': this.nearFactories.value,
       'otherDescription': this.otherDescription.value,
-      'certification': this.certification.value
+      'certification': this.certification.value,
+      'owner': this.owner.value
     };
 
     return this.serviceFarm.updateAsset(form.get('farmId').value, this.asset)
@@ -215,7 +221,8 @@ export class FarmComponent implements OnInit {
         'waterSources': null,
         'nearFactories': null,
         'otherDescription': null,
-        'certification': null
+        'certification': null,
+        'owner': null
       };
 
       if (result.farmId) {
@@ -260,6 +267,12 @@ export class FarmComponent implements OnInit {
         formObject.certification = null;
       }
 
+      if (result.owner) {
+        formObject.owner = result.owner;
+      } else {
+        formObject.owner = null;
+      }
+
       this.myForm.setValue(formObject);
 
     })
@@ -282,7 +295,8 @@ export class FarmComponent implements OnInit {
       'waterSources': null,
       'nearFactories': null,
       'otherDescription': null,
-      'certification': null
+      'certification': null,
+      'owner': null
       });
   }
 

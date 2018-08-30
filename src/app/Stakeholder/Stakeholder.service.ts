@@ -15,35 +15,35 @@
 import { Injectable } from '@angular/core';
 import { DataService } from '../data.service';
 import { Observable } from 'rxjs/Observable';
-import { Farmer } from '../org.ucsc.agriblockchain';
+import { Stakeholder } from '../org.ucsc.agriblockchain';
 import 'rxjs/Rx';
 
 // Can be injected into a constructor
 @Injectable()
-export class FarmerService {
+export class StakeholderService {
 
-  private NAMESPACE = 'org.ucsc.agriblockchain.Farmer';
+  private NAMESPACE = 'org.ucsc.agriblockchain.Stakeholder';
 
-  constructor(private dataService: DataService<Farmer>) {
+  constructor(private dataService: DataService<Stakeholder>) {
   };
 
-  public getAll(): Observable<Farmer[]> {
+  public getAll(): Observable<Stakeholder[]> {
     return this.dataService.getAll(this.NAMESPACE);
   }
 
-  public getparticipant(id: any): Observable<Farmer> {
+  public getparticipant(id: any): Observable<Stakeholder> {
     return this.dataService.getSingle(this.NAMESPACE, id);
   }
 
-  public addParticipant(itemToAdd: any): Observable<Farmer> {
+  public addParticipant(itemToAdd: any): Observable<Stakeholder> {
     return this.dataService.add(this.NAMESPACE, itemToAdd);
   }
 
-  public updateParticipant(id: any, itemToUpdate: any): Observable<Farmer> {
+  public updateParticipant(id: any, itemToUpdate: any): Observable<Stakeholder> {
     return this.dataService.update(this.NAMESPACE, id, itemToUpdate);
   }
 
-  public deleteParticipant(id: any): Observable<Farmer> {
+  public deleteParticipant(id: any): Observable<Stakeholder> {
     return this.dataService.delete(this.NAMESPACE, id);
   }
 

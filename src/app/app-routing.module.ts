@@ -24,23 +24,13 @@ import { SeedComponent } from './Seed/Seed.component';
 import { FertilizerComponent } from './Fertilizer/Fertilizer.component';
 import { PesticideComponent } from './Pesticide/Pesticide.component';
 
-import { FarmerComponent } from './Farmer/Farmer.component';
-import { DistributionComponent } from './Distribution/Distribution.component';
-import { PackagingComponent } from './Packaging/Packaging.component';
-import { WarehouseComponent } from './Warehouse/Warehouse.component';
-import { RetailComponent } from './Retail/Retail.component';
-import { SeedProviderComponent } from './SeedProvider/SeedProvider.component';
-import { FertilizerProviderComponent } from './FertilizerProvider/FertilizerProvider.component';
-import { PesticideProviderComponent } from './PesticideProvider/PesticideProvider.component';
-import { CertificationBodyComponent } from './CertificationBody/CertificationBody.component';
+import { StakeholderComponent } from './Stakeholder/Stakeholder.component';
 
 import { TransferPackageComponent } from './TransferPackage/TransferPackage.component';
 import { DivideAssetComponent } from './DivideAsset/DivideAsset.component';
 import { MergeAssetComponent } from './MergeAsset/MergeAsset.component';
 import { PHReadingComponent } from './PHReading/PHReading.component';
 import { ActivityComponent } from './Activity/Activity.component';
-import { AdminComponent } from './admin/admin.component';
-import { FarmerregisterComponent } from './farmerregister/farmerregister.component';
 
 const routes: Routes = [
   { path: '', component: HomeComponent },
@@ -50,22 +40,12 @@ const routes: Routes = [
   { path: 'Seed', component: SeedComponent },
   { path: 'Fertilizer', component: FertilizerComponent },
   { path: 'Pesticide', component: PesticideComponent },
-  { path: 'Farmer', component: FarmerComponent },
-  { path: 'Distribution', component: DistributionComponent },
-  { path: 'Packaging', component: PackagingComponent },
-  { path: 'Warehouse', component: WarehouseComponent },
-  { path: 'Retail', component: RetailComponent },
-  { path: 'SeedProvider', component: SeedProviderComponent },
-  { path: 'FertilizerProvider', component: FertilizerProviderComponent },
-  { path: 'PesticideProvider', component: PesticideProviderComponent },
-  { path: 'CertificationBody', component: CertificationBodyComponent },
+  { path: 'Stakeholder', component: StakeholderComponent },
   { path: 'TransferPackage', component: TransferPackageComponent },
   { path: 'DivideAsset', component: DivideAssetComponent },
   { path: 'MergeAsset', component: MergeAssetComponent },
   { path: 'PHReading', component: PHReadingComponent },
   { path: 'Activity', component: ActivityComponent },
-  { path: 'Admin', component: AdminComponent },
-  { path: 'FarmerRegister', component: FarmerregisterComponent },
   { path: '**', redirectTo: '' }
 ];
 
