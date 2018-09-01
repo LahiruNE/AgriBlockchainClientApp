@@ -33,13 +33,6 @@ export class AppComponent implements OnInit {
   onLogIn(username:NgModel, password:NgModel){
 
     if(username.valid && password.valid){
-
-      this.isError = false;
-      this.localStorageService.saveInLocal("currentUser", {'name' : 'admin'});
-      this.localStorageService.saveInLocal("isLoggedIn",true);
-      this.isLoggedIn = this.localStorageService.getFromLocal('isLoggedIn');
-
-      /*
       this.isUserAvailable(username.value, password.value)
         .then((result) => {
           if(Object.keys(result).length > 0){
@@ -55,7 +48,7 @@ export class AppComponent implements OnInit {
             this.isError = true;;
             this.error = "Wrong username password combination!";
           }
-        }) */
+        })
     }
     else{
       this.isError = true;;
