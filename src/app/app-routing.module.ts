@@ -33,6 +33,8 @@ import { PHReadingComponent } from './PHReading/PHReading.component';
 import { ActivityComponent } from './Activity/Activity.component';
 import { AdminComponent } from './admin/admin.component';
 
+import { FarmerDashboardComponent } from './farmer-dashboard/farmer-dashboard.component';
+
 const routes: Routes = [
   { path: '', component: HomeComponent },
   { path: 'Product', component: ProductComponent },
@@ -48,6 +50,7 @@ const routes: Routes = [
   { path: 'PHReading', component: PHReadingComponent },
   { path: 'Activity', component: ActivityComponent },
   { path: 'Admin', component: AdminComponent },
+  { path: 'FarmerHome', component: FarmerDashboardComponent },
   { path: '**', redirectTo: '' }
 ];
 

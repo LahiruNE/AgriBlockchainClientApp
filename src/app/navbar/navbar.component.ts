@@ -14,6 +14,7 @@ export class NavbarComponent implements AfterViewInit {
   constructor(private localStorageService : LocalStorageService, private dataService: DataService<Stakeholder>) { }
 
   private user = this.localStorageService.getFromLocal('currentUser').name;
+  private userType = this.localStorageService.getFromLocal('currentUser').type;
   
   ngAfterViewInit() {
     $('.navbar-nav a').on('click', function(){
@@ -39,7 +40,7 @@ export class NavbarComponent implements AfterViewInit {
   }
 
   setUser(){
-    return this.dataService.setUser('admin').toPromise();
+    return this.dataService.setUser('sysAdmin').toPromise();
   }
 
 }

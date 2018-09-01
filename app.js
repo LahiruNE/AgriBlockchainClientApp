@@ -27,6 +27,7 @@ const appEnv = cfenv.getAppEnv();
 const server = http.createServer(app);
 
 const dist = path.join(__dirname, 'dist');
+
 if (!fs.existsSync(dist)) {
     console.error('no dist directory - try running "npm run build" first');
     process.exit(1);
@@ -34,6 +35,7 @@ if (!fs.existsSync(dist)) {
 const static = express.static(dist);
 
 app.use(static);
+app.use(express.static(img))
 
 proxyConfig.forEach((element) => {
     const context = element.context;
