@@ -37,6 +37,7 @@ import {Event} from './org.hyperledger.composer.system';
       otherDescription: string;
       certification: Certification;
       owner: Stakeholder;
+      farmers: Stakeholder[];
    }
    export class Seed extends Asset {
       seedId: string;
@@ -48,7 +49,8 @@ import {Event} from './org.hyperledger.composer.system';
       price: number;
       activeChemicals: string[];
       certification: Certification;
-      vendor: Stakeholder;
+      currentOwner: Stakeholder;
+      issuer: Stakeholder;
    }
    export class Fertilizer extends Asset {
       fertilizerId: string;
@@ -60,7 +62,8 @@ import {Event} from './org.hyperledger.composer.system';
       price: number;
       activeChemicals: string[];
       certification: Certification;
-      vendor: Stakeholder;
+      currentOwner: Stakeholder;
+      issuer: Stakeholder;
    }
    export class Pesticide extends Asset {
       pesticideId: string;
@@ -72,7 +75,8 @@ import {Event} from './org.hyperledger.composer.system';
       price: number;
       activeChemicals: string[];
       certification: Certification;
-      vendor: Stakeholder;
+      currentOwner: Stakeholder;
+      issuer: Stakeholder;
    }
    export class CloserPlots {
       North: string;
@@ -136,6 +140,7 @@ import {Event} from './org.hyperledger.composer.system';
       WATERING,
    }
    export enum StakeholderType {
+      ADMIN,
       FARMER,
       DISTRIBUTION,
       PACKAGING,
@@ -160,7 +165,6 @@ import {Event} from './org.hyperledger.composer.system';
       type: StakeholderType;
       description: string;
       authPerson: string;
-      farms: Farm[];
       vehicleNo: string;
       distributionType: DistType;
       branchNo: string;
