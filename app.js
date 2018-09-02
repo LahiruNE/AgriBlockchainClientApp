@@ -35,7 +35,6 @@ if (!fs.existsSync(dist)) {
 const static = express.static(dist);
 
 app.use(static);
-app.use(express.static(img))
 
 proxyConfig.forEach((element) => {
     const context = element.context;

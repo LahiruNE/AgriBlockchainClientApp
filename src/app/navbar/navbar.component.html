@@ -53,6 +53,17 @@
         <li class="nav-item ">
           <a class="nav-link active" [routerLink]="['/FarmerHome']">Home <span class="sr-only">(current)</span></a>
         </li>
+        
+        <li class="nav-item dropdown">
+          <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            Resources
+          </a>
+          <div class="dropdown-menu" aria-labelledby="navbarDropdown">          
+            <a class="dropdown-item" [routerLink]="['/Plot']">Plots</a>          
+            <a class="dropdown-item" [routerLink]="['/Farm']">Farms</a>   
+          </div>
+        </li>
+
         <li class="nav-item dropdown">
           <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
             Assets
@@ -64,17 +75,7 @@
             <a class="dropdown-item" [routerLink]="['/Pesticide']">Pesticides</a>
           </div>
         </li>
-  
-        <li class="nav-item dropdown">
-          <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-            Resources
-          </a>
-          <div class="dropdown-menu" aria-labelledby="navbarDropdown">          
-            <a class="dropdown-item" [routerLink]="['/Plot']">Plots</a>          
-            <a class="dropdown-item" [routerLink]="['/Farm']">Farms</a>   
-          </div>
-        </li>
-  
+    
         <li class="nav-item dropdown">
           <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
             Activities

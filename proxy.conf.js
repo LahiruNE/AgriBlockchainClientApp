@@ -34,6 +34,14 @@ module.exports = [{
     target,
     secure: true,
     changeOrigin: true
+}];
+
+/*
+module.exports = [{
+    context: ['/auth', '/api'],
+    target,
+    secure: true,
+    changeOrigin: true
 }, {
     context: '/',
     target,
@@ -46,4 +54,4 @@ module.exports = [{
             return '/index.html';
         }
     }
-}];
+}];*/
