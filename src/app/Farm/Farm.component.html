@@ -257,42 +257,43 @@
 	</div>
   
   <div class="row">
-    <div class="col-md-9">
-        <h1 class="asset-title" id='assetName'>Farm</h1>
+    <div class="col-md-9 row">
+        <img *ngIf = "allAssets != ''" src="../../assets/008-planting.png" style="width: 45px; height: 45px">&nbsp;&nbsp;&nbsp;
+        <h1 class="asset-title" id='assetName'>Manage Farms</h1>
     </div>
-    <div class="col-md-3">
-      <button (click)="resetForm()" type="button" class="btn btn-primary" data-toggle="modal" data-target="#addAssetModal">
+    <div *ngIf = "userType == 'ADMIN'" class="col-md-3">
+      <button  style="width: auto !important" (click)="resetForm()" type="button" class="btn btn-primary" data-toggle="modal" data-target="#addAssetModal">
           <span style="font-size: 14px;font-family: inherit;border-right:1px solid rgba(255,255,255,0.5);padding-right:0.6em;margin-right:0.5em;vertical-align:middle;">
               <svg class="plus-svg" xmlns="http://www.w3.org/2000/svg" width="10" height="10" viewBox="0 0 10 10">
                 <path fill-rule="evenodd" d="M5.5,4.5 L9.5,4.5 L10,4.5 L10,5.5 L9.5,5.5 L5.5,5.5 L5.5,9.5 L5.5,10 L4.5,10 L4.5,9.5 L4.5,5.5 L0.5,5.5 L0,5.5 L0,4.5 L0.5,4.5 L4.5,4.5 L4.5,0.5 L4.5,0 L5.5,0 L5.5,0.5 L5.5,4.5 Z"/>
               </svg>
           </span>
-        Create Asset
+        Add Farms
       </button>
     </div>
   </div>
   <br>
   <div class="row">
-    <div class="col-md-12">
-      <table class="table table-responsive">
+    <div *ngIf = "allAssets != ''" class="col-md-12">
+      <table  class="table table-responsive">
         <thead class="thead">
           <tr class="thead-cols">
             
-                <th class="info">farmId</th>
+                <th class="info">Farm ID</th>
             
-                <th class="info">FarmLocation</th>
+                <th class="info">Farm Location</th>
             
-                <th class="info">images</th>
+                <th class="info">Images</th>
             
-                <th class="info">waterSources</th>
+                <th class="info">Water Sources</th>
             
-                <th class="info">nearFactories</th>
+                <th class="info">Near Factories</th>
             
-                <th class="info">otherDescription</th>
+                <th class="info">Other Facts</th>
             
-                <th class="info">certification</th>
+                <th class="info">Certification Details</th>
             
-                <th class="info">owner</th>
+                <th class="info">Owner</th>
             
               <th class="info-actions">Actions</th>
           </tr>
@@ -345,6 +346,11 @@
           </tr>
         </tbody>
       </table>
+    </div>
+
+    <div *ngIf = "allAssets == ''" class="col-md-12">
+        <img src="../../assets/008-planting.png" style="display: block; margin-left: auto; margin-right: auto; margin-top: 50px">
+        <div class="alert alert-warning" role="alert" style="text-align: center; margin-top: 30px; padding: 5px;"><h4>No farms available!</h4></div>
     </div>
   </div>
 </div>

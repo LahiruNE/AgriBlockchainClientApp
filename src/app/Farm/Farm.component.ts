@@ -16,6 +16,7 @@ import { Component, OnInit, Input } from '@angular/core';
 import { FormGroup, FormControl, Validators, FormBuilder } from '@angular/forms';
 import { FarmService } from './Farm.service';
 import 'rxjs/add/operator/toPromise';
+import { LocalStorageService } from '../services/local-storage.service';
 
 @Component({
   selector: 'app-farm',
@@ -32,6 +33,8 @@ export class FarmComponent implements OnInit {
   private currentId;
   private errorMessage;
 
+  private userType = this.localStorageService.getFromLocal('currentUser').type;
+
   farmId = new FormControl('', Validators.required);
   FarmLocation = new FormControl('', Validators.required);
   images = new FormControl('', Validators.required);
@@ -41,7 +44,7 @@ export class FarmComponent implements OnInit {
   certification = new FormControl('', Validators.required);
   owner = new FormControl('', Validators.required);
 
-  constructor(public serviceFarm: FarmService, fb: FormBuilder) {
+  constructor(private localStorageService: LocalStorageService, public serviceFarm: FarmService, fb: FormBuilder) {
     this.myForm = fb.group({
       farmId: this.farmId,
       FarmLocation: this.FarmLocation,

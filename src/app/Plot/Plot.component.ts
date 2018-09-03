@@ -16,6 +16,7 @@ import { Component, OnInit, Input } from '@angular/core';
 import { FormGroup, FormControl, Validators, FormBuilder } from '@angular/forms';
 import { PlotService } from './Plot.service';
 import 'rxjs/add/operator/toPromise';
+import { LocalStorageService } from '../services/local-storage.service';
 
 @Component({
   selector: 'app-plot',
@@ -32,6 +33,8 @@ export class PlotComponent implements OnInit {
   private currentId;
   private errorMessage;
 
+  private userType = this.localStorageService.getFromLocal('currentUser').type;
+
   plotId = new FormControl('', Validators.required);
   cultivationStartDate = new FormControl('', Validators.required);
   extent = new FormControl('', Validators.required);
@@ -41,7 +44,7 @@ export class PlotComponent implements OnInit {
   certificationBodyComments = new FormControl('', Validators.required);
   farm = new FormControl('', Validators.required);
 
-  constructor(public servicePlot: PlotService, fb: FormBuilder) {
+  constructor(private localStorageService: LocalStorageService, public servicePlot: PlotService, fb: FormBuilder) {
     this.myForm = fb.group({
       plotId: this.plotId,
       cultivationStartDate: this.cultivationStartDate,

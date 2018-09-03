@@ -41,7 +41,8 @@ export class FertilizerComponent implements OnInit {
   price = new FormControl('', Validators.required);
   activeChemicals = new FormControl('', Validators.required);
   certification = new FormControl('', Validators.required);
-  vendor = new FormControl('', Validators.required);
+  currentOwner = new FormControl('', Validators.required);
+  issuer = new FormControl('', Validators.required);
 
   constructor(public serviceFertilizer: FertilizerService, fb: FormBuilder) {
     this.myForm = fb.group({
@@ -54,7 +55,8 @@ export class FertilizerComponent implements OnInit {
       price: this.price,
       activeChemicals: this.activeChemicals,
       certification: this.certification,
-      vendor: this.vendor
+      currentOwner: this.currentOwner,
+      issuer: this.issuer
     });
   };
 
@@ -121,7 +123,8 @@ export class FertilizerComponent implements OnInit {
       'price': this.price.value,
       'activeChemicals': this.activeChemicals.value,
       'certification': this.certification.value,
-      'vendor': this.vendor.value
+      'currentOwner': this.currentOwner.value,
+      'issuer': this.issuer.value
     };
 
     this.myForm.setValue({
@@ -134,7 +137,8 @@ export class FertilizerComponent implements OnInit {
       'price': null,
       'activeChemicals': null,
       'certification': null,
-      'vendor': null
+      'currentOwner': null,
+      'issuer': null
     });
 
     return this.serviceFertilizer.addAsset(this.asset)
@@ -151,7 +155,8 @@ export class FertilizerComponent implements OnInit {
         'price': null,
         'activeChemicals': null,
         'certification': null,
-        'vendor': null
+        'currentOwner': null,
+        'issuer': null
       });
       this.loadAll();
     })
@@ -176,7 +181,8 @@ export class FertilizerComponent implements OnInit {
       'price': this.price.value,
       'activeChemicals': this.activeChemicals.value,
       'certification': this.certification.value,
-      'vendor': this.vendor.value
+      'currentOwner': this.currentOwner.value,
+      'issuer': this.issuer.value
     };
 
     return this.serviceFertilizer.updateAsset(form.get('fertilizerId').value, this.asset)
@@ -236,7 +242,8 @@ export class FertilizerComponent implements OnInit {
         'price': null,
         'activeChemicals': null,
         'certification': null,
-        'vendor': null
+        'currentOwner': null,
+        'issuer': null
       };
 
       if (result.fertilizerId) {
@@ -293,10 +300,16 @@ export class FertilizerComponent implements OnInit {
         formObject.certification = null;
       }
 
-      if (result.vendor) {
-        formObject.vendor = result.vendor;
+      if (result.currentOwner) {
+        formObject.currentOwner = result.currentOwner;
       } else {
-        formObject.vendor = null;
+        formObject.currentOwner = null;
+      }
+
+      if (result.issuer) {
+        formObject.issuer = result.issuer;
+      } else {
+        formObject.issuer = null;
       }
 
       this.myForm.setValue(formObject);
@@ -324,7 +337,8 @@ export class FertilizerComponent implements OnInit {
       'price': null,
       'activeChemicals': null,
       'certification': null,
-      'vendor': null
+      'currentOwner': null,
+      'issuer': null
       });
   }
 
