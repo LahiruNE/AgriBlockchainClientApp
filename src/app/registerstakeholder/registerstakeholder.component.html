@@ -1,0 +1,396 @@
+<div class="wrapper container">
+<div class="stepwizard">
+    <div class="stepwizard-row setup-panel">
+        <div class="stepwizard-step">
+            <a href="#step-1" type="button" class="btn btn-primary btn-circle">1</a>
+            <p>Step 1</p>
+        </div>
+        <div class="stepwizard-step">
+            <a href="#step-2" type="button" class="btn btn-default btn-circle" disabled="disabled">2</a>
+            <p>Step 2</p>
+        </div>
+        <div class="stepwizard-step">
+            <a href="#step-3" type="button" class="btn btn-default btn-circle" disabled="disabled">3</a>
+            <p>Step 3</p>
+        </div>
+    </div>
+</div>
+<br>
+        <form [formGroup]="myForm">
+            <div class="row setup-content" id="step-1">
+                <div class="col-md-12">
+                  <h4>Personal Details</h4>
+                  <hr>
+                  <br>
+                    <div class="col-md-6">
+                        
+                        <div class="form-group text-left">
+                            <label for="stakeholderId">StakeholderId</label>
+                            
+                              <input formControlName="stakeholderId" type="text" class="form-control">
+                            
+                          </div>
+                        
+
+                          <div class="form-group text-left">
+                            <label for="name">Name</label>
+                            
+                              <input formControlName="name" type="text" class="form-control">
+                            
+                          </div>
+
+                          <div class="form-group text-left">
+                            <label for="city">City</label>
+                            
+                                <input formControlName="city" type="text" class="form-control">
+                            
+                          </div>
+                          <div class="form-group text-left">
+                            <label for="country">Country</label>
+                            
+                                <input formControlName="country" type="text" class="form-control">
+                            
+                          </div>
+
+                          
+                        
+                      </div>
+                      <div class="col-md-6">
+
+                          <div class="form-group text-left">
+                              <label for="email">Email</label>
+                              
+                                <input formControlName="email" type="text" class="form-control">
+                              
+                            </div>
+                        
+                          <div class="form-group text-left">
+                            <label for="telephone">Telephone</label>
+                            
+                              <input formControlName="telephone" type="text" class="form-control">
+                            
+                          </div>
+                        
+                          <div class="form-group text-left">
+                              <label for="username">Username</label>
+                              
+                                <input formControlName="username" type="text" class="form-control">
+                              
+                            </div>
+                          
+                        
+              
+                          
+                            <div class="form-group text-left">
+                              <label for="password">Password</label>
+                              
+                                <input formControlName="password" type="text" class="form-control">
+                              
+                            </div>
+                      
+            
+                        
+                          
+                        <button class="btn btn-primary nextBtn btn-lg pull-right" type="button" >Next</button>
+                    </div>
+                </div>
+            </div>
+            <div class="row setup-content" id="step-2">
+                <div class="col-xs-12">
+                  
+                    <div class="col-md-6">
+                        <h4>Certification Details</h4>
+                        <hr>
+                        <br>
+                        <div class="form-group text-left">
+                            <label for="certificationNo">CertificationNo</label>
+                            
+                                <input formControlName="certificationNo" type="text" class="form-control">
+                            
+                          </div>
+
+                          <div class="form-group text-left">
+                              <label for="from">Start Date</label>
+                              
+                                  <input formControlName="from" type="text" class="form-control">
+                              
+                            </div>
+
+                            <div class="form-group text-left">
+                                <label for="to">End Date</label>
+                                
+                                    <input formControlName="to" type="text" class="form-control">
+                                
+                              </div>
+                        
+                      
+            
+                        
+                          <div class="form-group text-left">
+                            <label for="images">Images</label>
+                            
+                              <input formControlName="images" type="text" class="form-control">
+                            
+                          </div>
+                        
+                        
+                          </div>
+                          <div class="col-md-6">
+                              <h4>Company Details</h4>
+                              <hr>
+                              <br>
+                              <div class="form-group text-left">
+                                  <label for="companyname">Company Name</label>
+                                  
+                                      <input formControlName="companyname" type="text" class="form-control">
+                                  
+                                </div>
+                
+                                <div class="form-group text-left">
+                                  <label for="companycity">Company City</label>
+                                  
+                                      <input formControlName="companycity" type="text" class="form-control">
+                                  
+                                </div>
+                
+                                <div class="form-group text-left">
+                                  <label for="companycountry">Company Country</label>
+                                  
+                                      <input formControlName="companycountry" type="text" class="form-control">
+                                  
+                                </div>
+                                <br>
+                      
+            
+                        
+                         
+                        <button class="btn btn-primary nextBtn btn-lg pull-right" type="button" >Next</button>
+                    </div>
+                </div>
+            </div>
+            <div class="row setup-content" id="step-3">
+                <div class="col-xs-12">
+                    <h4>Other Details</h4>
+                    <hr>
+                    <br>
+                    <div class="col-md-6">
+
+
+                        <label for="type">Type</label>
+                        <div class="checkbox checkdiv">
+                          
+                            <label>
+                              <input id="chkPassport"
+                                
+                                  formControlName="type"
+                                
+                                name="type"
+                                value="FARMER"
+                                type="radio"
+                                
+                                
+                              />
+                              Farmer
+                            </label>
+                          
+                            <label>
+                              <input
+                                
+                                  formControlName="type"
+                                
+                                name="type"
+                                value="DISTRIBUTION"
+                                type="radio"
+                                
+                                
+                              />
+                              Distributor
+                            </label>
+                          
+                            <label>
+                              <input
+                                
+                                  formControlName="type"
+                                
+                                name="type"
+                                value="PACKAGING"
+                                type="radio"
+                                
+                              />
+                              Packaging
+                            </label>
+                          
+                            <label>
+                              <input
+                                
+                                  formControlName="type"
+                                
+                                name="type"
+                                value="WAREHOUSE"
+                                type="radio"
+                                
+                              />
+                              Warehouse
+                            </label>
+                          
+                            <label>
+                              <input
+                                
+                                  formControlName="type"
+                                
+                                name="type"
+                                value="RETAIL"
+                                type="radio"
+                                
+                              />
+                              Rrtailer
+                            </label>
+                          
+                            <label>
+                              <input
+                                
+                                  formControlName="type"
+                                
+                                name="type"
+                                value="FERTILIZER"
+                                type="radio"
+                                
+                              />
+                              Fertilizer Provider
+                            </label>
+                          
+                            <label>
+                              <input
+                                
+                                  formControlName="type"
+                                
+                                name="type"
+                                value="SEED"
+                                type="radio"
+                                
+                              />
+                              Seed Provider
+                            </label>
+                          
+                            <label>
+                              <input
+                                
+                                  formControlName="type"
+                                
+                                name="type"
+                                value="PESTICIDE"
+                                type="radio"
+                                
+                              />
+                              Pesticide Provider
+                            </label>
+                          
+                            <label>
+                              <input
+                                
+                                  formControlName="type"
+                                
+                                name="type"
+                                value="CERTIFICATION"
+                                type="radio"
+                                
+                              />
+                              Cerification Body
+                            </label>
+                          
+                        </div>
+
+                        <div id="dvPassport" style="display: none" class="form-group text-left">
+                            <label for="farms">Farms</label>
+                            
+                                <textarea formControlName="farms" class="form-control" rows="3"></textarea>
+                            
+                          </div>
+
+                          <label for="distributionType">Distribution Type</label>
+                          <div class="checkbox checkdiv" >
+                            
+                              <label>
+                                <input
+                                  
+                                    formControlName="distributionType"
+                                  
+                                  name="distributionType"
+                                  value="F2P"
+                                  type="radio"
+                                  
+                                />
+                                F2P
+                              </label>
+                            
+                              <label>
+                                <input
+                                  
+                                    formControlName="distributionType"
+                                  
+                                  name="distributionType"
+                                  value="P2W"
+                                  type="radio"
+                                  
+                                />
+                                P2W
+                              </label>
+                            
+                              <label>
+                                <input
+                                  
+                                    formControlName="distributionType"
+                                  
+                                  name="distributionType"
+                                  value="W2R"
+                                  type="radio"
+                                  
+                                />
+                                W2R
+                              </label>
+                            
+                          </div>
+                        
+                        
+ 
+                          
+                          </div>
+                          <div class="col-md-6">
+
+                              <div class="form-group text-left">
+                                  <label for="description">Description</label>
+                                  
+                                    <input formControlName="description" type="text" class="form-control">
+                                  
+                                </div>
+      
+                                <div class="form-group text-left">
+                                  <label for="authPerson">Auth Person</label>
+                                  
+                                    <input formControlName="authPerson" type="text" class="form-control">
+                                  
+                                </div>
+                                <div class="form-group text-left">
+                                    <label for="vehicleNo">Vehicle No</label>
+                                    
+                                      <input formControlName="vehicleNo" type="text" class="form-control">
+                                    
+                                  </div>
+
+                          
+
+                          <div class="form-group text-left">
+                            <label for="branchNo">Branch No</label>
+                            
+                              <input formControlName="branchNo" type="text" class="form-control">
+                            
+                          </div>
+
+                      <button (click)="addParticipant(myForm);" type="submit" class="btn btn-primary" >Confirm</button>
+                    </div>
+                </div>
+            </div>
+  
+        </form>
+
+</div>

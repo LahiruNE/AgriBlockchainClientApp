@@ -89,7 +89,7 @@ describe('StakeholderComponent', () => {
       stakeholderId: new FormControl('id')
     });
     
-    component.updateParticipant(mockForm);
+    /* component.updateParticipant(mockForm); */
 
     tick();
 

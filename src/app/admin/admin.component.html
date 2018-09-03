@@ -1,3 +1,43 @@
-<a [routerLink]="['/Stakeholder']">
-  <button type="submit" class="form-btn btn btn-primary">Stakeholders</button>
+<!-- <a [routerLink]="['/Stakeholder']">
+  <button type="submit" class="form-btn btn btn-primary">Manage Stakeholders</button>
 </a>
+
+<a [routerLink]="['/StakeholderRegister']">
+  <button type="submit" class="form-btn btn btn-primary">Create Stakeholders</button>
+</a> -->
+<div class="container">
+  <div class="row">
+    <div class="wrapper col-md-12">
+      <div class="col-md-1"></div>
+      <div class="col-md-4 maindiv1">
+          <div class="innerdiv1"></div>
+          <div class="imgdiv">
+              <img class="imguser1" src="../../assets/user1.png">
+          </div>
+          <br>
+          <div class="btndiv">
+              <a [routerLink]="['/StakeholderRegister']">
+              <button type="submit" class=" userbtn form-btn btn btn-primary">Create Stakeholder</button>
+            </a>
+          </div>
+         
+      </div>
+      <div class="col-md-2"></div>
+      <div class="col-md-4 maindiv1">
+          <div class="innerdiv1"></div>
+          <div class="imgdiv">
+              <img class="imguser" src="../../assets/group.png" >
+          </div>
+          <br>
+          <div class="btndiv">
+              <a [routerLink]="['/Stakeholder']">
+              <button type="submit" class=" userbtn form-btn btn btn-primary">Manage Stakeholders</button>
+            </a>
+          </div>
+         
+      </div>
+      <div class="col-md-1"></div>
+    </div>
+      
+  </div>
+</div>

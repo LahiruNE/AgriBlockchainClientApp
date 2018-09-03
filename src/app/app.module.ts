@@ -41,6 +41,9 @@ import { NavbarComponent } from './navbar/navbar.component';
 import { LocalStorageService } from './services/local-storage.service';
 import { AdminComponent } from './admin/admin.component';
 import { FarmerDashboardComponent } from './farmer-dashboard/farmer-dashboard.component';
+import { RegisterstakeholderComponent } from './registerstakeholder/registerstakeholder.component';
+
+
 
   @NgModule({
   declarations: [
@@ -60,7 +63,8 @@ import { FarmerDashboardComponent } from './farmer-dashboard/farmer-dashboard.co
     ActivityComponent,
     NavbarComponent,
     AdminComponent,
-    FarmerDashboardComponent
+    FarmerDashboardComponent,
+    RegisterstakeholderComponent
   ],
   imports: [
     BrowserModule,
@@ -68,7 +72,8 @@ import { FarmerDashboardComponent } from './farmer-dashboard/farmer-dashboard.co
     ReactiveFormsModule,
     HttpModule,
     AppRoutingModule,
-    StorageServiceModule
+    StorageServiceModule,
+  
   ],
   providers: [
     DataService,

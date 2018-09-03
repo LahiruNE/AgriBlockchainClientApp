@@ -24,6 +24,7 @@ export class DataService<Type> {
     private resolveSuffix = '?resolve=true';
     private actionUrl: string;
     private headers: Headers;
+    private ns:string;
 
     constructor(private http: Http) {
         this.actionUrl = '/api/';
@@ -106,6 +107,15 @@ export class DataService<Type> {
         console.log(this.actionUrl + ns);
 
         return this.http.post(this.actionUrl + ns, username)
+          .map(this.extractData)
+          .catch(this.handleError);          
+    }
+    public issueIdentity(identity:any): Observable<Type> {
+        this.ns = 'system/identities/issue/'; 
+        console.log(identity)
+        console.log(this.actionUrl + this.ns);
+
+        return this.http.post(this.actionUrl + this.ns, identity)
           .map(this.extractData)
           .catch(this.handleError);          
     }
