@@ -41,7 +41,6 @@ export class RegisterstakeholderComponent implements OnInit {
   type = new FormControl('', Validators.required);
   description = new FormControl('', Validators.required);
   authPerson = new FormControl('', Validators.required);
-  farms = new FormControl('', Validators.required);
   vehicleNo = new FormControl('', Validators.required);
   distributionType = new FormControl('', Validators.required);
   branchNo = new FormControl('', Validators.required);
@@ -66,7 +65,6 @@ export class RegisterstakeholderComponent implements OnInit {
       type: this.type,
       description: this.description,
       authPerson: this.authPerson,
-      farms: this.farms,
       vehicleNo: this.vehicleNo,
       distributionType: this.distributionType,
       branchNo: this.branchNo
@@ -189,10 +187,7 @@ export class RegisterstakeholderComponent implements OnInit {
       'password': this.password.value,
       'type': this.type.value,
       'description': this.description.value,
-      'authPerson': this.authPerson.value,
-       'farms':[ 
-        this.farms.value
-      ], 
+      'authPerson': this.authPerson.value, 
       'vehicleNo': this.vehicleNo.value,
       'distributionType': this.distributionType.value,
       'branchNo': this.branchNo.value
@@ -215,7 +210,6 @@ export class RegisterstakeholderComponent implements OnInit {
       'type': null,
       'description': null,
       'authPerson': null,
-      'farms': null,
       'vehicleNo': null,
       'distributionType': null,
       'branchNo': null
@@ -258,7 +252,6 @@ export class RegisterstakeholderComponent implements OnInit {
         'type': null,
         'description': null,
         'authPerson': null,
-        'farms': null,
         'vehicleNo': null,
         'distributionType': null,
         'branchNo': null
@@ -304,7 +297,6 @@ export class RegisterstakeholderComponent implements OnInit {
         'type': null,
         'description': null,
         'authPerson': null,
-        'farms': null,
         'vehicleNo': null,
         'distributionType': null,
         'branchNo': null
@@ -411,12 +403,6 @@ export class RegisterstakeholderComponent implements OnInit {
         formObject.authPerson = null;
       }
 
-      if (result.farms) {
-        formObject.farms = result.farms;
-      } else {
-        formObject.farms = null;
-      }
-
       if (result.vehicleNo) {
         formObject.vehicleNo = result.vehicleNo;
       } else {
@@ -469,7 +455,6 @@ export class RegisterstakeholderComponent implements OnInit {
       'type': null,
       'description': null,
       'authPerson': null,
-      'farms': null,
       'vehicleNo': null,
       'distributionType': null,
       'branchNo': null
