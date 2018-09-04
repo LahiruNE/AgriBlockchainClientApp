@@ -21,7 +21,7 @@ import { NgModel } from '@angular/forms';
 
 @Injectable()
 export class DataService<Type> {
-    private resolveSuffix = '?resolve=true';
+    private resolveSuffix = '?filter=%7B%22include%22%3A%22resolve%22%7D';
     private actionUrl: string;
     private headers: Headers;
     private ns:string;
@@ -35,7 +35,7 @@ export class DataService<Type> {
 
     public getAll(ns: string): Observable<Type[]> {
         console.log('GetAll ' + ns + ' to ' + this.actionUrl + ns);
-        return this.http.get(`${this.actionUrl}${ns}`)
+        return this.http.get(`${this.actionUrl}${ns}` + this.resolveSuffix)
           .map(this.extractData)
           .catch(this.handleError);
     }
