@@ -18,7 +18,6 @@ export class RegisterstakeholderComponent implements OnInit {
 
   private allParticipants;
   private participant;
-  private identity;
   private currentId;
   private errorMessage;
   
@@ -218,19 +217,19 @@ export class RegisterstakeholderComponent implements OnInit {
     return this.registerStakeholder.addParticipant(this.participant)
     .toPromise()
     .then(() => {
-      this.identity = {
+     const identity = {
         'participant': 'org.ucsc.agriblockchain.Stakeholder#'+ this.stakeholderId.value,
         'userID': this.username.value,
         'options': {}
       };
-      console.log(this.identity)
-      return this.dataService.issueIdentity(this.identity).toPromise(); 
+      console.log(identity)
+      return this.dataService.issueIdentity(identity).toPromise(); 
     })
-    .then((cardData) => {
+    /* .then((cardData) => {
       console.log('CARD-DATA', cardData);
       
       })
-
+ */
     .then(() => {
       this.errorMessage = null;
       this.myForm.setValue({

@@ -6,38 +6,95 @@
   <button type="submit" class="form-btn btn btn-primary">Create Stakeholders</button>
 </a> -->
 <div class="container">
-  <div class="row">
-    <div class="wrapper col-md-12">
-      <div class="col-md-1"></div>
-      <div class="col-md-4 maindiv1">
-          <div class="innerdiv1"></div>
-          <div class="imgdiv">
-              <img class="imguser1" src="../../assets/user1.png">
+  <div class="jumbotron">
+    <h2 class="display-5">Resources</h2>
+
+    <div class="row">
+        <div class="card" style="width: 18rem;">
+            <img src="../../assets/008-planting.png">
+            <div class="card-body">
+              <h4 class="card-title">Farms</h4>
+              <a [routerLink]="['/Farm']"  class="btn btn-primary">Manage</a>
+            </div>
           </div>
-          <br>
-          <div class="btndiv">
-              <a [routerLink]="['/StakeholderRegister']">
-              <button type="submit" class=" userbtn form-btn btn btn-primary">Create Stakeholder</button>
-            </a>
-          </div>
-         
-      </div>
-      <div class="col-md-2"></div>
-      <div class="col-md-4 maindiv1">
-          <div class="innerdiv1"></div>
-          <div class="imgdiv">
-              <img class="imguser" src="../../assets/group.png" >
-          </div>
-          <br>
-          <div class="btndiv">
-              <a [routerLink]="['/Stakeholder']">
-              <button type="submit" class=" userbtn form-btn btn btn-primary">Manage Stakeholders</button>
-            </a>
-          </div>
-         
-      </div>
-      <div class="col-md-1"></div>
-    </div>
-      
+          
+        <div class="card" style="width: 18rem;">
+            <img src="../../assets/007-sprout.png">
+            <div class="card-body">
+              <h4 class="card-title">Plots</h4>
+              <a [routerLink]="['/Plot']" class="btn btn-primary">Manage</a>
+            </div>
+          </div>          
+    </div>   
   </div>
+
+  <div class="jumbotron">
+    <h2 class="display-5">Stakeholders</h2>
+
+    <div class="row">
+
+    <div class="card" style="width: 18rem;">
+        <img src="../../assets/farmer.png">
+        <div class="card-body">
+          <h4 class="card-title">Farmers</h4>
+          <a [routerLink]="['/Stakeholder', 'FARMER']" class="btn btn-primary">Manage</a>
+        </div>
+      </div>
+
+      <div class="card" style="width: 18rem;">
+        <img src="../../assets/010-tractor.png">
+        <div class="card-body">
+          <h4 class="card-title">Distributors</h4>
+          <a [routerLink]="['/Stakeholder', 'DISTRIBUTION']" class="btn btn-primary">Manage</a>
+        </div>
+      </div>
+
+      <div class="card" style="width: 18rem;">
+        <img src="../../assets/stall.png">
+          <div class="card-body">
+            <h4 class="card-title">Retailors</h4>
+            <a [routerLink]="['/Stakeholder', 'RETAIL']" class="btn btn-primary">Manage</a>
+          </div>
+        </div>
+
+        <div class="card" style="width: 18rem;">
+          <img src="../../assets/004-seeds-1.png">
+          <div class="card-body">
+            <h4 class="card-title">Packaging</h4>
+            <a [routerLink]="['/Stakeholder', 'PACKAGING']" class="btn btn-primary">Manage</a>
+          </div>
+        </div>
+        <div class="card" style="width: 18rem;">
+          <img src="../../assets/temperature.png">
+            <div class="card-body">
+              <h4 class="card-title">Certification Body</h4>
+              <a [routerLink]="['/Stakeholder', 'CERTIFICATION']" class="btn btn-primary">Manage</a>
+            </div>
+          </div>
+
+        <div class="card" style="width: 18rem;">
+          <img src="../../assets/farm.png">
+            <div class="card-body">
+              <h4 class="card-title">Warehouse</h4>
+              <a [routerLink]="['/Stakeholder', 'WAREHOUSE']" class="btn btn-primary">Manage</a>
+            </div>
+          </div>
+    
+          <div class="card" style="width: 18rem;">
+            <img src="../../assets/002-seeds.png">
+            <div class="card-body">
+              <h4 class="card-title">Seed Provider</h4>
+              <a [routerLink]="['/Stakeholder', 'SEED']" class="btn btn-primary">Manage</a>
+            </div>
+          </div>
+        
+            <div class="card" style="width: 18rem;">
+              <img src="../../assets/006-seed-bag.png">
+              <div class="card-body">
+                <h4 class="card-title">Fertilizer Provider</h4>
+                <a [routerLink]="['/Stakeholder', 'FERTILIZER']" class="btn btn-primary">Manage</a>
+              </div>
+            </div>
+    </div>
+  </div> 
 </div>

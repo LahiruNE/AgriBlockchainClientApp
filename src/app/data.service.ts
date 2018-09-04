@@ -110,7 +110,7 @@ export class DataService<Type> {
           .map(this.extractData)
           .catch(this.handleError);          
     }
-    public issueIdentity(identity:any): Observable<Type> {
+    public issueIdentity(identity): Observable<Type> {
         this.ns = 'system/identities/issue/'; 
         console.log(identity)
         console.log(this.actionUrl + this.ns);

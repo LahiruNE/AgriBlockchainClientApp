@@ -44,7 +44,7 @@ const routes: Routes = [
   { path: 'Seed', component: SeedComponent },
   { path: 'Fertilizer', component: FertilizerComponent },
   { path: 'Pesticide', component: PesticideComponent },
-  { path: 'Stakeholder', component: StakeholderComponent },
+  { path: 'Stakeholder/:id', component: StakeholderComponent },
   { path: 'TransferPackage', component: TransferPackageComponent },
   { path: 'DivideAsset', component: DivideAssetComponent },
   { path: 'MergeAsset', component: MergeAssetComponent },
