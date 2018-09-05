@@ -17,6 +17,7 @@ import { FormGroup, FormControl, Validators, FormBuilder } from '@angular/forms'
 import { FarmService } from './Farm.service';
 import 'rxjs/add/operator/toPromise';
 import { LocalStorageService } from '../services/local-storage.service';
+import $ from 'jquery';
 
 @Component({
   selector: 'app-farm',
@@ -27,11 +28,13 @@ import { LocalStorageService } from '../services/local-storage.service';
 export class FarmComponent implements OnInit {
 
   myForm: FormGroup;
+  viewForm: FormGroup;
 
   private allAssets;
   private asset;
   private currentId;
   private errorMessage;
+  private certiicationComment = [];
 
   private userType = this.localStorageService.getFromLocal('currentUser').type;
 
@@ -44,6 +47,23 @@ export class FarmComponent implements OnInit {
   certification = new FormControl('', Validators.required);
   owner = new FormControl('', Validators.required);
 
+  nearFactoriesN = new FormControl('');
+  nearFactoriesS = new FormControl('');
+  nearFactoriesE = new FormControl('');
+  nearFactoriesW = new FormControl('');
+
+  waterSourcesN = new FormControl('');
+  waterSourcesS = new FormControl('');
+  waterSourcesE = new FormControl('');
+  waterSourcesW = new FormControl('');
+
+  certificationNo = new FormControl('');
+  certificationBody = new FormControl('');
+  from = new FormControl('');
+  to = new FormControl('');
+  certiImages = new FormControl('');
+  certiComments = new FormControl(''); 
+
   constructor(private localStorageService: LocalStorageService, public serviceFarm: FarmService, fb: FormBuilder) {
     this.myForm = fb.group({
       farmId: this.farmId,
@@ -55,10 +75,77 @@ export class FarmComponent implements OnInit {
       certification: this.certification,
       owner: this.owner
     });
+
+    this.viewForm = fb.group({
+      farmId: this.farmId,
+      FarmLocation: this.FarmLocation,
+      images: this.images,
+      waterSources: this.waterSources,
+      nearFactories: this.nearFactories,
+      otherDescription: this.otherDescription,
+      certification: this.certification,
+      owner: this.owner,
+      waterSourcesN : this.waterSourcesN,
+      waterSourcesS : this.waterSourcesS,
+      waterSourcesE : this.waterSourcesE,
+      waterSourcesW : this.waterSourcesW,
+      nearFactoriesN : this.nearFactoriesN,
+      nearFactoriesS : this.nearFactoriesS,
+      nearFactoriesE : this.nearFactoriesE,
+      nearFactoriesW : this.nearFactoriesW,
+      certificationNo : this.certificationNo,
+      certificationBody : this.certificationBody,
+      from : this.from,
+      to : this.to,
+      certiImages : this.certiImages,
+      certiComments : this.certiImages
+    });
   };
 
   ngOnInit(): void {
-    this.loadAll();
+    this.loadAll();   
+    var navListItems = $('div.setup-panel div a'),
+            allWells = $('.setup-content'),
+            allNextBtn = $('.nextBtn');
+
+    allWells.hide();
+
+    navListItems.click(function (e) {
+        e.preventDefault();
+        var $target = $($(this).attr('href')),
+                $item = $(this);
+
+        if (!$item.hasClass('disabled')) {
+            navListItems.removeClass('btn-primary').addClass('btn-default');
+            $item.addClass('btn-primary');
+            allWells.hide();
+            $target.show();
+            $target.find('input:eq(0)').focus();
+        }
+    });
+
+    allNextBtn.click(function(){
+        var curStep = $(this).closest(".setup-content"),
+            curStepBtn = curStep.attr("id"),
+            nextStepWizard = $('div.setup-panel div a[href="#' + curStepBtn + '"]').parent().next().children("a"),
+            curInputs = curStep.find("input[type='text'],input[type='url']"),
+            isValid = true;
+
+        $(".form-group").removeClass("has-error");
+        for(var i=0; i<curInputs.length; i++){
+            if (!curInputs[i].validity.valid){
+                isValid = false;
+                $(curInputs[i]).closest(".form-group").addClass("has-error");
+            }
+        }
+
+        if (isValid)
+            nextStepWizard.removeAttr('disabled').trigger('click');
+    });
+
+    $('#stage1').trigger('click');
+      
+ 
   }
 
   loadAll(): Promise<any> {
@@ -277,6 +364,115 @@ export class FarmComponent implements OnInit {
       }
 
       this.myForm.setValue(formObject);
+
+    })
+    .catch((error) => {
+      if (error === 'Server error') {
+        this.errorMessage = 'Could not connect to REST server. Please check your configuration details';
+      } else if (error === '404 - Not Found') {
+        this.errorMessage = '404 - Could not find API route. Please check your available APIs.';
+      } else {
+        this.errorMessage = error;
+      }
+    });
+  }
+
+  getFormForView(id: any): Promise<any> {
+
+    return this.serviceFarm.getAsset(id)
+    .toPromise()
+    .then((result) => {
+
+      this.errorMessage = null;
+      const formObject = {
+        'farmId': null,
+        'FarmLocation': null,
+        'images': null,
+        'waterSources': null,
+        'nearFactories': null,
+        'otherDescription': null,
+        'certification': null,
+        'owner': null,
+        'nearFactoriesN': null,
+        'nearFactoriesS': null,
+        'nearFactoriesE': null,
+        'nearFactoriesW': null,
+        'waterSourcesN': null,
+        'waterSourcesS': null,
+        'waterSourcesE': null,
+        'waterSourcesW': null,
+        'certificationNo' : null,
+        'certificationBody' : null,
+        'from' : null,
+        'to' : null,
+        'certiImages' : null,
+        'certiComments' : null
+      };
+
+      if (result.farmId) {
+        formObject.farmId = result.farmId;
+      } else {
+        formObject.farmId = null;
+      }
+
+      if (result.FarmLocation) {
+        formObject.FarmLocation = result.FarmLocation;
+      } else {
+        formObject.FarmLocation = null;
+      }
+
+      if (result.images) {
+        formObject.images = result.images;
+      } else {
+        formObject.images = null;
+      }
+
+      if (result.waterSources) {
+        formObject.waterSourcesN = result.waterSources.North;
+        formObject.waterSourcesS = result.waterSources.South;
+        formObject.waterSourcesE = result.waterSources.East;
+        formObject.waterSourcesW = result.waterSources.West;
+      } else {
+        formObject.waterSources = null;
+      }
+
+      if (result.nearFactories) {
+        formObject.nearFactoriesN = result.nearFactories.North;
+        formObject.nearFactoriesS = result.nearFactories.South;
+        formObject.nearFactoriesE = result.nearFactories.East;
+        formObject.nearFactoriesW = result.nearFactories.South;
+      } else {
+        formObject.nearFactories = null;
+      }
+
+      if (result.otherDescription) {
+        formObject.otherDescription = result.otherDescription;
+      } else {
+        formObject.otherDescription = null;
+      }
+
+      if (result.certification) {
+        formObject.certification = result.certification;
+        formObject.certificationNo = result.certification.certificationNo;
+        formObject.certificationBody = result.certification.certificationBody;
+        formObject.from = result.certification.from.toString().split('T')[0];
+        formObject.to = result.certification.to.toString().split('T')[0];
+        formObject.certiImages = result.certification.images;
+        formObject.certiComments = result.certification.comment;
+
+        this.certiicationComment = result.certification.comment;
+
+      } else {
+        formObject.certification = null;
+      }
+
+      if (result.owner) {
+        formObject.owner = result.owner.name;
+      } else {
+        formObject.owner = null;
+      }
+
+      this.viewForm.setValue(formObject);
 
     })
     .catch((error) => {

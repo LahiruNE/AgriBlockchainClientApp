@@ -22,7 +22,7 @@ import {Event} from './org.hyperledger.composer.system';
       plotId: string;
       cultivationStartDate: Date;
       extent: number;
-      closerplots: CloserPlots;
+      closerplots: Directions;
       activities: Activity[];
       phReadings: PHReading[];
       certificationBodyComments: string[];
@@ -32,8 +32,8 @@ import {Event} from './org.hyperledger.composer.system';
       farmId: string;
       FarmLocation: string;
       images: string[];
-      waterSources: string[];
-      nearFactories: string[];
+      waterSources: Directions;
+      nearFactories: Directions;
       otherDescription: string;
       certification: Certification;
       owner: Stakeholder;
@@ -78,7 +78,7 @@ import {Event} from './org.hyperledger.composer.system';
       currentOwner: Stakeholder;
       issuer: Stakeholder;
    }
-   export class CloserPlots {
+   export class Directions {
       North: string;
       East: string;
       South: string;
