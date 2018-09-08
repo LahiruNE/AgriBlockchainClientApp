@@ -139,6 +139,14 @@ margin-left: -4px;
 }
 ***/
 
+.asset-title{
+    font-family: inherit;
+    font-size: 24px;
+    color: #4E4E4E;
+    letter-spacing: 0.28px;
+    line-height: 28px;
+}
+
 .requestwizard-modal{
 	background: rgba(255, 255, 255, 0.8);
 	box-shadow: rgba(0, 0, 0, 0.3) 20px 20px 20px;

@@ -486,7 +486,7 @@
                             <div class="form-group text-left">
                               <label for="password">Password<sup>*</sup></label>
                               
-                                <input formControlName="password" type="text" class="form-control">
+                                <input formControlName="password" type="password" class="form-control">
                               
                             </div>
                       
@@ -511,6 +511,14 @@
                           </div>
 
                           <div class="form-group text-left">
+                            <label for="certificationBody">certificationBody<sup>*</sup></label>
+                            <select class="form-control"  formControlName="certificationBody"  >
+                              <option value=""></option>
+                             <option *ngFor="let option of Participants" [value]="option.stakeholderId">{{ option.name}}</option> 
+                            </select>
+                          </div>
+
+                          <div class="form-group text-left">
                               <label for="from">Start Date</label>
                               
                                   <input formControlName="from" type="text" class="form-control">
@@ -523,20 +531,17 @@
                                     <input formControlName="to" type="text" class="form-control">
                                 
                               </div>
-                        
-                      
-            
-                        
-                          <div class="form-group text-left">
-                            <label for="images">Images</label>
-                            
-                              <input formControlName="images" type="file" class="form-control">
-                            
-                          </div>
-                        
-                        
+
                           </div>
                           <div class="col-md-6">
+
+                              <div class="form-group text-left">
+                                  <label for="images">Images</label>
+                                  
+                                    <input formControlName="images" type="file" class="form-control">
+                                  
+                                </div>
+
                               <div class="form-group text-left">
                                   <label for="companyname">Company Name<sup>*</sup></label>
                                   
@@ -573,7 +578,7 @@
                     <div class="col-md-6">
 
 
-                        <label for="type">Type<sup>*</sup></label>
+                       <!--  <label for="type">Type<sup>*</sup></label>
                         <div class="checkbox checkdiv">
                           
                             <label>
@@ -696,7 +701,7 @@
                               Cerification Body
                             </label>
                           
-                        </div>                        
+                        </div>  -->                       
 
                           <label for="distributionType">Distribution Type</label>
                           <div class="checkbox checkdiv" >
@@ -741,28 +746,25 @@
                               </label>
                             
                           </div>
-                        
-  
-                           
- 
-                          
+                          <div class="form-group text-left">
+                              <label for="authPerson">Auth Person<sup>*</sup></label>
+                              
+                                <input formControlName="authPerson" type="text" class="form-control">
+                              
+                            </div>
+
+                            <div class="form-group text-left">
+                                <label for="description">Description</label>
+                                
+                                  <input formControlName="description" type="text" class="form-control">
+                                
+                              </div>
+                            
+
                           </div>
                           <div class="col-md-6">
 
-                              <div class="form-group text-left">
-                                  <label for="authPerson">Auth Person<sup>*</sup></label>
-                                  
-                                    <input formControlName="authPerson" type="text" class="form-control">
-                                  
-                                </div>
-
-                              <div class="form-group text-left">
-                                  <label for="description">Description</label>
-                                  
-                                    <input formControlName="description" type="text" class="form-control">
-                                  
-                                </div>
-                              
+                             
                                 <div class="form-group text-left">
                                     <label for="vehicleNo">Vehicle No</label>
                                     
@@ -777,7 +779,7 @@
                             
                               <input formControlName="branchNo" type="text" class="form-control">
                             
-                          </div>
+                          </div><br><br>
 
                       <button (click)="addParticipant(myForm);" type="submit" class="btn btn-primary" >Confirm</button>
                     </div>
@@ -798,7 +800,7 @@
 
 
   
-<!--   
+  
   <div class="modal fade" id="updateParticipantModal" tabindex="-1" role="dialog" aria-labelledby="updateParticipantModalLabel">
     <div class="modal-dialog" role="document">
       <div class="modal-content">
@@ -813,10 +815,8 @@
             
               <div class="form-group text-left">
                 <label for="stakeholderId">stakeholderId</label>
-  
-                
+
                   <input [ngModel]="stakeholderId" formControlName="stakeholderId" class="form-control" disabled="disabled">  
-                
   
               </div>
             
@@ -830,11 +830,22 @@
               </div>
             
               <div class="form-group text-left">
-                <label for="address">address</label>
+                <label for="city">city</label>
   
                 
                   
-                    <textarea [ngModel]="address" formControlName="address" class="form-control" rows="3"></textarea>
+                    <textarea [ngModel]="city" formControlName="city" class="form-control" rows="3"></textarea>
+                  
+                
+  
+              </div>
+
+              <div class="form-group text-left">
+                <label for="country">country</label>
+  
+                
+                  
+                    <textarea [ngModel]="country" formControlName="country" class="form-control" rows="3"></textarea>
                   
                 
   
@@ -859,11 +870,41 @@
               </div>
             
               <div class="form-group text-left">
-                <label for="certification">certification</label>
+                <label for="certificationNo">certificationNo</label>
   
                 
                   
-                    <textarea [ngModel]="certification" formControlName="certification" class="form-control" rows="3"></textarea>
+                    <textarea [ngModel]="certificationNo" formControlName="certificationNo" class="form-control" rows="3"></textarea>
+                  
+                
+  
+              </div>
+
+              <div class="form-group text-left">
+                <label for="certificationBody">certificationBody<sup>*</sup></label>
+                <select class="form-control" [ngModel]="certificationBody"  formControlName="certificationBody"  >
+                  <option value=""></option>
+                 <option *ngFor="let option of Participants" [value]="option.stakeholderId">{{ option.name}}</option> 
+                </select>
+              </div>
+
+              <div class="form-group text-left">
+                <label for="from">StartDate</label>
+  
+                
+                  
+                    <textarea [ngModel]="from" formControlName="from" class="form-control" rows="3"></textarea>
+                  
+                
+  
+              </div>
+
+              <div class="form-group text-left">
+                <label for="to">endDate</label>
+  
+                
+                  
+                    <textarea [ngModel]="to" formControlName="to" class="form-control" rows="3"></textarea>
                   
                 
   
@@ -873,17 +914,39 @@
                 <label for="images">images</label>
   
                 
-                  <input [ngModel]="images"formControlName="images" type="text" class="form-control">
+                  <input formControlName="images" type="file" class="form-control">
                 
   
               </div>
             
               <div class="form-group text-left">
-                <label for="company">company</label>
+                <label for="company">companyname</label>
   
                 
                   
-                    <textarea [ngModel]="company" formControlName="company" class="form-control" rows="3"></textarea>
+                    <textarea [ngModel]="companyname" formControlName="companyname" class="form-control" rows="3"></textarea>
+                  
+                
+  
+              </div>
+
+              <div class="form-group text-left">
+                <label for="companycity">compacompanycity</label>
+  
+                
+                  
+                    <textarea [ngModel]="companycity" formControlName="companycity" class="form-control" rows="3"></textarea>
+                  
+                
+  
+              </div>
+
+              <div class="form-group text-left">
+                <label for="companycountry">companycountry</label>
+  
+                
+                  
+                    <textarea [ngModel]="companycountry" formControlName="companycountry" class="form-control" rows="3"></textarea>
                   
                 
   
@@ -902,7 +965,7 @@
                 <label for="password">password</label>
   
                 
-                  <input [ngModel]="password"formControlName="password" type="text" class="form-control">
+                  <input [ngModel]="password"formControlName="password" type="password" class="form-control">
                 
   
               </div>
@@ -1160,13 +1223,13 @@
           </div>
           <div class="modal-footer">
             <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-            <button (click)="updateParticipant(myForm)" type="submit" class="btn btn-success" data-dismiss="modal">Submit</button>
+            <button (click)="updateParticipant(myForm)" type="submit" class="btn btn-primary" data-dismiss="modal">Submit</button>
           </div>
         </form>
       </div>
     </div>
   </div>
-   -->
+  
   
   
   <div class="modal fade" id="deleteParticipantModal" tabindex="-1" role="dialog" aria-labelledby="deleteParticipantModalLabel">
@@ -1206,7 +1269,11 @@
     
     <div class="row">
       <div class="col-md-9">
-          <h1 class="participant-title" id='participantName'>Stakeholder</h1>
+          <div class="col-md-9 row">
+              <img *ngIf = "allParticipants != ''" src="../../assets/farmer1.png" style="width: 45px; height: 45px">&nbsp;&nbsp;&nbsp;
+              <h1 class="asset-title" id='assetName'>Manage Stakeholders</h1>
+          </div>
+          
       </div>
       <div class="col-md-3">
         <button (click)="resetForm()" type="button" class="btn btn-primary" data-toggle="modal" data-target="#addParticipantModal">
@@ -1222,15 +1289,15 @@
     <br>
     <div class="row">
       <div class="col-md-12">
-        <table class="table table-responsive">
+        <table class="table table-responsive" style="margin: auto;width: 800px;">
           <thead class="thead">
             <tr class="thead-cols">
               
-                  <th class="info">stakeholderId</th>
+                  <th class="info" style="min-width: 150px">Stakeholder Id</th>
               
-                  <th class="info">name</th>
+                  <th class="info" style="min-width: 150px">Name</th>
               
-                  <th class="info">city</th>
+                 <!--  <th class="info">city</th>
 
                   <th class="info">country</th>
               
@@ -1238,9 +1305,11 @@
               
                   <th class="info">telephone</th>
               
-                  <th class="info">certificationNo</th>
+                  <th class="info">certificationNo</th> -->
 
-                  <th class="info">startDate</th>
+                  <th class="info" style="min-width: 150px">Certification Body</th>
+
+                  <!-- <th class="info">startDate</th>
 
                   <th class="info">endDate</th>
               
@@ -1263,7 +1332,7 @@
                   <th class="info">distributionType</th>
               
                   <th class="info">branchNo</th>
-              
+               -->
                 <th class="info-actions">Actions</th>
             </tr>
           </thead>
@@ -1275,7 +1344,7 @@
               
                   <td class="participant-properties">{{participant.name}}</td>
               
-                  <td class="participant-properties">{{participant.address.city}}</td>
+                 <!--  <td class="participant-properties">{{participant.address.city}}</td>
 
                   <td class="participant-properties">{{participant.address.country}}</td>
               
@@ -1283,9 +1352,11 @@
               
                   <td class="participant-properties">{{participant.telephone}}</td>
               
-                  <td class="participant-properties">{{participant.certification.certificationNo}}</td>
+                  <td class="participant-properties">{{participant.certification.certificationNo}}</td> -->
 
-                  <td class="participant-properties">{{participant.certification.from}}</td>
+                  <td class="participant-properties">{{participant.certification.certificationBody.name}}</td>
+
+                  <!-- <td class="participant-properties">{{participant.certification.from}}</td>
 
                   <td class="participant-properties">{{participant.certification.to}}</td>
               
@@ -1307,9 +1378,13 @@
               
                   <td class="participant-properties">{{participant.distributionType}}</td>
               
-                  <td class="participant-properties">{{participant.branchNo}}</td>
+                  <td class="participant-properties">{{participant.branchNo}}</td> -->
               
               <td>
+                  <button  type="button" title="view" (click)="getForm(participant.stakeholderId);" class="btn btn-update" data-toggle="modal" data-target="#viewAssetModal">
+                      <img src="../../assets/view.png">
+                    </button>
+
                 <button (click)="getForm(participant.stakeholderId);" type="button" class="btn btn-update" data-toggle="modal" data-target="#updateParticipantModal">
                     <svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
                     width="12.8px" height="12.8px" viewBox="0 0 30.7 30.7" style="enable-background:new 0 0 30.7 30.7;" xml:space="preserve">
@@ -1337,6 +1412,10 @@
             </tr>
           </tbody>
         </table>
+      </div>
+      <div *ngIf = "allParticipants == ''" class="col-md-12">
+          <img src="../../assets/farmer1.png" style="width: 120px; height: 120px ;display: block; margin-left: auto; margin-right: auto; margin-top: 50px">
+          <div class="alert alert-warning" role="alert" style="text-align: center; margin-top: 30px; padding: 5px;"><h4>No Stakeholders available!</h4></div>
       </div>
     </div>
   </div>
