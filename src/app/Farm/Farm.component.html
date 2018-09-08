@@ -334,7 +334,7 @@
                     </tr>
 
                     <tr>
-                        <td style="width: 150px; border-bottom: 1px solid #bababc" colspan="2">
+                        <td style="width: 150px; border-top: 1px solid #bababc" colspan="2">
                                 <label for="farmId"><b>Surroundings</b></label>                        
     
                         </td>
@@ -455,19 +455,36 @@
                         </tr>
     
                         <tr>
-                            <td style="width: 150px; border-bottom: 1px solid #bababc" colspan="2">
-                                    <label for="farmId"><b>Images</b></label>                        
+                            <td style="width: 150px; border-top: 1px solid #bababc" colspan="2">
+                                    <label for="farmId"><b>Images</b></label> 
+                                    
+                                    <div *ngIf = "certificationImages.length != 0">
+                                        <carousel [interval]="false">
+                                            <slide *ngFor = "let image of certificationImages">
+                                                <img style="width: 150px !important" src="{{'data:image/jpg;base64,' + image}}" style="display: block; width: 100%;" />
+                                            </slide>
+                                        </carousel>
+                                    </div>
+
+                                    <div *ngIf = "certificationImages.length == 0" class="col-md-12">
+                                        <img src="../../assets/error.png" style="display: block; margin-left: auto; margin-right: auto; margin-top: 50px">
+                                        <div class="alert alert-warning" role="alert" style="text-align: center; margin-top: 30px; padding: 5px;"><h4>No images available!</h4></div>
+                                    </div>
         
                             </td>
                         </tr>
 
                         <tr>
-                            <td style="width: 150px; border-bottom: 1px solid #bababc" colspan="2">
-                                    <label for="farmId"><b>Comments</b></label> 
-                                    <ol>
-                                      <li *ngFor="let comment of certiicationComment" >{{comment}}</li>   
-                                    </ol>      
+                            <td style="width: 150px; border-top: 1px solid #bababc" colspan="2">
+                                    <label for="farmId"><b>Comments</b></label>                                          
                             </td>
+                        </tr>
+                        <tr>
+                          <td colspan="2">
+                              <ol>
+                                  <li *ngFor="let comment of certiicationComment" >{{comment}}</li>   
+                                </ol> 
+                          </td>
                         </tr>
                       </table>
               </div>
@@ -475,38 +492,70 @@
       </div>
       <div class="row setup-content" id="step-3">
           <div class="col-xs-12">
-              <div class="col-md-12">
-                  <div class="col-md-6">
-
-
-                         zxc
-
-                        
-                        </div>
-                        <div class="col-md-6">
-
-                            zxc
-
+          
+            <div id="accordion" class="accordion col-md-12">
+              <div *ngFor="let farmer of farmersArr"  class="card">
+                <div class="card-header panel-heading" role="tab" [id]="'heading'+ farmer.stakeholderId">
+                    <h4 class="panel-title">
+                        <a class="btn btn-link collapsed" role="button" data-toggle="collapse" data-parent="#accordion" [attr.data-target]="'#collapse'+ farmer.stakeholderId" aria-expanded="false" [attr.aria-controls]="'collapse'+ farmer.stakeholderId">
+                            {{farmer.name}}
+                        </a>
+                    </h4>
+                </div>
+                <div [id]="'collapse'+ farmer.stakeholderId" class="panel-collapse collapse" role="tabpanel" [attr.aria-labelledby]="'heading'+ farmer.stakeholderId">
+                  <div class="card-body">
+                    <table style="width: 100%"> 
+                        <tr>
+                            <td style="width: 150px">
+                                <label for="to"><b>ID</b></label>
+                            </td>
+                            <td>
+                                <input class="form-control" disabled="disabled" [attr.value]="farmer.stakeholderId">  
+                            </td>
+                        </tr>
+                        <tr>
+                            <td style="width: 150px">
+                                <label for="to"><b>Name</b></label>
+                            </td>
+                            <td>
+                                <input class="form-control" disabled="disabled" [attr.value]="farmer.name">  
+                            </td>
+                        </tr>
+                        <tr>
+                            <td style="width: 150px">
+                                <label for="to"><b>Address</b></label>
+                            </td>
+                            <td>
+                                <input class="form-control" disabled="disabled" [attr.value]="farmer.address.city + ', ' + farmer.address.country">  
+                            </td>
+                        </tr>
+                    </table>
                   </div>
+                </div>
               </div>
+            </div>
+
           </div>
       </div>
 
       <div class="row setup-content" id="step-4">
         <div class="col-xs-12">
-            <div class="col-md-12">
-                <div class="col-md-6">
-
-b
-                       fbf
-
-                      
-                      </div>
-                      <div class="col-md-6">
-
-                          
-rerb
+            <div class="col-md-12">              
+                
+                <div *ngIf = "farmImages.length != 0">
+                    <carousel [interval]="false">
+                        <slide *ngFor = "let image of farmImages">
+                            <img style="width: 150px !important" src="{{'data:image/jpg;base64,' + image}}" style="display: block; width: 100%;" />
+                        </slide>
+                    </carousel>
                 </div>
+
+                <div *ngIf = "farmImages.length == 0" class="col-md-12">
+                    <img src="../../assets/error.png" style="display: block; margin-left: auto; margin-right: auto; margin-top: 50px">
+                    <div class="alert alert-warning" role="alert" style="text-align: center; margin-top: 30px; padding: 5px;"><h4>No images available!</h4></div>
+                </div>
+
+                
             </div>
         </div>
     </div>

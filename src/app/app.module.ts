@@ -43,7 +43,7 @@ import { AdminComponent } from './admin/admin.component';
 import { FarmerDashboardComponent } from './farmer-dashboard/farmer-dashboard.component';
 import { RegisterstakeholderComponent } from './registerstakeholder/registerstakeholder.component';
 
-
+import { CarouselModule } from 'ngx-bootstrap';
 
   @NgModule({
   declarations: [
@@ -73,7 +73,7 @@ import { RegisterstakeholderComponent } from './registerstakeholder/registerstak
     HttpModule,
     AppRoutingModule,
     StorageServiceModule,
-  
+    CarouselModule.forRoot(),
   ],
   providers: [
     DataService,

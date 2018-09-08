@@ -18,6 +18,7 @@ import { FarmService } from './Farm.service';
 import 'rxjs/add/operator/toPromise';
 import { LocalStorageService } from '../services/local-storage.service';
 import $ from 'jquery';
+import { ICarouselConfig, AnimationConfig } from 'angular4-carousel';
 
 @Component({
   selector: 'app-farm',
@@ -35,6 +36,9 @@ export class FarmComponent implements OnInit {
   private currentId;
   private errorMessage;
   private certiicationComment = [];
+  private farmersArr = [];
+  private farmImages = [];
+  private certificationImages = [];
 
   private userType = this.localStorageService.getFromLocal('currentUser').type;
 
@@ -46,6 +50,7 @@ export class FarmComponent implements OnInit {
   otherDescription = new FormControl('', Validators.required);
   certification = new FormControl('', Validators.required);
   owner = new FormControl('', Validators.required);
+  farmers = new FormControl('');
 
   nearFactoriesN = new FormControl('');
   nearFactoriesS = new FormControl('');
@@ -63,6 +68,7 @@ export class FarmComponent implements OnInit {
   to = new FormControl('');
   certiImages = new FormControl('');
   certiComments = new FormControl(''); 
+
 
   constructor(private localStorageService: LocalStorageService, public serviceFarm: FarmService, fb: FormBuilder) {
     this.myForm = fb.group({
@@ -98,11 +104,13 @@ export class FarmComponent implements OnInit {
       from : this.from,
       to : this.to,
       certiImages : this.certiImages,
-      certiComments : this.certiImages
+      certiComments : this.certiImages,
+      farmers : this.farmers,
     });
   };
 
   ngOnInit(): void {
+    
     this.loadAll();   
     var navListItems = $('div.setup-panel div a'),
             allWells = $('.setup-content'),
@@ -382,7 +390,6 @@ export class FarmComponent implements OnInit {
     return this.serviceFarm.getAsset(id)
     .toPromise()
     .then((result) => {
-
       this.errorMessage = null;
       const formObject = {
         'farmId': null,
@@ -406,7 +413,8 @@ export class FarmComponent implements OnInit {
         'from' : null,
         'to' : null,
         'certiImages' : null,
-        'certiComments' : null
+        'certiComments' : null,
+        'farmers' : null,
       };
 
       if (result.farmId) {
@@ -423,6 +431,10 @@ export class FarmComponent implements OnInit {
 
       if (result.images) {
         formObject.images = result.images;
+
+        this.farmImages = result.images;
+
+
       } else {
         formObject.images = null;
       }
@@ -454,14 +466,15 @@ export class FarmComponent implements OnInit {
       if (result.certification) {
         formObject.certification = result.certification;
         formObject.certificationNo = result.certification.certificationNo;
-        formObject.certificationBody = result.certification.certificationBody;
+        formObject.certificationBody = result.certification.certificationBody.name;
         formObject.from = result.certification.from.toString().split('T')[0];
         formObject.to = result.certification.to.toString().split('T')[0];
         formObject.certiImages = result.certification.images;
         formObject.certiComments = result.certification.comment;
 
         this.certiicationComment = result.certification.comment;
-
+        this.certificationImages = result.certification.images;
+        
       } else {
         formObject.certification = null;
       }
@@ -470,6 +483,14 @@ export class FarmComponent implements OnInit {
         formObject.owner = result.owner.name;
       } else {
         formObject.owner = null;
+      }
+
+      if (result.farmers) {
+        formObject.farmers = result.farmers;
+
+        this.farmersArr = result.farmers;
+      } else {
+        formObject.farmers = null;
       }
 
       this.viewForm.setValue(formObject);
@@ -497,6 +518,6 @@ export class FarmComponent implements OnInit {
       'certification': null,
       'owner': null
       });
-  }
+  } 
 
 }
