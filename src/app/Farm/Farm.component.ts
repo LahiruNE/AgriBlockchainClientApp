@@ -18,7 +18,6 @@ import { FarmService } from './Farm.service';
 import 'rxjs/add/operator/toPromise';
 import { LocalStorageService } from '../services/local-storage.service';
 import $ from 'jquery';
-import { ICarouselConfig, AnimationConfig } from 'angular4-carousel';
 
 @Component({
   selector: 'app-farm',
