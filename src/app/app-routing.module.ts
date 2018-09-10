@@ -35,6 +35,7 @@ import { AdminComponent } from './admin/admin.component';
 import { RegisterstakeholderComponent } from './registerstakeholder/registerstakeholder.component';
 
 import { FarmerDashboardComponent } from './farmer-dashboard/farmer-dashboard.component';
+import { ScanComponent } from './scan/scan.component';
 
 const routes: Routes = [
   { path: '', component: HomeComponent },
@@ -53,6 +54,7 @@ const routes: Routes = [
   { path: 'Admin', component: AdminComponent },
   { path: 'FarmerHome', component: FarmerDashboardComponent },
   { path: 'StakeholderRegister', component: RegisterstakeholderComponent },
+  { path: 'ScanProduct', component: ScanComponent },
   { path: '**', redirectTo: '' }
 ];
 

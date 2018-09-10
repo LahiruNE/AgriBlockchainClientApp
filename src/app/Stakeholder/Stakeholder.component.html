@@ -393,7 +393,7 @@
   </div> -->
   
   <div class="modal fade" id="addParticipantModal" tabindex="-1" role="dialog" aria-labelledby="modalLabel" aria-hidden="true">
-      <div class="modal-dialog">
+      <div class="modal-dialog modal-lg">
       <div class="modal-content">
         <div class="modal-header">
             <h4 class="modal-title" id="addParticipantModalLabel">Create {{StakeholderType}}</h4>
@@ -405,16 +405,16 @@
         <div class="requestwizard">
           <div class="requestwizard-row setup-panel">
             <div class="requestwizard-step">
-                    <a href="#step-1" type="button" class="btn btn-primary btn-circle">1</a>
-                    <p>Contact information</p>
+                    <a id="stage1" href="#step-1" type="button" class="btn btn-primary btn-circle">1</a>
+                    <p>Basic information</p>
                 </div>
                 <div class="requestwizard-step">
                     <a href="#step-2" type="button" class="btn btn-default btn-circle" disabled="disabled">2</a>
-                    <p>Official information</p>
+                    <p>company information</p>
                 </div>
-                <div class="requestwizard-step">
+                <div *ngIf = "StakeholderType !== 'CERTIFICATION'" class="requestwizard-step">
                     <a href="#step-3" type="button" class="btn btn-default btn-circle" disabled="disabled">3</a>
-                    <p>Other information</p>
+                    <p>certification information</p>
                 </div>
             </div>
         </div>
@@ -503,6 +503,128 @@
             <div class="col-xs-12">
                 <div class="col-md-12">
                     <div class="col-md-6">
+                        <div *ngIf = "StakeholderType == 'CERTIFICATION'" class="form-group text-left">
+                            <label for="certificationNo">Registration No<sup>*</sup></label>
+                            
+                                <input formControlName="certificationNo" type="text" class="form-control">
+                            
+                          </div>
+
+                        <div class="form-group text-left">
+                            <label for="companyname">Company Name<sup>*</sup></label>
+                            
+                                <input formControlName="companyname" type="text" class="form-control">
+                            
+                          </div>
+          
+                          <div class="form-group text-left">
+                            <label for="companycity">Company City<sup>*</sup></label>
+                            
+                                <input formControlName="companycity" type="text" class="form-control">
+                            
+                          </div>
+          
+                          <div class="form-group text-left">
+                            <label for="companycountry">Company Country<sup>*</sup></label>
+                            
+                                <input formControlName="companycountry" type="text" class="form-control">
+                            
+                          </div>
+
+                        <label for="distributionType">Distribution Type</label>
+                        <div class="checkbox checkdiv" >
+                          
+                            <label>
+                              <input
+                                
+                                  formControlName="distributionType"
+                                
+                                name="distributionType"
+                                value="F2P"
+                                type="radio"
+                                
+                              />
+                              F2P
+                            </label>
+                          
+                            <label>
+                              <input
+                                
+                                  formControlName="distributionType"
+                                
+                                name="distributionType"
+                                value="P2W"
+                                type="radio"
+                                
+                              />
+                              P2W
+                            </label>
+                          
+                            <label>
+                              <input
+                                
+                                  formControlName="distributionType"
+                                
+                                name="distributionType"
+                                value="W2R"
+                                type="radio"
+                                
+                              />
+                              W2R
+                            </label>
+                          
+                        </div>
+                       
+                        
+
+                          </div>
+                          <div class="col-md-6">
+
+                              <div class="form-group text-left">
+                                  <label for="authPerson">Auth Person<sup>*</sup></label>
+                                  
+                                    <input formControlName="authPerson" type="text" class="form-control">
+                                  
+                                </div>
+      
+                                <div class="form-group text-left">
+                                    <label for="description">Description</label>
+                                    
+                                      <input formControlName="description" type="text" class="form-control">
+                                    
+                                  </div>
+
+
+                                <div class="form-group text-left">
+                                    <label for="vehicleNo">Vehicle No</label>
+                                    
+                                      <input formControlName="vehicleNo" type="text" class="form-control">
+                                    
+                                  </div>
+
+                          
+
+                          <div class="form-group text-left">
+                            <label for="branchNo">Branch No</label>
+                            
+                              <input formControlName="branchNo" type="text" class="form-control">
+                            
+                          </div>
+                                <br>
+                      
+            
+                        
+                        <button *ngIf = "StakeholderType == 'CERTIFICATION'" (click)="addParticipant(myForm);" type="submit" class="btn btn-primary" >Confirm</button>
+                        <button *ngIf = "StakeholderType !== 'CERTIFICATION'" class="btn btn-primary nextBtn btn-lg pull-right" type="button" >Next</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div *ngIf = "StakeholderType !== 'CERTIFICATION'" class="row setup-content" id="step-3">
+            <div class="col-xs-12">
+                <div class="col-md-12">
+                    <div class="col-md-6">
+
                         <div class="form-group text-left">
                             <label for="certificationNo">CertificationNo<sup>*</sup></label>
                             
@@ -518,22 +640,7 @@
                             </select>
                           </div>
 
-                          <div class="form-group text-left">
-                              <label for="from">Start Date</label>
-                              
-                                  <input formControlName="from" type="text" class="form-control">
-                              
-                            </div>
-
-                            <div class="form-group text-left">
-                                <label for="to">End Date</label>
-                                
-                                    <input formControlName="to" type="text" class="form-control">
-                                
-                              </div>
-
-                          </div>
-                          <div class="col-md-6">
+                          
 
                               <div class="form-group text-left">
                                   <label for="images">Images</label>
@@ -541,41 +648,6 @@
                                     <input formControlName="images" type="file" class="form-control">
                                   
                                 </div>
-
-                              <div class="form-group text-left">
-                                  <label for="companyname">Company Name<sup>*</sup></label>
-                                  
-                                      <input formControlName="companyname" type="text" class="form-control">
-                                  
-                                </div>
-                
-                                <div class="form-group text-left">
-                                  <label for="companycity">Company City<sup>*</sup></label>
-                                  
-                                      <input formControlName="companycity" type="text" class="form-control">
-                                  
-                                </div>
-                
-                                <div class="form-group text-left">
-                                  <label for="companycountry">Company Country<sup>*</sup></label>
-                                  
-                                      <input formControlName="companycountry" type="text" class="form-control">
-                                  
-                                </div>
-                                <br>
-                      
-            
-                        
-                         
-                        <button class="btn btn-primary nextBtn btn-lg pull-right" type="button" >Next</button>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="row setup-content" id="step-3">
-            <div class="col-xs-12">
-                <div class="col-md-12">
-                    <div class="col-md-6">
 
 
                        <!--  <label for="type">Type<sup>*</sup></label>
@@ -703,83 +775,23 @@
                           
                         </div>  -->                       
 
-                          <label for="distributionType">Distribution Type</label>
-                          <div class="checkbox checkdiv" >
-                            
-                              <label>
-                                <input
-                                  
-                                    formControlName="distributionType"
-                                  
-                                  name="distributionType"
-                                  value="F2P"
-                                  type="radio"
-                                  
-                                />
-                                F2P
-                              </label>
-                            
-                              <label>
-                                <input
-                                  
-                                    formControlName="distributionType"
-                                  
-                                  name="distributionType"
-                                  value="P2W"
-                                  type="radio"
-                                  
-                                />
-                                P2W
-                              </label>
-                            
-                              <label>
-                                <input
-                                  
-                                    formControlName="distributionType"
-                                  
-                                  name="distributionType"
-                                  value="W2R"
-                                  type="radio"
-                                  
-                                />
-                                W2R
-                              </label>
-                            
-                          </div>
-                          <div class="form-group text-left">
-                              <label for="authPerson">Auth Person<sup>*</sup></label>
-                              
-                                <input formControlName="authPerson" type="text" class="form-control">
-                              
-                            </div>
-
-                            <div class="form-group text-left">
-                                <label for="description">Description</label>
-                                
-                                  <input formControlName="description" type="text" class="form-control">
-                                
-                              </div>
-                            
-
                           </div>
                           <div class="col-md-6">
-
-                             
+                              <div class="form-group text-left">
+                                  <label for="from">Start Date</label>
+                                  
+                                      <input formControlName="from" type="date" class="form-control">
+                                  
+                                </div>
+    
                                 <div class="form-group text-left">
-                                    <label for="vehicleNo">Vehicle No</label>
+                                    <label for="to">End Date</label>
                                     
-                                      <input formControlName="vehicleNo" type="text" class="form-control">
+                                        <input formControlName="to" type="date" class="form-control">
                                     
                                   </div>
-
-                          
-
-                          <div class="form-group text-left">
-                            <label for="branchNo">Branch No</label>
-                            
-                              <input formControlName="branchNo" type="text" class="form-control">
-                            
-                          </div><br><br>
+                             
+                               <br>
 
                       <button (click)="addParticipant(myForm);" type="submit" class="btn btn-primary" >Confirm</button>
                     </div>
@@ -805,8 +817,9 @@
     <div class="modal-dialog" role="document">
       <div class="modal-content">
         <div class="modal-header">
+            <h4 class="modal-title" id="updateParticipantModalLabel">Update Participant</h4>
           <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-          <h4 class="modal-title" id="updateParticipantModalLabel">Update Participant</h4>
+          
         </div>
         <form [formGroup]="myForm">
           <div class="modal-body">
@@ -834,7 +847,7 @@
   
                 
                   
-                    <textarea [ngModel]="city" formControlName="city" class="form-control" rows="3"></textarea>
+                    <input [ngModel]="city" formControlName="city" class="form-control">
                   
                 
   
@@ -845,7 +858,7 @@
   
                 
                   
-                    <textarea [ngModel]="country" formControlName="country" class="form-control" rows="3"></textarea>
+                    <input [ngModel]="country" formControlName="country" class="form-control">
                   
                 
   
@@ -874,7 +887,7 @@
   
                 
                   
-                    <textarea [ngModel]="certificationNo" formControlName="certificationNo" class="form-control" rows="3"></textarea>
+                    <input [ngModel]="certificationNo" formControlName="certificationNo" class="form-control">
                   
                 
   
@@ -883,8 +896,7 @@
               <div class="form-group text-left">
                 <label for="certificationBody">certificationBody<sup>*</sup></label>
                 <select class="form-control" [ngModel]="certificationBody"  formControlName="certificationBody"  >
-                  <option value=""></option>
-                 <option *ngFor="let option of Participants" [value]="option.stakeholderId">{{ option.name}}</option> 
+                 <option *ngFor="let option of Participants" [value]="option.stakeholderId" >{{ option.name}}</option> 
                 </select>
               </div>
 
@@ -893,7 +905,7 @@
   
                 
                   
-                    <textarea [ngModel]="from" formControlName="from" class="form-control" rows="3"></textarea>
+                    <input [ngModel]="from" formControlName="from" class="form-control">
                   
                 
   
@@ -904,7 +916,7 @@
   
                 
                   
-                    <textarea [ngModel]="to" formControlName="to" class="form-control" rows="3"></textarea>
+                    <input [ngModel]="to" formControlName="to" class="form-control">
                   
                 
   
@@ -924,7 +936,7 @@
   
                 
                   
-                    <textarea [ngModel]="companyname" formControlName="companyname" class="form-control" rows="3"></textarea>
+                    <input [ngModel]="companyname" formControlName="companyname" class="form-control">
                   
                 
   
@@ -935,7 +947,7 @@
   
                 
                   
-                    <textarea [ngModel]="companycity" formControlName="companycity" class="form-control" rows="3"></textarea>
+                    <input [ngModel]="companycity" formControlName="companycity" class="form-control">
                   
                 
   
@@ -946,7 +958,7 @@
   
                 
                   
-                    <textarea [ngModel]="companycountry" formControlName="companycountry" class="form-control" rows="3"></textarea>
+                    <input [ngModel]="companycountry" formControlName="companycountry" class="form-control">
                   
                 
   
@@ -1252,9 +1264,233 @@
     </div>
   </div>
   
+  <div class="modal fade" id="requestform" tabindex="-1" role="dialog" aria-labelledby="modalLabel" aria-hidden="true">
+      <div class="modal-dialog modal-lg">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h4 class="modal-title" id="addParticipantModalLabel">Stakeholder Details</h4>
+          <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">×</span><span class="sr-only">Close</span></button>
+        </div>
+        <div class="modal-body">
+            <!-- Steps starts here -->
+        <div class="requestwizard">
+          <div class="requestwizard-row setup-panel">
+            <div class="requestwizard-step">
+                    <a href="#step1" type="button" class="btn btn-primary btn-circle">1</a>
+                    <p>Basic Information</p>
+                </div>
+                <div class="requestwizard-step">
+                    <a href="#step2" type="button" class="btn btn-default btn-circle" >2</a>
+                    <p>Company Information</p>
+                </div>
+                <div *ngIf = "StakeholderType !== 'CERTIFICATION'" class="requestwizard-step">
+                    <a href="#step3" type="button" class="btn btn-default btn-circle">3</a>
+                    <p>Certification Information</p>
+                </div>
+            </div>
+        </div>
+    
+    <form  [formGroup]="myForm">
+        <div class="row setup-content" id="step1">
+            <div class="col-xs-12">
+                <div class="col-md-12">
+                    <table id="detTbl" style="width: 100%">
+                       
+                        <tr>
+                            <td style="width: 150px"><label for="stakeholderId"><b>stakeholderId</b></label></td>
+
+                            <td><input [ngModel]="stakeholderId" formControlName="stakeholderId" class="form-control" readonly>     </td>
+
+                        </tr>
+
+                        <tr>
+                            <td style="width: 150px"><label for="name"><b>name</b></label></td>
+                            <td><input [ngModel]="name"formControlName="name" type="text" class="form-control" readonly></td>
+
+                          </tr>
+
+                          <tr>
+                            <td style="width: 150px"><label for="city"><b>City</b></label></td>
+                            <td><input [ngModel]="city" formControlName="city" class="form-control" readonly></td>
+                          </tr>
+
+                          <tr>
+                              <td style="width: 150px"><label for="country"><b>Country</b></label></td>
+                              <td><input [ngModel]="country" formControlName="country" class="form-control" readonly></td>
+                            </tr>
+
+                            <tr>
+                                <td style="width: 150px"><label for="email"><b>Email</b></label></td>
+                                <td> <input [ngModel]="email"formControlName="email" type="text" class="form-control" readonly></td>
+                              </tr>
+
+                              <tr>
+                                  <td style="width: 150px"><label for="telephone"><b>Telephone</b></label></td>
+                                  <td><input [ngModel]="telephone"formControlName="telephone" type="text" class="form-control" readonly></td>
+                              </tr>
+
+                              <tr>
+                                  <td style="width: 150px"><label for="username"><b>User Name</b></label></td>
+                                  <td> <input [ngModel]="username"formControlName="username" type="text" class="form-control" readonly></td>
+                                </tr>
+
+                      </table>
+            
+                   
+          
+                   
+                </div>
+            </div>
+        </div>
+        <div class="row setup-content" id="step2">
+            <div class="col-xs-12">
+                <div class="col-md-12">
+
+                    <table id="detTbl" style="width: 100%">
+                       
+                        <tr>
+                            <td style="width: 150px"><label for="companyname"><b>Company Name</b></label></td>
+
+                            <td><input [ngModel]="companyname" formControlName="companyname" class="form-control" readonly>
+                            </td>
+
+                        </tr>
+
+                        <tr>
+                            <td style="width: 150px"><label for="companycity"><b>Company City</b></label></td>
+                            <td> <input [ngModel]="companycity" formControlName="companycity" class="form-control" readonly>
+                            </td>
+
+                          </tr>
+
+                          <tr>
+                            <td style="width: 150px"><label for="companycountry"><b>Company Country</b></label></td>
+                            <td> <input [ngModel]="companycountry" formControlName="companycountry" class="form-control" readonly>
+                            </td>
+                          </tr>
+
+                          <tr>
+                              <td style="width: 150px"><label for="authPerson"><b>Authorized Person</b></label></td>
+                              <td><input [ngModel]="authPerson"formControlName="authPerson" type="text" class="form-control" readonly></td>
+                            </tr>
+
+                            <tr>
+                                <td style="width: 150px"><label for="description"><b>Description</b></label></td>
+                                <td> <input [ngModel]="description"formControlName="description" type="text" class="form-control" readonly></td>
+                              </tr>
+
+                              <tr>
+                                  <td style="width: 150px"><label for="vehicleNo"><b>Vehicle Number</b></label></td>
+                                  <td><input [ngModel]="vehicleNo"formControlName="vehicleNo" type="text" class="form-control" readonly></td>
+                              </tr>
+
+                              <tr>
+                                  <td style="width: 150px"><label for="distributionType"><b>Distribution Type</b></label></td>
+                                  <td><label>
+                                      <input
+                                        
+                                          formControlName="distributionType"
+                                          [ngModel]="distributionType"
+                                        
+                                        name="distributionType"
+                                        value="F2P"
+                                        type="radio"
+                                        readonly
+                                      />
+                                      F2P
+                                    </label>
+                                  
+                                    <label>
+                                      <input
+                                        
+                                          formControlName="distributionType"
+                                          [ngModel]="distributionType"
+                                        
+                                        name="distributionType"
+                                        value="P2W"
+                                        type="radio"
+                                        readonly
+                                      />
+                                      P2W
+                                    </label>
+                                  
+                                    <label>
+                                      <input
+                                        
+                                          formControlName="distributionType"
+                                          [ngModel]="distributionType"
+                                        
+                                        name="distributionType"
+                                        value="W2R"
+                                        type="radio"
+                                        readonly
+                                      />
+                                      W2R
+                                    </label></td>
+                                </tr>
+
+                                <tr>
+                                    <td style="width: 150px"><label for="telephone"><b>Branch Number</b></label></td>
+                                    <td><input [ngModel]="branchNo"formControlName="branchNo" type="text" class="form-control" readonly>
+                                    </td>
+                                </tr>
+
+                      </table>
+            
+                   
+                   
+                  
+          
+                    
+                </div>
+            </div>
+        </div>
+        <div *ngIf = "StakeholderType !== 'CERTIFICATION'" class="row setup-content" id="step3">
+            <div class="col-xs-12">
+                <div class="col-md-12">
+                    <table id="detTbl" style="width: 100%">
+                       
+                        <tr>
+                            <td style="width: 150px"><label for="certificationNo"><b>Certification No</b></label></td>
+
+                            <td> <input [ngModel]="certificationNo" formControlName="certificationNo" class="form-control" readonly>
+                            </td>
+
+                        </tr>
+
+                        <tr>
+                            <td style="width: 150px"><label for="certificationBody"><b>Certification Body</b></label></td>
+                            <td><input class="form-control" [ngModel]="certificationBody"  formControlName="certificationBody" readonly ></td>
+
+                          </tr>
+
+                          <tr>
+                            <td style="width: 150px"><label for="from"><b>Start Date</b></label></td>
+                            <td><input [ngModel]="from" formControlName="from" class="form-control" readonly></td>
+                          </tr>
+
+                          <tr>
+                              <td style="width: 150px"><label for="to"><b>End Date</b></label></td>
+                              <td> <input [ngModel]="to" formControlName="to" class="form-control" readonly></td>
+                            </tr>
+
+                      </table>
+                   
+                   
+                </div>
+            </div>
+        </div>
+
+    </form>
   
   
+  <!-- Form ends here -->
+      </div>
+    </div>
+  </div>
+  </div>
   
+
   
   
   
@@ -1307,7 +1543,7 @@
               
                   <th class="info">certificationNo</th> -->
 
-                  <th class="info" style="min-width: 150px">Certification Body</th>
+                  <!-- <th class="info" style="min-width: 150px">Certification Body</th> -->
 
                   <!-- <th class="info">startDate</th>
 
@@ -1315,25 +1551,25 @@
               
                   <th class="info">images</th>
               
-                  <th class="info">company</th>
+                  <th class="info">company</th> -->
               
-                  <th class="info">username</th>
+                  <th class="info" style="min-width: 150px">username</th>
               
-                  <th class="info">password</th>
+                 <!--  <th class="info">password</th>
               
                   <th class="info">type</th>
               
-                  <th class="info">description</th>
+                  <th class="info">description</th> -->
               
-                  <th class="info">authPerson</th>
+                  <th class="info" style="min-width: 150px">authPerson</th>
               
-                  <th class="info">vehicleNo</th>
+                 <!--  <th class="info">vehicleNo</th>
               
                   <th class="info">distributionType</th>
               
-                  <th class="info">branchNo</th>
-               -->
-                <th class="info-actions">Actions</th>
+                  <th class="info">branchNo</th> -->
+              
+                <th class="info-actions" style="min-width: 150px">Actions</th>
             </tr>
           </thead>
           <tbody>
@@ -1354,34 +1590,34 @@
               
                   <td class="participant-properties">{{participant.certification.certificationNo}}</td> -->
 
-                  <td class="participant-properties">{{participant.certification.certificationBody.name}}</td>
+                 <!--  <td class="participant-properties">{{participant.certification.certificationBody.name}}</td>
 
-                  <!-- <td class="participant-properties">{{participant.certification.from}}</td>
+                  <td class="participant-properties">{{participant.certification.from}}</td>
 
                   <td class="participant-properties">{{participant.certification.to}}</td>
               
                   <td class="participant-properties">{{participant.images}}</td>
               
-                  <td class="participant-properties">{{participant.company.name}}</td>
+                  <td class="participant-properties">{{participant.company.name}}</td> -->
               
                   <td class="participant-properties">{{participant.username}}</td>
               
-                  <td class="participant-properties">{{participant.password}}</td>
+                 <!--  <td class="participant-properties">{{participant.password}}</td>
               
                   <td class="participant-properties">{{participant.type}}</td>
               
-                  <td class="participant-properties">{{participant.description}}</td>
+                  <td class="participant-properties">{{participant.description}}</td> -->
               
                   <td class="participant-properties">{{participant.authPerson}}</td>
               
-                  <td class="participant-properties">{{participant.vehicleNo}}</td>
+                 <!--  <td class="participant-properties">{{participant.vehicleNo}}</td>
               
                   <td class="participant-properties">{{participant.distributionType}}</td>
               
                   <td class="participant-properties">{{participant.branchNo}}</td> -->
               
               <td>
-                  <button  type="button" title="view" (click)="getForm(participant.stakeholderId);" class="btn btn-update" data-toggle="modal" data-target="#viewAssetModal">
+                  <button (click)="getForm(participant.stakeholderId);"  type="button" title="view" class="btn btn-update" data-toggle="modal" data-target="#requestform">
                       <img src="../../assets/view.png">
                     </button>
 

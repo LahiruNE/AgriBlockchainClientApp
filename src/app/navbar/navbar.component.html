@@ -1,5 +1,6 @@
 <nav class="navbar navbar-expand-lg navbar-light bg-light">
   <a class="navbar-brand" [routerLink]="['']">AgriBlock</a>
+  <a [routerLink]="['/ScanProduct']">scan a product</a>
   <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
     <span class="navbar-toggler-icon"></span>
   </button>
@@ -91,6 +92,7 @@
       </ul>
   </div>
   <span class="navbar-text">
+    
     Welcome <span class="badge badge-secondary">{{user}}</span>
   </span>
   <form (ngSubmit)="logOut()" class="form-inline">

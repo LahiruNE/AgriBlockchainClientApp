@@ -42,6 +42,7 @@ import { LocalStorageService } from './services/local-storage.service';
 import { AdminComponent } from './admin/admin.component';
 import { FarmerDashboardComponent } from './farmer-dashboard/farmer-dashboard.component';
 import { RegisterstakeholderComponent } from './registerstakeholder/registerstakeholder.component';
+import { ScanComponent } from './scan/scan.component';
 
 import { CarouselModule } from 'ngx-bootstrap';
 
@@ -64,7 +65,8 @@ import { CarouselModule } from 'ngx-bootstrap';
     NavbarComponent,
     AdminComponent,
     FarmerDashboardComponent,
-    RegisterstakeholderComponent
+    RegisterstakeholderComponent,
+    ScanComponent
   ],
   imports: [
     BrowserModule,

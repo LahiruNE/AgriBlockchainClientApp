@@ -207,3 +207,10 @@ sup{
 .nextBtn{
     font-size: 12px !important;
 }
+#tbl1 td{
+    width: 25% !important;
+}
+
+#detTbl td{
+    padding: 10px !important;
+}
