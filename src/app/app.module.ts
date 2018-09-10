@@ -44,8 +44,6 @@ import { FarmerDashboardComponent } from './farmer-dashboard/farmer-dashboard.co
 import { RegisterstakeholderComponent } from './registerstakeholder/registerstakeholder.component';
 import { ScanComponent } from './scan/scan.component';
 
-import { CarouselModule } from 'ngx-bootstrap';
-
   @NgModule({
   declarations: [
     AppComponent,
@@ -75,7 +73,7 @@ import { CarouselModule } from 'ngx-bootstrap';
     HttpModule,
     AppRoutingModule,
     StorageServiceModule,
-    CarouselModule.forRoot(),
+   
   ],
   providers: [
     DataService,
