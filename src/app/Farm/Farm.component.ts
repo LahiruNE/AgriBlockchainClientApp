@@ -13,22 +13,28 @@
  */
 
 import { Component, OnInit, Input } from '@angular/core';
-import { FormGroup, FormControl, Validators, FormBuilder } from '@angular/forms';
+import { FormGroup, FormControl, Validators, FormBuilder, FormArray } from '@angular/forms';
 import { FarmService } from './Farm.service';
 import 'rxjs/add/operator/toPromise';
 import { LocalStorageService } from '../services/local-storage.service';
 import $ from 'jquery';
+import { StakeholderService } from '../Stakeholder/Stakeholder.service';
+import { FileHolder } from 'angular2-image-upload';
 
 @Component({
   selector: 'app-farm',
   templateUrl: './Farm.component.html',
   styleUrls: ['./Farm.component.css'],
-  providers: [FarmService]
+  providers: [FarmService,StakeholderService]
 })
 export class FarmComponent implements OnInit {
 
   myForm: FormGroup;
   viewForm: FormGroup;
+  updateForm: FormGroup;
+  farmersFormArr: FormArray;
+  imagesFormArr: FormArray;
+  certImagesFormArr: FormArray;
 
   private allAssets;
   private asset;
@@ -38,6 +44,11 @@ export class FarmComponent implements OnInit {
   private farmersArr = [];
   private farmImages = [];
   private certificationImages = [];
+  private availParticipants = [];
+  private availCertification = [];
+  private availFarmer = [];
+  private uploadImages = [];
+  private uploadCertImages = [];
 
   private userType = this.localStorageService.getFromLocal('currentUser').type;
 
@@ -69,7 +80,7 @@ export class FarmComponent implements OnInit {
   certiComments = new FormControl(''); 
 
 
-  constructor(private localStorageService: LocalStorageService, public serviceFarm: FarmService, fb: FormBuilder) {
+  constructor(private localStorageService: LocalStorageService, public serviceFarm: FarmService, public serviceStakeholder : StakeholderService, private fb: FormBuilder) {
     this.myForm = fb.group({
       farmId: this.farmId,
       FarmLocation: this.FarmLocation,
@@ -103,14 +114,42 @@ export class FarmComponent implements OnInit {
       from : this.from,
       to : this.to,
       certiImages : this.certiImages,
-      certiComments : this.certiImages,
+      certiComments : this.certiComments,
       farmers : this.farmers,
+    });
+
+    this.updateForm = fb.group({
+      farmId: this.farmId,
+      FarmLocation: this.FarmLocation,
+      waterSources: this.waterSources,
+      nearFactories: this.nearFactories,
+      otherDescription: this.otherDescription,
+      certification: this.certification,
+      owner: this.owner,
+      waterSourcesN : this.waterSourcesN,
+      waterSourcesS : this.waterSourcesS,
+      waterSourcesE : this.waterSourcesE,
+      waterSourcesW : this.waterSourcesW,
+      nearFactoriesN : this.nearFactoriesN,
+      nearFactoriesS : this.nearFactoriesS,
+      nearFactoriesE : this.nearFactoriesE,
+      nearFactoriesW : this.nearFactoriesW,
+      certificationNo : this.certificationNo,
+      certificationBody : this.certificationBody,
+      from : this.from,
+      to : this.to,
+      certImagesFormArr : fb.array([]),
+      certiComments : this.certiComments,
+      farmersFormArr: fb.array([]),
+      imagesFormArr : fb.array([]),
     });
   };
 
-  ngOnInit(): void {
-    
-    this.loadAll();   
+  ngOnInit(): void {    
+    this.loadAll();
+    this.loadParticipants();
+
+    //setup wizard   
     var navListItems = $('div.setup-panel div a'),
             allWells = $('.setup-content'),
             allNextBtn = $('.nextBtn');
@@ -134,12 +173,13 @@ export class FarmComponent implements OnInit {
     allNextBtn.click(function(){
         var curStep = $(this).closest(".setup-content"),
             curStepBtn = curStep.attr("id"),
-            nextStepWizard = $('div.setup-panel div a[href="#' + curStepBtn + '"]').parent().next().children("a"),
+            nextStepWizard = $('div.setup-panel div a[href="#' + curStepBtn + '"]').parent().parent().next().children("div").children("a"),
             curInputs = curStep.find("input[type='text'],input[type='url']"),
             isValid = true;
 
         $(".form-group").removeClass("has-error");
         for(var i=0; i<curInputs.length; i++){
+          console.log(curInputs[i]);
             if (!curInputs[i].validity.valid){
                 isValid = false;
                 $(curInputs[i]).closest(".form-group").addClass("has-error");
@@ -147,13 +187,11 @@ export class FarmComponent implements OnInit {
         }
 
         if (isValid)
-            nextStepWizard.removeAttr('disabled').trigger('click');
+            nextStepWizard.trigger('click');
     });
 
-    $('#stage1').trigger('click');
-      
- 
-  }
+    
+  }  
 
   loadAll(): Promise<any> {
     const tempList = [];
@@ -165,6 +203,37 @@ export class FarmComponent implements OnInit {
         tempList.push(asset);
       });
       this.allAssets = tempList;
+    })
+    .catch((error) => {
+      if (error === 'Server error') {
+        this.errorMessage = 'Could not connect to REST server. Please check your configuration details';
+      } else if (error === '404 - Not Found') {
+        this.errorMessage = '404 - Could not find API route. Please check your available APIs.';
+      } else {
+        this.errorMessage = error;
+      }
+    });
+  }
+
+  loadParticipants(): Promise<any>{
+    const tempList = [];
+    return this.serviceStakeholder.getAll()
+    .toPromise()
+    .then((result) => {
+      this.errorMessage = null;
+      result.forEach(asset => {
+        this.availParticipants.push(asset);
+
+        if(String(asset.type) == "FARMER"){
+          this.availFarmer.push(asset);
+        }
+
+        if(String(asset.type) == "CERTIFICATION"){
+          this.availCertification.push(asset);
+        }        
+
+      });
+
     })
     .catch((error) => {
       if (error === 'Server error') {
@@ -202,73 +271,193 @@ export class FarmComponent implements OnInit {
     return this[name].value.indexOf(value) !== -1;
   }
 
-  addAsset(form: any): Promise<any> {
-    this.asset = {
-      $class: 'org.ucsc.agriblockchain.Farm',
-      'farmId': this.farmId.value,
-      'FarmLocation': this.FarmLocation.value,
-      'images': this.images.value,
-      'waterSources': this.waterSources.value,
-      'nearFactories': this.nearFactories.value,
-      'otherDescription': this.otherDescription.value,
-      'certification': this.certification.value,
-      'owner': this.owner.value
-    };
+  addAsset(form: any) { 
+    $('.loader').show();
+    $('.word').hide();
 
-    this.myForm.setValue({
-      'farmId': null,
-      'FarmLocation': null,
-      'images': null,
-      'waterSources': null,
-      'nearFactories': null,
-      'otherDescription': null,
-      'certification': null,
-      'owner': null
+    let imageArr = this.updateForm.value['imagesFormArr'];
+    let images = [];
+
+    imageArr.forEach((image)=>{
+      let item = image.image;
+      images.push(item);
     });
 
-    return this.serviceFarm.addAsset(this.asset)
+    let certImageArr = this.updateForm.value['certImagesFormArr'];
+    let certImages = [];
+
+    certImageArr.forEach((image)=>{
+      let item = image.image;
+      certImages.push(item);
+    });
+
+    let farmersArr = this.updateForm.value['farmersFormArr'];
+    let farmers = [];
+
+    farmersArr.forEach((farmer)=>{
+      let item = farmer.farmer;
+      farmers.push("resource:org.ucsc.agriblockchain.Stakeholder#" + item);
+    }); 
+
+    let water = {
+        $class : "org.ucsc.agriblockchain.Directions",
+        "North": this.waterSourcesN.value,
+        "East": this.waterSourcesE.value,
+        "South": this.waterSourcesS.value,
+        "West": this.waterSourcesW.value     
+    }
+
+    let factory = {
+      $class: "org.ucsc.agriblockchain.Directions",
+      "North": this.nearFactoriesN.value,
+      "East": this.nearFactoriesE.value,
+      "South": this.nearFactoriesS.value,
+      "West": this.nearFactoriesW.value
+    }
+
+    let certi = {
+      $class: "org.ucsc.agriblockchain.Certification",
+      "certificationNo": this.certificationNo.value,
+      "certificationBody": "resource:org.ucsc.agriblockchain.Stakeholder#" + this.certificationBody.value,
+      "from": this.from.value,
+      "to": this.to.value,
+      "images": certImages,
+    }
+
+    this.asset = {
+      $class: 'org.ucsc.agriblockchain.Farm',
+      "farmId": this.farmId.value,
+      'FarmLocation': this.FarmLocation.value,
+      'images': images,
+      'waterSources': water,
+      'nearFactories': factory,
+      'otherDescription': this.otherDescription.value,
+      'certification': certi,
+      'owner': "resource:org.ucsc.agriblockchain.Stakeholder#" + this.owner.value,
+      'farmers' : farmers
+    }; 
+
+    return this.toggleLoad = this.serviceFarm.addAsset(this.asset)
     .toPromise()
     .then(() => {
       this.errorMessage = null;
-      this.myForm.setValue({
+      this.loadAll();
+      $('.loader').hide();
+      $('.word').show();
+      this.updateForm.setValue({
         'farmId': null,
         'FarmLocation': null,
-        'images': null,
         'waterSources': null,
         'nearFactories': null,
         'otherDescription': null,
         'certification': null,
-        'owner': null
-      });
-      this.loadAll();
+        'owner': null,
+        'nearFactoriesN': null,
+        'nearFactoriesS': null,
+        'nearFactoriesE': null,
+        'nearFactoriesW': null,
+        'waterSourcesN': null,
+        'waterSourcesS': null,
+        'waterSourcesE': null,
+        'waterSourcesW': null,
+        'certificationNo' : null,
+        'certificationBody' : null,
+        'from' : null,
+        'to' : null,
+        'certiComments' : null,
+        'farmersFormArr' : null,
+        'imagesFormArr' : null,
+        'certImagesFormArr' : null
+        });
     })
     .catch((error) => {
       if (error === 'Server error') {
-          this.errorMessage = 'Could not connect to REST server. Please check your configuration details';
+        this.errorMessage = 'Could not connect to REST server. Please check your configuration details';
+      } else if (error === '404 - Not Found') {
+        this.errorMessage = '404 - Could not find API route. Please check your available APIs.';
       } else {
-          this.errorMessage = error;
+        this.errorMessage = error;
       }
     });
+    
   }
 
+  private toggleLoad;
 
-  updateAsset(form: any): Promise<any> {
+  updateAsset(form: any)  { 
+
+    $('.loader').show();
+    $('.word').hide();
+
+    let imageArr = this.updateForm.value['imagesFormArr'];
+    let images = [];
+
+    imageArr.forEach((image)=>{
+      let item = image.image;
+      images.push(item);
+    });
+
+    let certImageArr = this.updateForm.value['certImagesFormArr'];
+    let certImages = [];
+
+    certImageArr.forEach((image)=>{
+      let item = image.image;
+      certImages.push(item);
+    });
+
+    let farmersArr = this.updateForm.value['farmersFormArr'];
+    let farmers = [];
+
+    farmersArr.forEach((farmer)=>{
+      let item = farmer.farmer;
+      farmers.push(item);
+    });
+
+    let water = {
+        $class : "org.ucsc.agriblockchain.Directions",
+        "North": this.waterSourcesN.value,
+        "East": this.waterSourcesE.value,
+        "South": this.waterSourcesS.value,
+        "West": this.waterSourcesW.value     
+    }
+
+    let factory = {
+      $class: "org.ucsc.agriblockchain.Directions",
+      "North": this.nearFactoriesN.value,
+      "East": this.nearFactoriesE.value,
+      "South": this.nearFactoriesS.value,
+      "West": this.nearFactoriesW.value
+    }
+
+    let certi = {
+      $class: "org.ucsc.agriblockchain.Certification",
+      "certificationNo": this.certificationNo.value,
+      "certificationBody": "resource:org.ucsc.agriblockchain.Stakeholder#" + this.certificationBody.value,
+      "from": this.from.value,
+      "to": this.to.value,
+      "images": certImages,
+    }
+
     this.asset = {
       $class: 'org.ucsc.agriblockchain.Farm',
       'FarmLocation': this.FarmLocation.value,
-      'images': this.images.value,
-      'waterSources': this.waterSources.value,
-      'nearFactories': this.nearFactories.value,
+      'images': images,
+      'waterSources': water,
+      'nearFactories': factory,
       'otherDescription': this.otherDescription.value,
-      'certification': this.certification.value,
-      'owner': this.owner.value
+      'certification': certi,
+      'owner': "resource:org.ucsc.agriblockchain.Stakeholder#" + this.owner.value,
+      'farmers' : farmers
     };
 
-    return this.serviceFarm.updateAsset(form.get('farmId').value, this.asset)
+
+    return this.toggleLoad = this.serviceFarm.updateAsset(form.get('farmId').value, this.asset)
     .toPromise()
     .then(() => {
       this.errorMessage = null;
       this.loadAll();
+      $('.loader').hide();
+      $('.word').show();
     })
     .catch((error) => {
       if (error === 'Server error') {
@@ -384,11 +573,165 @@ export class FarmComponent implements OnInit {
     });
   }
 
-  getFormForView(id: any): Promise<any> {
+  getFormForUpdate(id: any): Promise<any> {
+    $('#update1').trigger('click');
+    this.uploadImages = [];
+    this.uploadCertImages = [];
 
     return this.serviceFarm.getAsset(id)
     .toPromise()
     .then((result) => {
+      this.errorMessage = null;
+      const formObject = {
+        'farmId': null,
+        'FarmLocation': null,
+        'waterSources': null,
+        'nearFactories': null,
+        'otherDescription': null,
+        'certification': null,
+        'owner': null,
+        'nearFactoriesN': null,
+        'nearFactoriesS': null,
+        'nearFactoriesE': null,
+        'nearFactoriesW': null,
+        'waterSourcesN': null,
+        'waterSourcesS': null,
+        'waterSourcesE': null,
+        'waterSourcesW': null,
+        'certificationNo' : null,
+        'certificationBody' : null,
+        'from' : null,
+        'to' : null,
+        'certiComments' : null,
+        'farmersFormArr' : null,
+        'imagesFormArr' : null,
+        'certImagesFormArr' : null
+      };
+
+      if (result.farmId) {
+        formObject.farmId = result.farmId;
+      } else {
+        formObject.farmId = null;
+      }
+
+      if (result.FarmLocation) {
+        formObject.FarmLocation = result.FarmLocation;
+      } else {
+        formObject.FarmLocation = null;
+      }
+
+      if (result.images) {
+        this.updateForm.setControl('imagesFormArr', this.fb.array([]));
+        formObject.imagesFormArr = this.updateForm.get('imagesFormArr') as FormArray;;   
+        
+        this.uploadImages = result.images;
+        this.uploadImages.forEach(image=>{    
+          formObject.imagesFormArr.push(
+            this.fb.group({
+              image: image 
+            })
+          ); 
+        });
+
+      } else {
+        formObject.imagesFormArr = null;
+      }
+
+      if (result.waterSources) {
+        formObject.waterSourcesN = result.waterSources.North;
+        formObject.waterSourcesS = result.waterSources.South;
+        formObject.waterSourcesE = result.waterSources.East;
+        formObject.waterSourcesW = result.waterSources.West;
+      } else {
+        formObject.waterSources = null;
+      }
+
+      if (result.nearFactories) {
+        formObject.nearFactoriesN = result.nearFactories.North;
+        formObject.nearFactoriesS = result.nearFactories.South;
+        formObject.nearFactoriesE = result.nearFactories.East;
+        formObject.nearFactoriesW = result.nearFactories.South;
+      } else {
+        formObject.nearFactories = null;
+      }
+
+      if (result.otherDescription) {
+        formObject.otherDescription = result.otherDescription;
+      } else {
+        formObject.otherDescription = null;
+      }
+
+      if (result.certification) {
+        formObject.certification = result.certification;
+        formObject.certificationNo = result.certification.certificationNo;
+        formObject.certificationBody = result.certification.certificationBody.stakeholderId;
+        formObject.from = result.certification.from.toString().split('T')[0];
+        formObject.to = result.certification.to.toString().split('T')[0];        
+        formObject.certiComments = result.certification.comment;
+
+        this.certiicationComment = result.certification.comment;
+
+        this.updateForm.setControl('certImagesFormArr', this.fb.array([]));
+        formObject.certImagesFormArr = this.updateForm.get('certImagesFormArr') as FormArray;;   
+        
+        this.uploadCertImages = result.certification.images;
+
+        this.uploadCertImages.forEach(image=>{    
+          formObject.certImagesFormArr.push(
+            this.fb.group({
+              image: image 
+            })
+          ); 
+        });
+        
+      } else {
+        formObject.certification = null;
+      }
+
+      if (result.owner) {
+        formObject.owner = result.owner.stakeholderId;
+      } else {
+        formObject.owner = null;
+      }
+
+      if (result.farmers) {
+        this.updateForm.setControl('farmersFormArr', this.fb.array([]));
+
+        formObject.farmersFormArr = this.updateForm.get('farmersFormArr') as FormArray;;   
+        
+        this.farmersArr = result.farmers;
+
+        this.farmersArr.forEach(farmer=>{    
+          formObject.farmersFormArr.push(
+            this.fb.group({
+              farmer: farmer.stakeholderId
+            })
+          ); 
+        });
+      } else {
+        formObject.farmersFormArr = null;
+      }
+      this.updateForm.setValue(formObject); 
+
+    })
+    .catch((error) => {
+      if (error === 'Server error') {
+        this.errorMessage = 'Could not connect to REST server. Please check your configuration details';
+      } else if (error === '404 - Not Found') {
+        this.errorMessage = '404 - Could not find API route. Please check your available APIs.';
+      } else {
+        this.errorMessage = error;
+      }
+    });
+  }
+
+  getFormForView(id: any): Promise<any> {
+    $('#stage1').trigger('click');
+
+    return this.serviceFarm.getAsset(id)
+    .toPromise()
+    .then((result) => {
+
       this.errorMessage = null;
       const formObject = {
         'farmId': null,
@@ -488,6 +831,7 @@ export class FarmComponent implements OnInit {
         formObject.farmers = result.farmers;
 
         this.farmersArr = result.farmers;
+
       } else {
         formObject.farmers = null;
       }
@@ -507,16 +851,106 @@ export class FarmComponent implements OnInit {
   }
 
   resetForm(): void {
-    this.myForm.setValue({
-      'farmId': null,
-      'FarmLocation': null,
-      'images': null,
-      'waterSources': null,
-      'nearFactories': null,
-      'otherDescription': null,
-      'certification': null,
-      'owner': null
-      });
+    $('#add1').trigger('click');
+
+      this.updateForm.setValue({
+        'farmId': null,
+        'FarmLocation': null,
+        'waterSources': null,
+        'nearFactories': null,
+        'otherDescription': null,
+        'certification': null,
+        'owner': null,
+        'nearFactoriesN': null,
+        'nearFactoriesS': null,
+        'nearFactoriesE': null,
+        'nearFactoriesW': null,
+        'waterSourcesN': null,
+        'waterSourcesS': null,
+        'waterSourcesE': null,
+        'waterSourcesW': null,
+        'certificationNo' : null,
+        'certificationBody' : null,
+        'from' : null,
+        'to' : null,
+        'certiComments' : null,
+        'farmersFormArr' : null,
+        'imagesFormArr' : null,
+        'certImagesFormArr' : null
+        });
   } 
 
+  addField(){
+    this.farmersFormArr = this.updateForm.get('farmersFormArr') as FormArray;
+    this.farmersFormArr.push(this.addFarmer());      
+  }
+
+  addFarmer() : FormGroup{
+    return this.fb.group({
+      farmer: ''
+    });
+  }
+
+  removeField(index){
+    let fArray = <FormArray>this.updateForm.controls['farmersFormArr'];
+    fArray.removeAt(index);
+  }
+
+  onFileChange(event) {
+    const reader = new FileReader();    
+ 
+    if(event.target.files && event.target.files.length) {
+      const [file] = event.target.files;
+      let form = this.updateForm.get('imagesFormArr') as FormArray;
+      
+      reader.readAsDataURL(file);
+  
+      reader.onload = () => {
+        this.uploadImages.push(reader.result);
+        form.push(
+          this.fb.group({
+            image: reader.result 
+          })
+        );  
+      };          
+    } 
+    
+  }
+
+  onCertChange(event) {
+    const reader = new FileReader();    
+ 
+    if(event.target.files && event.target.files.length) {
+      const [file] = event.target.files;
+      let form = this.updateForm.get('certImagesFormArr') as FormArray;
+      
+      reader.readAsDataURL(file);
+  
+      reader.onload = () => {
+        this.uploadCertImages.push(reader.result);
+        form.push(
+          this.fb.group({
+            image: reader.result 
+          })
+        );  
+      };          
+    } 
+    
+  }
+
+  onCertRemoved(file: FileHolder) {
+    var index = this.uploadCertImages.indexOf(file.src);
+    this.uploadCertImages.splice(index,1); 
+
+    let fArray = <FormArray>this.updateForm.controls['certImagesFormArr'];
+    fArray.removeAt(index);  
+  }
+
+  onRemoved(file: FileHolder) {
+    var index = this.uploadImages.indexOf(file.src);
+    this.uploadImages.splice(index,1); 
+
+    let fArray = <FormArray>this.updateForm.controls['imagesFormArr'];
+    fArray.removeAt(index);  
+  }
 }

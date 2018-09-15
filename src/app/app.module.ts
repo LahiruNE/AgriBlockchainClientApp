@@ -44,6 +44,12 @@ import { FarmerDashboardComponent } from './farmer-dashboard/farmer-dashboard.co
 import { RegisterstakeholderComponent } from './registerstakeholder/registerstakeholder.component';
 import { ScanComponent } from './scan/scan.component';
 
+import { CarouselModule } from 'ngx-bootstrap';
+import { ImageUploadModule } from "angular2-image-upload";
+import { Ng4FilesModule } from 'angular4-files-upload';
+import { BsDatepickerModule } from 'ngx-bootstrap';
+import {Angular2PromiseButtonModule} from 'angular2-promise-buttons/dist';
+
   @NgModule({
   declarations: [
     AppComponent,
@@ -73,7 +79,16 @@ import { ScanComponent } from './scan/scan.component';
     HttpModule,
     AppRoutingModule,
     StorageServiceModule,
-   
+    CarouselModule.forRoot(),
+    ImageUploadModule.forRoot(),
+    Ng4FilesModule,
+    BsDatepickerModule.forRoot(),
+    Angular2PromiseButtonModule.forRoot({
+      spinnerTpl: '<div class="loader"></div>',
+      disableBtn: true,
+      btnLoadingClass: 'is-loading',
+      handleCurrentBtnOnly: false,
+    }),
   ],
   providers: [
     DataService,
