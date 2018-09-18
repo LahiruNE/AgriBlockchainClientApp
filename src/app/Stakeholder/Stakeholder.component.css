@@ -214,3 +214,22 @@ sup{
 #detTbl td{
     padding: 10px !important;
 }
+.rating-header {
+    margin-top: -10px;
+    margin-bottom: 10px;
+}
+
+  tr.Active td {
+    background-color: #b9d0b9;
+  }
+  
+  tr.Warn td {
+    background-color: #fbfbab;
+  }
+  
+  tr.Rejected td {
+    background-color: #ffdddd;
+  }
+  .table-bordered>tbody>tr>td, .table-bordered>tbody>tr>th, .table-bordered>tfoot>tr>td, .table-bordered>tfoot>tr>th, .table-bordered>thead>tr>td, .table-bordered>thead>tr>th {
+    border: 1px solid #c3c3c3 !important;
+}

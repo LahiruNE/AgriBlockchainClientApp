@@ -119,4 +119,13 @@ export class DataService<Type> {
           .map(this.extractData)
           .catch(this.handleError);          
     }
+
+    public getStakeholders(type: String, certificationBody: String){
+        let ns = 'queries/getFromFarmer';
+        let param = 'type='+type+'&certificationBody='+certificationBody;
+        console.log(this.actionUrl + ns + '?' + param);
+        return this.http.get(this.actionUrl + ns + '?' + param)
+          .map(this.extractData)
+          .catch(this.handleError);
+    }
 }

@@ -15,6 +15,7 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { FormGroup, FormControl, Validators, FormBuilder } from '@angular/forms';
 import { Router } from '@angular/router';
+import { LocalStorageService } from '../services/local-storage.service';
 import { ActivatedRoute } from '@angular/router';
 import $ from 'jquery';
 import { StakeholderService } from './Stakeholder.service';
@@ -32,6 +33,8 @@ export class StakeholderComponent implements OnInit {
 
   myForm: FormGroup;
   maintype:String;
+  loggingUser:string;
+  loggingType: string;
   StakeholderType :String;
   private allParticipants;
   private Participants;
@@ -62,9 +65,11 @@ export class StakeholderComponent implements OnInit {
   vehicleNo = new FormControl('', Validators.required);
   distributionType = new FormControl('', Validators.required);
   branchNo = new FormControl('', Validators.required);
+  comment = new FormControl('', Validators.required);
+  rating = new FormControl('', Validators.required);
 
 
-  constructor(private router: ActivatedRoute,private normalRouter: Router,public dataService: DataService<Stakeholder>,public serviceStakeholder: StakeholderService, fb: FormBuilder) {
+  constructor(private localStorageService : LocalStorageService,private router: ActivatedRoute,private normalRouter: Router,public dataService: DataService<Stakeholder>,public serviceStakeholder: StakeholderService, fb: FormBuilder) {
     this.myForm = fb.group({
       stakeholderId: this.stakeholderId,
       name: this.name,
@@ -87,13 +92,26 @@ export class StakeholderComponent implements OnInit {
       authPerson: this.authPerson,
       vehicleNo: this.vehicleNo,
       distributionType: this.distributionType,
-      branchNo: this.branchNo
+      branchNo: this.branchNo,
+      comment: this.comment,
+      rating: this.rating
     });
   };
 
   ngOnInit(): void {
+
+  this.loggingUser = this.localStorageService.getFromLocal('currentUser').name;
+  console.log('logname'+this.loggingUser)
+  this.loggingType = this.localStorageService.getFromLocal('currentUser').type;
+  console.log(this.loggingType)
+
+  /* $("select").change(function(){
+    $("option:selected",this).text().trim().toLowerCase() == "Active" ? $(this).closest("tr").css("background-color","red") : $(this).closest("tr").css("background-color","green")
     
-    $('#stage1').trigger('click');
+    })
+   */
+ 
+$('#stage1').trigger('click');
 
  $(document).ready(function () {
 
@@ -139,12 +157,18 @@ export class StakeholderComponent implements OnInit {
     $('div.setup-panel div a.btn-primary').trigger('click');
 });
  
-
+ 
 
     this.router.params.subscribe((params) => {
       this.StakeholderType = params['id']
       console.log(this.StakeholderType)
-      this.loadAll();
+      if(this.loggingType == 'ADMIN'){
+        this.loadAll();
+      }
+      else{
+        this.loadALLNext();
+      }
+     
     })
 
 
@@ -160,18 +184,19 @@ export class StakeholderComponent implements OnInit {
         if( certtype == 'CERTIFICATION'){
           certtempList.push(participant);
         }
+        
        
       });
       this.Participants = certtempList;
       console.log( this.Participants)
     })
 
-    
   }
 
   loadAll(): Promise<any> {
     const tempList = [];
     let  maintype;
+    let certbody;
      
     return this.serviceStakeholder.getAll()
     .toPromise()
@@ -181,10 +206,11 @@ export class StakeholderComponent implements OnInit {
         maintype = participant.type 
         if( maintype == this.StakeholderType){
           tempList.push(participant);
+
         }
-       
+        this.allParticipants = tempList;
       });
-      this.allParticipants = tempList;
+      
       console.log( this.allParticipants)
       
     })
@@ -196,6 +222,34 @@ export class StakeholderComponent implements OnInit {
         this.errorMessage = error;
       }
     });
+  }
+
+  loadALLNext(){
+    const tempList = [];
+    let  maintype;
+    let certbody;
+     
+    return this.serviceStakeholder.getAll()
+    .toPromise()
+    .then((result) => {
+      this.errorMessage = null;
+      result.forEach(participant => {
+        maintype = participant.type 
+        certbody = participant.certification.certificationBody.name
+        console.log("cert"+certbody)
+        if( maintype == this.StakeholderType){
+          if(certbody == this.loggingUser){
+            tempList.push(participant);
+            
+          }
+
+        }
+        this.allParticipants = tempList;
+      });
+      
+      console.log( this.allParticipants)
+      
+    })
   }
 
 	/**
@@ -259,7 +313,9 @@ export class StakeholderComponent implements OnInit {
       'authPerson': this.authPerson.value, 
       'vehicleNo': this.vehicleNo.value,
       'distributionType': this.distributionType.value,
-      'branchNo': this.branchNo.value
+      'branchNo': this.branchNo.value,
+      'comment': this.comment.value,
+      'rating': this.rating.value
     };
 
    /*  this.myForm.setValue({
@@ -321,7 +377,9 @@ export class StakeholderComponent implements OnInit {
         'authPerson': null,
         'vehicleNo': null,
         'distributionType': null,
-        'branchNo': null
+        'branchNo': null,
+        'comment': null,
+        'rating': null
       });
       this.loadAll(); 
     })
@@ -370,14 +428,21 @@ export class StakeholderComponent implements OnInit {
       'authPerson': this.authPerson.value, 
       'vehicleNo': this.vehicleNo.value,
       'distributionType': this.distributionType.value,
-      'branchNo': this.branchNo.value
+      'branchNo': this.branchNo.value,
+      'comment' :this.comment.value,
+      'rating' :this.rating.value
     };
 
     return this.serviceStakeholder.updateParticipant(form.get('stakeholderId').value, this.participant)
     .toPromise()
     .then(() => {
       this.errorMessage = null;
-      this.loadAll();
+      if(this.loggingType == 'ADMIN'){
+        this.loadAll();
+      }
+      if(this.loggingType == 'CERTIFICATION'){
+        this.loadALLNext();
+      }
     })
     .catch((error) => {
       if (error === 'Server error') {
@@ -388,6 +453,59 @@ export class StakeholderComponent implements OnInit {
         this.errorMessage = error;
       }
     });
+  }
+
+  addComment(form: any):Promise<any>{
+    this.participant = {
+      $class: 'org.ucsc.agriblockchain.Stakeholder',
+      'name': this.name.value,
+      'address': {
+        '$class': 'org.ucsc.agriblockchain.Address',
+        'city': this.city.value,
+        'country': this.country.value
+      },
+      'email': this.email.value,
+      'telephone': this.telephone.value,
+      'certification': {
+        '$class': 'org.ucsc.agriblockchain.Certification',
+        'certificationNo': this.certificationNo.value,
+        'certificationBody': 'resource:org.ucsc.agriblockchain.Stakeholder#'+this.certificationBody.value,
+        'from': this.from.value,
+        'to': this.to.value,
+      },
+      'images': this.images.value,
+      'company': {
+        '$class': 'org.ucsc.agriblockchain.Company',
+        'name': this.companyname.value,
+        'address': {
+          '$class': 'org.ucsc.agriblockchain.Address',
+          'city': this.companycity.value,
+          'country': this.companycountry.value
+        }
+      },
+      'username': this.username.value,
+      'password': this.password.value,
+      'type': this.type.value,
+      'description': this.description.value,
+      'authPerson': this.authPerson.value, 
+      'vehicleNo': this.vehicleNo.value,
+      'distributionType': this.distributionType.value,
+      'branchNo': this.branchNo.value,
+      'comment' :this.comment.value,
+      'rating' :this.rating.value
+    };
+    return this.serviceStakeholder.updateParticipant(form.get('stakeholderId').value, this.participant)
+    .toPromise()
+    .then(() => {
+      this.errorMessage = null;
+      if(this.loggingType == 'ADMIN'){
+        this.loadAll();
+      }
+      if(this.loggingType == 'CERTIFICATION'){
+        this.loadALLNext();
+      }
+      
+    })
   }
 
 
@@ -442,7 +560,9 @@ export class StakeholderComponent implements OnInit {
         'authPerson': null,
         'vehicleNo': null,
         'distributionType': null,
-        'branchNo': null
+        'branchNo': null,
+        'comment': null,
+        'rating': null
       };
 
       if (result.stakeholderId) {
@@ -486,8 +606,8 @@ export class StakeholderComponent implements OnInit {
         formObject.certificationNo = null;
       }
 
-      if (result.certification.certificationBody) {
-        formObject.certificationBody = result.certification.certificationBody;
+      if (result.certification.certificationBody.stakeholderId) {
+        formObject.certificationBody = result.certification.certificationBody.stakeholderId;
       } else {
         formObject.certificationBody = null;
       }
@@ -576,6 +696,19 @@ export class StakeholderComponent implements OnInit {
       } else {
         formObject.branchNo = null;
       }
+      if (result.comment) {
+        formObject.comment = result.comment;
+      } else {
+        formObject.comment = null;
+      }
+
+      if (result.rating) {
+        formObject.rating = result.rating;
+      } else {
+        formObject.rating = null;
+      }
+      
+      
 
       this.myForm.setValue(formObject);
     })
@@ -614,7 +747,9 @@ export class StakeholderComponent implements OnInit {
       'authPerson': null,
       'vehicleNo': null,
       'distributionType': null,
-      'branchNo': null
+      'branchNo': null,
+      'comment': null,
+      'rating': null
     });
   }
 }

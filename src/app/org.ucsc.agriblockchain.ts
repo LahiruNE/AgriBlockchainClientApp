@@ -168,6 +168,8 @@ import {Event} from './org.hyperledger.composer.system';
       vehicleNo: string;
       distributionType: DistType;
       branchNo: string;
+      comment:string;
+      rating:string;
    }
    export class TransferPackage extends Transaction {
       product: Product;

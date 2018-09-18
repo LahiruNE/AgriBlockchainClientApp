@@ -43,6 +43,8 @@ import { AdminComponent } from './admin/admin.component';
 import { FarmerDashboardComponent } from './farmer-dashboard/farmer-dashboard.component';
 import { RegisterstakeholderComponent } from './registerstakeholder/registerstakeholder.component';
 import { ScanComponent } from './scan/scan.component';
+import { CarouselModule } from 'ngx-bootstrap';
+import { CertificationhomeComponent } from './certificationhome/certificationhome.component';
 
 import { CarouselModule } from 'ngx-bootstrap';
 import { ImageUploadModule } from "angular2-image-upload";
@@ -70,7 +72,8 @@ import {Angular2PromiseButtonModule} from 'angular2-promise-buttons/dist';
     AdminComponent,
     FarmerDashboardComponent,
     RegisterstakeholderComponent,
-    ScanComponent
+    ScanComponent,
+    CertificationhomeComponent
   ],
   imports: [
     BrowserModule,

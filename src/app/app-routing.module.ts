@@ -36,6 +36,7 @@ import { RegisterstakeholderComponent } from './registerstakeholder/registerstak
 
 import { FarmerDashboardComponent } from './farmer-dashboard/farmer-dashboard.component';
 import { ScanComponent } from './scan/scan.component';
+import { CertificationhomeComponent } from './certificationhome/certificationhome.component';
 
 const routes: Routes = [
   { path: '', component: HomeComponent },
@@ -55,6 +56,7 @@ const routes: Routes = [
   { path: 'FarmerHome', component: FarmerDashboardComponent },
   { path: 'StakeholderRegister', component: RegisterstakeholderComponent },
   { path: 'ScanProduct', component: ScanComponent },
+  { path: 'CertificationHome', component: CertificationhomeComponent },
   { path: '**', redirectTo: '' }
 ];
 
