@@ -45,8 +45,6 @@ import { RegisterstakeholderComponent } from './registerstakeholder/registerstak
 import { ScanComponent } from './scan/scan.component';
 import { CarouselModule } from 'ngx-bootstrap';
 import { CertificationhomeComponent } from './certificationhome/certificationhome.component';
-
-import { CarouselModule } from 'ngx-bootstrap';
 import { ImageUploadModule } from "angular2-image-upload";
 import { Ng4FilesModule } from 'angular4-files-upload';
 import { BsDatepickerModule } from 'ngx-bootstrap';
