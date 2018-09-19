@@ -17,12 +17,15 @@ import { FormGroup, FormControl, Validators, FormBuilder } from '@angular/forms'
 import { PlotService } from './Plot.service';
 import 'rxjs/add/operator/toPromise';
 import { LocalStorageService } from '../services/local-storage.service';
+import $ from 'jquery';
+import { FarmService } from '../Farm/Farm.service';
+import swal from 'sweetalert2';
 
 @Component({
   selector: 'app-plot',
   templateUrl: './Plot.component.html',
   styleUrls: ['./Plot.component.css'],
-  providers: [PlotService]
+  providers: [PlotService,FarmService]
 })
 export class PlotComponent implements OnInit {
 
@@ -32,6 +35,9 @@ export class PlotComponent implements OnInit {
   private asset;
   private currentId;
   private errorMessage;
+  private availFarms = [];
+  private certiicationComment = [];
+  private toggleLoad;
 
   private userType = this.localStorageService.getFromLocal('currentUser').type;
 
@@ -44,7 +50,13 @@ export class PlotComponent implements OnInit {
   certificationBodyComments = new FormControl('', Validators.required);
   farm = new FormControl('', Validators.required);
 
-  constructor(private localStorageService: LocalStorageService, public servicePlot: PlotService, fb: FormBuilder) {
+  closerPlotsN = new FormControl('');
+  closerPlotsS = new FormControl('');
+  closerPlotsE = new FormControl('');
+  closerPlotsW = new FormControl('');
+
+
+  constructor(private localStorageService: LocalStorageService, public servicePlot: PlotService, fb: FormBuilder, public serviceFarm: FarmService) {
     this.myForm = fb.group({
       plotId: this.plotId,
       cultivationStartDate: this.cultivationStartDate,
@@ -53,12 +65,59 @@ export class PlotComponent implements OnInit {
       activities: this.activities,
       phReadings: this.phReadings,
       certificationBodyComments: this.certificationBodyComments,
-      farm: this.farm
+      farm: this.farm, 
+      closerPlotsN : this.closerPlotsN,
+      closerPlotsS : this.closerPlotsS,
+      closerPlotsE : this.closerPlotsE,
+      closerPlotsW : this.closerPlotsW
     });
   };
 
   ngOnInit(): void {
     this.loadAll();
+    this.loadFarms();
+
+
+    //setup wizard   
+    var navListItems = $('div.setup-panel div a'),
+            allWells = $('.setup-content'),
+            allNextBtn = $('.nextBtn');
+
+    allWells.hide();
+
+    navListItems.click(function (e) {
+        e.preventDefault();
+        var $target = $($(this).attr('href')),
+                $item = $(this);
+
+        if (!$item.hasClass('disabled')) {
+            navListItems.removeClass('btn-primary').addClass('btn-default');
+            $item.addClass('btn-primary');
+            allWells.hide();
+            $target.show();
+            $target.find('input:eq(0)').focus();
+        }
+    });
+
+    allNextBtn.click(function(){
+        var curStep = $(this).closest(".setup-content"),
+            curStepBtn = curStep.attr("id"),
+            nextStepWizard = $('div.setup-panel div a[href="#' + curStepBtn + '"]').parent().parent().next().children("div").children("a"),
+            curInputs = curStep.find("input[type='text'],input[type='url']"),
+            isValid = true;
+
+        $(".form-group").removeClass("has-error");
+        for(var i=0; i<curInputs.length; i++){
+          console.log(curInputs[i]);
+            if (!curInputs[i].validity.valid){
+                isValid = false;
+                $(curInputs[i]).closest(".form-group").addClass("has-error");
+            }
+        }
+
+        if (isValid)
+            nextStepWizard.trigger('click');
+    });
   }
 
   loadAll(): Promise<any> {
@@ -109,44 +168,44 @@ export class PlotComponent implements OnInit {
   }
 
   addAsset(form: any): Promise<any> {
+    $('.loader').show();
+    $('.word').hide();
+
+    let plots = {
+      $class: "org.ucsc.agriblockchain.Directions",
+      "North": this.closerPlotsN.value,
+      "East": this.closerPlotsE.value,
+      "South": this.closerPlotsS.value,
+      "West": this.closerPlotsW.value,
+    }
+
     this.asset = {
       $class: 'org.ucsc.agriblockchain.Plot',
       'plotId': this.plotId.value,
       'cultivationStartDate': this.cultivationStartDate.value,
       'extent': this.extent.value,
-      'closerplots': this.closerplots.value,
-      'activities': this.activities.value,
-      'phReadings': this.phReadings.value,
-      'certificationBodyComments': this.certificationBodyComments.value,
-      'farm': this.farm.value
+      'closerplots' : plots,
+      'activities': [],
+      'phReadings': [],
+      'certificationBodyComments': [],
+      'farm': "resource:org.ucsc.agriblockchain.Farm#" + this.farm.value,
     };
 
-    this.myForm.setValue({
-      'plotId': null,
-      'cultivationStartDate': null,
-      'extent': null,
-      'closerplots': null,
-      'activities': null,
-      'phReadings': null,
-      'certificationBodyComments': null,
-      'farm': null
-    });
-
-    return this.servicePlot.addAsset(this.asset)
+    return  this.toggleLoad = this.servicePlot.addAsset(this.asset)
     .toPromise()
     .then(() => {
       this.errorMessage = null;
-      this.myForm.setValue({
-        'plotId': null,
-        'cultivationStartDate': null,
-        'extent': null,
-        'closerplots': null,
-        'activities': null,
-        'phReadings': null,
-        'certificationBodyComments': null,
-        'farm': null
-      });
+      
       this.loadAll();
+
+      $('#addAssetModal .close').trigger('click');
+      swal(
+        'Success!',
+        'Plot is added successfully!',
+        'success'
+      )
+      $('.loader').hide();
+      $('.word').show();
     })
     .catch((error) => {
       if (error === 'Server error') {
@@ -159,22 +218,42 @@ export class PlotComponent implements OnInit {
 
 
   updateAsset(form: any): Promise<any> {
+    $('.loader').show();
+    $('.word').hide();
+
+    let plots = {
+      $class: "org.ucsc.agriblockchain.Directions",
+      "North": this.closerPlotsN.value,
+      "East": this.closerPlotsE.value,
+      "South": this.closerPlotsS.value,
+      "West": this.closerPlotsW.value,
+    }
+
     this.asset = {
       $class: 'org.ucsc.agriblockchain.Plot',
+      'plotId': this.plotId.value,
       'cultivationStartDate': this.cultivationStartDate.value,
       'extent': this.extent.value,
-      'closerplots': this.closerplots.value,
-      'activities': this.activities.value,
-      'phReadings': this.phReadings.value,
-      'certificationBodyComments': this.certificationBodyComments.value,
-      'farm': this.farm.value
+      'closerplots' : plots,
+      'activities': [],
+      'phReadings': [],
+      'certificationBodyComments': [],
+      'farm': "resource:org.ucsc.agriblockchain.Farm#" + this.farm.value,
     };
-
-    return this.servicePlot.updateAsset(form.get('plotId').value, this.asset)
+    return this.toggleLoad = this.servicePlot.updateAsset(form.get('plotId').value, this.asset)
     .toPromise()
     .then(() => {
       this.errorMessage = null;
       this.loadAll();
+
+      $('#updateAssetModal .close').trigger('click');
+      swal(
+        'Success!',
+        'Plot is updated successfully!',
+        'success'
+      )
+      $('.loader').hide();
+      $('.word').show();
     })
     .catch((error) => {
       if (error === 'Server error') {
@@ -212,6 +291,7 @@ export class PlotComponent implements OnInit {
   }
 
   getForm(id: any): Promise<any> {
+    $('#update1').trigger('click');
 
     return this.servicePlot.getAsset(id)
     .toPromise()
@@ -225,7 +305,11 @@ export class PlotComponent implements OnInit {
         'activities': null,
         'phReadings': null,
         'certificationBodyComments': null,
-        'farm': null
+        'farm': null,
+        'closerPlotsN' : null,
+        'closerPlotsS' : null,
+        'closerPlotsE' : null,
+        'closerPlotsW' : null 
       };
 
       if (result.plotId) {
@@ -248,8 +332,17 @@ export class PlotComponent implements OnInit {
 
       if (result.closerplots) {
         formObject.closerplots = result.closerplots;
+        formObject.closerPlotsN = result.closerplots.North;
+        formObject.closerPlotsE = result.closerplots.East;
+        formObject.closerPlotsS = result.closerplots.South;
+        formObject.closerPlotsW = result.closerplots.West;
+
       } else {
         formObject.closerplots = null;
+        formObject.closerPlotsN = null;
+        formObject.closerPlotsE = null;
+        formObject.closerPlotsS = null;
+        formObject.closerPlotsW = null;
       }
 
       if (result.activities) {
@@ -271,7 +364,102 @@ export class PlotComponent implements OnInit {
       }
 
       if (result.farm) {
-        formObject.farm = result.farm;
+        formObject.farm = result.farm.farmId;
+      } else {
+        formObject.farm = null;
+      }
+
+      this.myForm.setValue(formObject);
+
+    })
+    .catch((error) => {
+      if (error === 'Server error') {
+        this.errorMessage = 'Could not connect to REST server. Please check your configuration details';
+      } else if (error === '404 - Not Found') {
+        this.errorMessage = '404 - Could not find API route. Please check your available APIs.';
+      } else {
+        this.errorMessage = error;
+      }
+    });
+  }
+
+  getFormForView(id: any): Promise<any> {
+    $('#view1').trigger('click');
+
+    return this.servicePlot.getAsset(id)
+    .toPromise()
+    .then((result) => {
+      this.errorMessage = null;
+      const formObject = {
+        'plotId': null,
+        'cultivationStartDate': null,
+        'extent': null,
+        'closerplots': null,
+        'activities': null,
+        'phReadings': null,
+        'certificationBodyComments': null,
+        'farm': null,
+        'closerPlotsN' : null,
+        'closerPlotsS' : null,
+        'closerPlotsE' : null,
+        'closerPlotsW' : null 
+      };
+
+      if (result.plotId) {
+        formObject.plotId = result.plotId;
+      } else {
+        formObject.plotId = null;
+      }
+
+      if (result.cultivationStartDate) {
+        formObject.cultivationStartDate = result.cultivationStartDate.toString().split('T')[0];
+      } else {
+        formObject.cultivationStartDate = null;
+      }
+
+      if (result.extent) {
+        formObject.extent = result.extent;
+      } else {
+        formObject.extent = null;
+      }
+
+      if (result.closerplots) {
+        formObject.closerplots = result.closerplots;
+        formObject.closerPlotsN = result.closerplots.North;
+        formObject.closerPlotsE = result.closerplots.East;
+        formObject.closerPlotsS = result.closerplots.South;
+        formObject.closerPlotsW = result.closerplots.West;
+
+      } else {
+        formObject.closerplots = null;
+        formObject.closerPlotsN = null;
+        formObject.closerPlotsE = null;
+        formObject.closerPlotsS = null;
+        formObject.closerPlotsW = null;
+      }
+
+      if (result.activities) {
+        formObject.activities = result.activities;
+      } else {
+        formObject.activities = null;
+      }
+
+      if (result.phReadings) {
+        formObject.phReadings = result.phReadings;
+      } else {
+        formObject.phReadings = null;
+      }
+
+      if (result.certificationBodyComments) {
+        formObject.certificationBodyComments = result.certificationBodyComments;
+
+        this.certiicationComment = result.certificationBodyComments;
+      } else {
+        formObject.certificationBodyComments = null;
+      }
+
+      if (result.farm) {
+        formObject.farm = result.farm.farmId;
       } else {
         formObject.farm = null;
       }
@@ -291,6 +479,8 @@ export class PlotComponent implements OnInit {
   }
 
   resetForm(): void {
+    $('#add1').trigger('click');
+
     this.myForm.setValue({
       'plotId': null,
       'cultivationStartDate': null,
@@ -299,8 +489,33 @@ export class PlotComponent implements OnInit {
       'activities': null,
       'phReadings': null,
       'certificationBodyComments': null,
-      'farm': null
+      'farm': null,
+      'closerPlotsN' : null,
+      'closerPlotsS' : null,
+      'closerPlotsE' : null,
+      'closerPlotsW' : null                                   
       });
+  }
+
+  loadFarms(): Promise<any>{
+    const tempList = [];
+    return this.serviceFarm.getAll()
+    .toPromise()
+    .then((result) => {
+      this.errorMessage = null;
+      result.forEach(asset => {
+        this.availFarms.push(asset);
+      });
+    })
+    .catch((error) => {
+      if (error === 'Server error') {
+        this.errorMessage = 'Could not connect to REST server. Please check your configuration details';
+      } else if (error === '404 - Not Found') {
+        this.errorMessage = '404 - Could not find API route. Please check your available APIs.';
+      } else {
+        this.errorMessage = error;
+      }
+    });
   }
 
 }

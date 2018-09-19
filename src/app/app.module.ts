@@ -49,6 +49,8 @@ import { ImageUploadModule } from "angular2-image-upload";
 import { Ng4FilesModule } from 'angular4-files-upload';
 import { BsDatepickerModule } from 'ngx-bootstrap';
 import {Angular2PromiseButtonModule} from 'angular2-promise-buttons/dist';
+import { NgDatepickerModule } from 'ng2-datepicker';
+import Swal from 'sweetalert2';
 
   @NgModule({
   declarations: [
@@ -90,6 +92,7 @@ import {Angular2PromiseButtonModule} from 'angular2-promise-buttons/dist';
       btnLoadingClass: 'is-loading',
       handleCurrentBtnOnly: false,
     }),
+    NgDatepickerModule
   ],
   providers: [
     DataService,

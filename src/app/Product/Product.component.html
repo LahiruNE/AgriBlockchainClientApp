@@ -750,9 +750,10 @@
 	</div>
   
   <div class="row">
-    <div class="col-md-9">
-        <h1 class="asset-title" id='assetName'>Product</h1>
-    </div>
+      <div class="col-md-9">
+          <img *ngIf = "allAssets != ''" src="../../assets/005-vegetables.png" style="width: 45px; height: 45px">&nbsp;&nbsp;&nbsp;
+          <h1 class="asset-title" id='assetName'>Manage Products</h1>
+      </div>
     <div class="col-md-3">
       <button (click)="resetForm()" type="button" class="btn btn-primary" data-toggle="modal" data-target="#addAssetModal">
           <span style="font-size: 14px;font-family: inherit;border-right:1px solid rgba(255,255,255,0.5);padding-right:0.6em;margin-right:0.5em;vertical-align:middle;">
@@ -760,44 +761,26 @@
                 <path fill-rule="evenodd" d="M5.5,4.5 L9.5,4.5 L10,4.5 L10,5.5 L9.5,5.5 L5.5,5.5 L5.5,9.5 L5.5,10 L4.5,10 L4.5,9.5 L4.5,5.5 L0.5,5.5 L0,5.5 L0,4.5 L0.5,4.5 L4.5,4.5 L4.5,0.5 L4.5,0 L5.5,0 L5.5,0.5 L5.5,4.5 Z"/>
               </svg>
           </span>
-        Create Asset
+        Add Products
       </button>
     </div>
   </div>
   <br>
   <div class="row">
-    <div class="col-md-12">
-      <table class="table table-responsive">
+    <div *ngIf = "allAssets != ''" class="col-md-12">
+      <table class="table table-responsive"  style="margin: auto; width: 950px;">
         <thead class="thead">
           <tr class="thead-cols">
             
-                <th class="info">productId</th>
+                <th class="info" style="min-width: 150px">Product ID</th>
             
-                <th class="info">pluckedDate</th>
+                <th class="info" style="min-width: 250px">Plucked Date</th>
             
-                <th class="info">certification</th>
+                <th class="info" style="min-width: 250px">Product Type</th>
             
-                <th class="info">productType</th>
-            
-                <th class="info">quantity</th>
-            
-                <th class="info">unit</th>
-            
-                <th class="info">divideStatus</th>
-            
-                <th class="info">activeStatus</th>
-            
-                <th class="info">productpath</th>
-            
-                <th class="info">plot</th>
-            
-                <th class="info">parentProduct</th>
-            
-                <th class="info">currentOwner</th>
-            
-                <th class="info">issuer</th>
-            
-              <th class="info-actions">Actions</th>
+                <th class="info" style="min-width: 150px">Quantity / Unit</th>           
+
+                <th class="info-actions" style="min-width: 150px">Actions</th>
           </tr>
         </thead>
         <tbody>
@@ -807,29 +790,12 @@
                 <td class="asset-properties">{{asset.productId}}</td>
             
                 <td class="asset-properties">{{asset.pluckedDate}}</td>
-            
-                <td class="asset-properties">{{asset.certification}}</td>
-            
+                        
                 <td class="asset-properties">{{asset.productType}}</td>
             
-                <td class="asset-properties">{{asset.quantity}}</td>
+                <td class="asset-properties">{{asset.quantity + asset.unit}}</td>
             
-                <td class="asset-properties">{{asset.unit}}</td>
-            
-                <td class="asset-properties">{{asset.divideStatus}}</td>
-            
-                <td class="asset-properties">{{asset.activeStatus}}</td>
-            
-                <td class="asset-properties">{{asset.productpath}}</td>
-            
-                <td class="asset-properties">{{asset.plot}}</td>
-            
-                <td class="asset-properties">{{asset.parentProduct}}</td>
-            
-                <td class="asset-properties">{{asset.currentOwner}}</td>
-            
-                <td class="asset-properties">{{asset.issuer}}</td>
-            
+                       
             <td>
               <button (click)="getForm(asset.productId);" type="button" class="btn btn-update" data-toggle="modal" data-target="#updateAssetModal">
                   <svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
@@ -858,6 +824,11 @@
           </tr>
         </tbody>
       </table>
+    </div>
+
+    <div *ngIf = "allAssets == ''" class="col-md-12">
+        <img src="../../assets/005-vegetables.png" style="display: block; margin-left: auto; margin-right: auto; margin-top: 50px">
+        <div class="alert alert-warning" role="alert" style="text-align: center; margin-top: 30px; padding: 5px;"><h4>No products available!</h4></div>
     </div>
   </div>
 </div>

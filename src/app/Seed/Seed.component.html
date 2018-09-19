@@ -11,7 +11,7 @@
  See the License for the specific language governing permissions and
  limitations under the License.
 -->
-<div class="modal fade" id="addAssetModal" tabindex="-1" role="dialog" aria-labelledby="addAssetModalLabel">
+<!-- <div class="modal fade" id="addAssetModal" tabindex="-1" role="dialog" aria-labelledby="addAssetModalLabel">
   <div class="modal-dialog" role="document">
     <div class="modal-content">
       <div class="modal-header">
@@ -276,7 +276,825 @@
       </form>
     </div>
   </div>
-</div>
+</div> -->
+
+<div class="modal fade" id="addAssetModal" tabindex="-1" role="dialog" aria-labelledby="addAssetModalLabel">
+    <div class="modal-dialog modal-lg">
+      <div class="modal-content">
+        <div class="modal-header">
+            <h4 class="modal-title" id="addParticipantModalLabel">Add New Plots</h4>
+          <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">×</span><span class="sr-only">Close</span></button>
+          
+        </div>
+        <div class="modal-body">
+            <!-- Steps starts here -->
+        <div class="requestwizard">
+          <div class="requestwizard-row setup-panel">
+            <table id="tbl1" style="width: 100%">
+                <tr>
+                    <td>
+                        <div class="requestwizard-step">
+                            <a id="add1" href="#add-1" type="button" class="btn btn-default btn-circle" disabled="disabled">1</a>
+                            <p>Basic Information</p>
+                        </div>
+                    </td>
+  
+                    <td>
+                        <div class="requestwizard-step">
+                            <a href="#add-2" type="button" class="btn btn-default btn-circle" disabled="disabled">2</a>
+                            <p>Certification Details</p>
+                        </div>
+                    </td>
+  
+                    <td>
+                        <div class="requestwizard-step">
+                            <a href="#add-3" type="button" class="btn btn-default btn-circle" disabled="disabled">3</a>
+                            <p>Active Chemicals</p>
+                        </div>
+                    </td>
+                
+          
+                </tr>
+            </table>
+            </div>
+        </div>
+        <hr>
+    
+        <form [formGroup]="myForm">
+            <div class="row setup-content" id="add-1">
+                <div class="col-xs-12">
+                    <div class="col-md-12">
+                      <table id="detTbl">
+                        <tr>
+                          <td style="width: 150px">
+                                  <label ><b>Seed ID</b></label>                        
+      
+                          </td>
+                          <td>
+                              <input formControlName="seedId" class="form-control" >  
+                            
+                          </td>
+                        </tr>
+      
+                        <tr>
+                            <td style="width: 150px">
+                                    <label><b>Name</b></label>                        
+        
+                            </td>
+                            <td>
+                                <input formControlName="name" class="form-control" >      
+                            </td>
+                          </tr>
+      
+                          <tr>
+                              <td style="width: 150px">
+                                      <label><b>Amount</b></label>                        
+          
+                              </td>
+                              <td>  
+                                <div class="input-group mb-3">
+                                  <input formControlName="amount" class="form-control" >
+                                </div>
+                              </td>
+                          </tr>
+    
+                          <tr>
+                            <td style="width: 150px">
+                                    <label><b>Price (LKR)</b></label>                        
+        
+                            </td>
+                            <td>  
+                                <input formControlName="price" class="form-control" >
+                            </td>
+                        </tr>
+    
+                        <tr>
+                          <td style="width: 150px">
+                                  <label><b>Owner</b></label>                        
+      
+                          </td>
+                          <td>  
+                              <select class="form-control input" formControlName="currentOwner">
+                                    <option value = "">- Select -</option>
+                                    <option *ngFor="let item of availParticipants" value = {{item.stakeholderId}}>{{ item.stakeholderId +" - "+item.name }}</option>
+                                </select>
+                          </td>
+                      </tr>
+        
+      
+                          <tr>
+                            <td style="width: 150px;" >
+                                    <label for="farmId"><b>Vendor</b></label>                        
+        
+                            </td>
+                            
+                                <td> 
+                                    <select class="form-control input farmerSelect" formControlName="issuer">
+                                        <option value = "">- Select -</option>
+                                        <option *ngFor="let seed of availSeedProviders" value = {{seed.stakeholderId}}>{{ seed.stakeholderId +" - "+seed.name }}</option>
+                                    </select>
+                                </td>
+                          
+                        </tr>
+      
+                        <tr>
+                          <td style="width: 150px;" >
+                                  <label for="farmId"><b>Manufactured Date</b></label>                        
+      
+                          </td>
+                          <td>  
+                              <input formControlName="manufactureDate" class="form-control" bsDatepicker [bsConfig]="{ dateInputFormat: 'YYYY-MM-DD' }">                                 
+                                
+                        </td>
+                      </tr>
+    
+                      <tr>
+                        <td style="width: 150px;" >
+                                <label for="farmId"><b>Expiry Date</b></label>                        
+    
+                        </td>
+                        <td>  
+                            <input formControlName="expiryDate" class="form-control" bsDatepicker [bsConfig]="{ dateInputFormat: 'YYYY-MM-DD' }">                                 
+                                
+                      </td>
+                    </tr>
+    
+                    <tr>
+                      <td style="width: 150px;" >
+                              <label for="farmId"><b>Sale Date</b></label>                        
+    
+                      </td>
+                      <td>  
+                          <input formControlName="dateOfSale" class="form-control" bsDatepicker [bsConfig]="{ dateInputFormat: 'YYYY-MM-DD' }">                                 
+                                
+                    </td>
+                  </tr>
+                      </table>
+      
+                      <button class="btn btn-primary nextBtn btn-lg pull-right" type="button" >Next</button>             
+                    </div>
+                </div>
+            </div>
+            
+            <div class="row setup-content" id="add-2">
+              <div class="col-xs-12">
+                  <div class="col-md-12">
+                      <table id="detTbl">
+                          <tr>
+                            <td style="width: 150px">
+                                    <label for="certificationNo"><b>Certification No.</b></label>                        
+        
+                            </td>
+                            <td>
+                                <input formControlName="certificationNo" class="form-control">  
+                              
+                            </td>
+                          </tr>
+        
+                          <tr>
+                              <td style="width: 150px">
+                                      <label for="certificationBody"><b>Certification Body</b></label>                        
+          
+                              </td>
+                              <td> 
+                                  <select class="form-control input farmerSelect" formControlName="certificationBody">
+                                      <option value = "">- Select -</option>
+                                      <option *ngFor="let cert of availCertification" value = {{cert.stakeholderId}}>{{ cert.stakeholderId +" - "+cert.name }}</option>
+                                  </select>
+                              </td>
+                            </tr>
+        
+                            <tr>
+                                <td style="width: 150px">
+                                        <label for="from"><b>From</b></label>                        
+            
+                                </td>
+                                <td>
+                                    <input formControlName="from" class="form-control" bsDatepicker [bsConfig]="{ dateInputFormat: 'YYYY-MM-DD' }">                                 
+                                </td>
+                            </tr>
+    
+                            <tr>
+                                <td style="width: 150px">
+                                        <label for="to"><b>To</b></label>                        
+            
+                                </td>
+                                <td>
+                                    <input formControlName="to" class="form-control" bsDatepicker [bsConfig]="{ dateInputFormat: 'YYYY-MM-DD' }">  
+                                    
+                                </td>
+                            </tr>
+        
+                            <tr>
+                                <td style="width: 150px; border-top: 1px solid #bababc" colspan="2">
+                                        <label for="farmId"><b>Images</b></label> 
+                                        
+                                        <image-upload id="imageUpload" (removed)="onCertRemoved($event)" (change)="onCertChange($event)"></image-upload>
+            
+                                </td>
+                            </tr>
+                        </table>
+    
+                        <button class="btn btn-primary nextBtn btn-lg pull-right" type="button" >Next</button>
+                    
+                  </div>
+              </div>
+          </div> 
+    
+          
+          <div class="row setup-content" id="add-3">
+              <div class="col-xs-12">
+                  <div class="col-md-12">
+                      <div class="row">
+    
+                          <input type="hidden" name="count" value="1" />
+                          <div class="control-group" id="fields">
+                              <div>
+                                  <button (click) = "addField()" id="b1" class="btn add-more" type="button">+ Chemicals</button>
+                              </div><br>
+                              
+                              <div formArrayName="chemFormArr" *ngFor="let item of myForm.get('chemFormArr').controls; let i = index;">
+                                  <div [formGroupName]="i">
+                                      <table>
+                                          <tr>
+                                              <td>
+                                                  <input formControlName="chemical" class="form-control" >  
+                                    
+                                              </td>
+                                              <td style="padding-left: 10px">
+                                                  <button (click) = "removeField(i)" id="remove' + (this.next - 1) + '" class="btn btn-danger remove-me" >-</button>
+                                              </td>
+                                          </tr>
+                                      </table>
+                                      <br>
+                                  </div>
+                              </div>
+                          </div>
+                      </div>   
+    
+                      <table style="float : right;">
+                          <tr>
+                            <td style="padding : 5px;">
+                              <button type="button" class="btn btn-default pull-right" data-dismiss="modal">Cancel</button>
+                            </td>
+                            <td style="padding : 5px;">
+                              <button [promiseBtn]="toggleLoad" (click)="addAsset(myForm)" type="submit" class="btn btn-success pull-right" ><div class="word">Submit</div><div class="loader" style="display:none"></div></button>
+                            </td>
+                          </tr>
+                        </table>
+                  </div>
+              </div>
+          </div>
+         
+        </form>
+  
+  
+  <!-- Form ends here -->
+      </div>
+    </div>
+  </div>
+  </div>
+
+  <div class="modal fade" id="updateAssetModal" tabindex="-1" role="dialog" aria-labelledby="updateAssetModalLabel">
+    <div class="modal-dialog modal-lg">
+      <div class="modal-content">
+        <div class="modal-header">
+            <h4 class="modal-title" id="addParticipantModalLabel">Update Seed Details</h4>
+          <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">×</span><span class="sr-only">Close</span></button>
+          
+        </div>
+        <div class="modal-body">
+            <!-- Steps starts here -->
+        <div class="requestwizard">
+          <div class="requestwizard-row setup-panel">
+            <table id="tbl1" style="width: 100%">
+              <tr>
+                  <td>
+                      <div class="requestwizard-step">
+                          <a id="update1" href="#update-1" type="button" class="btn btn-default btn-circle" disabled="disabled">1</a>
+                          <p>Basic Information</p>
+                      </div>
+                  </td>
+
+                  <td>
+                      <div class="requestwizard-step">
+                          <a href="#update-2" type="button" class="btn btn-default btn-circle" disabled="disabled">2</a>
+                          <p>Certification Details</p>
+                      </div>
+                  </td>
+
+                  <td>
+                      <div class="requestwizard-step">
+                          <a href="#update-3" type="button" class="btn btn-default btn-circle" disabled="disabled">3</a>
+                          <p>Active Chemicals</p>
+                      </div>
+                  </td>
+              
+        
+              </tr>
+            </table>
+            </div>
+        </div>
+        <hr>
+    
+    <form [formGroup]="myForm">
+        <div class="row setup-content" id="update-1">
+            <div class="col-xs-12">
+                <div class="col-md-12">
+                  <table id="detTbl">
+                    <tr>
+                      <td style="width: 150px">
+                              <label ><b>Seed ID</b></label>                        
+  
+                      </td>
+                      <td>
+                          <input formControlName="seedId" class="form-control" disabled>  
+                        
+                      </td>
+                    </tr>
+  
+                    <tr>
+                        <td style="width: 150px">
+                                <label><b>Name</b></label>                        
+    
+                        </td>
+                        <td>
+                            <input formControlName="name" class="form-control" >      
+                        </td>
+                      </tr>
+  
+                      <tr>
+                          <td style="width: 150px">
+                                  <label><b>Amount</b></label>                        
+      
+                          </td>
+                          <td>  
+                            <div class="input-group mb-3">
+                              <input formControlName="amount" class="form-control" >
+                            </div>
+                          </td>
+                      </tr>
+
+                      <tr>
+                        <td style="width: 150px">
+                                <label><b>Price (LKR)</b></label>                        
+    
+                        </td>
+                        <td>  
+                            <input formControlName="price" class="form-control" >
+                        </td>
+                    </tr>
+
+                    <tr>
+                      <td style="width: 150px">
+                              <label><b>Owner</b></label>                        
+  
+                      </td>
+                      <td>  
+                          <select class="form-control input farmerSelect" formControlName="currentOwner">
+                                <option value = "">- Select -</option>
+                                <option *ngFor="let item of availParticipants" value = {{item.stakeholderId}}>{{ item.stakeholderId +" - "+item.name }}</option>
+                            </select>
+                      </td>
+                  </tr>
+    
+  
+                      <tr>
+                        <td style="width: 150px;" >
+                                <label for="farmId"><b>Vendor</b></label>                        
+    
+                        </td>
+                        
+                            <td> 
+                                <select class="form-control input farmerSelect" formControlName="issuer">
+                                    <option value = "">- Select -</option>
+                                    <option *ngFor="let seed of availSeedProviders" value = {{seed.stakeholderId}}>{{ seed.stakeholderId +" - "+seed.name }}</option>
+                                </select>
+                            </td>
+                      
+                    </tr>
+  
+                    <tr>
+                      <td style="width: 150px;" >
+                              <label for="farmId"><b>Manufactured Date</b></label>                        
+  
+                      </td>
+                      <td>  
+                          <input formControlName="manufactureDate" class="form-control" bsDatepicker [bsConfig]="{ dateInputFormat: 'YYYY-MM-DD' }">                                 
+                            
+                    </td>
+                  </tr>
+
+                  <tr>
+                    <td style="width: 150px;" >
+                            <label for="farmId"><b>Expiry Date</b></label>                        
+
+                    </td>
+                    <td>  
+                        <input formControlName="expiryDate" class="form-control" bsDatepicker [bsConfig]="{ dateInputFormat: 'YYYY-MM-DD' }">                                 
+                            
+                  </td>
+                </tr>
+
+                <tr>
+                  <td style="width: 150px;" >
+                          <label for="farmId"><b>Sale Date</b></label>                        
+
+                  </td>
+                  <td>  
+                      <input formControlName="dateOfSale" class="form-control" bsDatepicker [bsConfig]="{ dateInputFormat: 'YYYY-MM-DD' }">                                 
+                            
+                </td>
+              </tr>
+                  </table>
+  
+                  <button class="btn btn-primary nextBtn btn-lg pull-right" type="button" >Next</button>             
+                </div>
+            </div>
+        </div>
+        
+        <div class="row setup-content" id="update-2">
+          <div class="col-xs-12">
+              <div class="col-md-12">
+                  <table id="detTbl">
+                      <tr>
+                        <td style="width: 150px">
+                                <label for="certificationNo"><b>Certification No.</b></label>                        
+    
+                        </td>
+                        <td>
+                            <input formControlName="certificationNo" class="form-control">  
+                          
+                        </td>
+                      </tr>
+    
+                      <tr>
+                          <td style="width: 150px">
+                                  <label for="certificationBody"><b>Certification Body</b></label>                        
+      
+                          </td>
+                          <td> 
+                              <select class="form-control input farmerSelect" formControlName="certificationBody">
+                                  <option value = "">- Select -</option>
+                                  <option *ngFor="let cert of availCertification" value = {{cert.stakeholderId}}>{{ cert.stakeholderId +" - "+cert.name }}</option>
+                              </select>
+                          </td>
+                        </tr>
+    
+                        <tr>
+                            <td style="width: 150px">
+                                    <label for="from"><b>From</b></label>                        
+        
+                            </td>
+                            <td>
+                                <input formControlName="from" class="form-control" bsDatepicker [bsConfig]="{ dateInputFormat: 'YYYY-MM-DD' }">                                 
+                            </td>
+                        </tr>
+
+                        <tr>
+                            <td style="width: 150px">
+                                    <label for="to"><b>To</b></label>                        
+        
+                            </td>
+                            <td>
+                                <input formControlName="to" class="form-control" bsDatepicker [bsConfig]="{ dateInputFormat: 'YYYY-MM-DD' }">  
+                                
+                            </td>
+                        </tr>
+    
+                        <tr>
+                            <td style="width: 150px; border-top: 1px solid #bababc" colspan="2">
+                                    <label for="farmId"><b>Images</b></label> 
+                                    
+                                    <image-upload id="imageUpload" (removed)="onCertRemoved($event)" [uploadedFiles]="uploadCertImages" (change)="onCertChange($event)"></image-upload>
+        
+                            </td>
+                        </tr>
+                    </table>
+
+                    <button class="btn btn-primary nextBtn btn-lg pull-right" type="button" >Next</button>
+                
+              </div>
+          </div>
+      </div> 
+
+      
+      <div class="row setup-content" id="update-3">
+          <div class="col-xs-12">
+              <div class="col-md-12">
+                  <div class="row">
+
+                      <input type="hidden" name="count" value="1" />
+                      <div class="control-group" id="fields">
+                          <div>
+                              <button (click) = "addField()" id="b1" class="btn add-more" type="button">+ Chemicals</button>
+                          </div><br>
+                          <div formArrayName="chemFormArr" *ngFor="let item of myForm.get('chemFormArr').controls; let i = index;">
+                              <div [formGroupName]="i">
+                                  <table>
+                                      <tr>
+                                          <td>
+                                              <input formControlName="chemical" class="form-control" >  
+                                
+                                          </td>
+                                          <td style="padding-left: 10px">
+                                              <button (click) = "removeField(i)" id="remove' + (this.next - 1) + '" class="btn btn-danger remove-me" >-</button>
+                                          </td>
+                                      </tr>
+                                  </table>
+                                  <br>
+                              </div>
+                          </div>
+                      </div>
+                  </div>   
+
+                  <table style="float : right;">
+                      <tr>
+                        <td style="padding : 5px;">
+                          <button type="button" class="btn btn-default pull-right" data-dismiss="modal">Cancel</button>
+                        </td>
+                        <td style="padding : 5px;">
+                          <button [promiseBtn]="toggleLoad" (click)="updateAsset(myForm)" type="submit" class="btn btn-success pull-right" ><div class="word">Update</div><div class="loader" style="display:none"></div></button>
+                        </td>
+                      </tr>
+                    </table>
+              </div>
+          </div>
+      </div>
+     
+    </form>
+  
+  
+  <!-- Form ends here -->
+      </div>
+    </div>
+  </div>
+  </div>
+
+
+  <div class="modal fade" id="viewAssetModal" tabindex="-1" role="dialog" aria-labelledby="viewAssetModalLabel">
+    <div class="modal-dialog modal-lg">
+      <div class="modal-content">
+        <div class="modal-header">
+            <h4 class="modal-title" id="addParticipantModalLabel">Seed Details</h4>
+          <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">×</span><span class="sr-only">Close</span></button>
+          
+        </div>
+        <div class="modal-body">
+            <!-- Steps starts here -->
+        <div class="requestwizard">
+          <div class="requestwizard-row setup-panel">
+            <table id="tbl1" style="width: 100%">
+              <tr>
+                  <td>
+                      <div class="requestwizard-step">
+                          <a id="view1" href="#view-1" type="button" class="btn btn-default btn-circle" disabled="disabled">1</a>
+                          <p>Basic Information</p>
+                      </div>
+                  </td>
+
+                  <td>
+                      <div class="requestwizard-step">
+                          <a href="#view-2" type="button" class="btn btn-default btn-circle" disabled="disabled">2</a>
+                          <p>Certification Details</p>
+                      </div>
+                  </td>
+
+                  <td>
+                      <div class="requestwizard-step">
+                          <a href="#view-3" type="button" class="btn btn-default btn-circle" disabled="disabled">3</a>
+                          <p>Active Chemicals</p>
+                      </div>
+                  </td>
+  
+                <td>
+                    <div class="requestwizard-step">
+                        <a href="#view-4" type="button" class="btn btn-default btn-circle" disabled="disabled">4</a>
+                        <p>Historian Details</p>
+                    </div>
+                </td>                
+        
+              </tr>
+            </table>
+            </div>
+        </div>
+        <hr>
+    
+    <form [formGroup]="viewForm">
+        <div class="row setup-content" id="view-1">
+            <div class="col-xs-12">
+                <div class="col-md-12">
+                  <table id="detTbl">
+                    <tr>
+                      <td style="width: 150px">
+                              <label ><b>Seed ID</b></label>                        
+  
+                      </td>
+                      <td>
+                          <input formControlName="seedId" class="form-control" disabled>  
+                        
+                      </td>
+                    </tr>
+  
+                    <tr>
+                        <td style="width: 150px">
+                                <label><b>Name</b></label>                        
+    
+                        </td>
+                        <td>
+                            <input formControlName="name" class="form-control" disabled>      
+                        </td>
+                      </tr>
+  
+                      <tr>
+                          <td style="width: 150px">
+                                  <label><b>Amount (Kg)</b></label>                        
+      
+                          </td>
+                          <td>  
+                            <div class="input-group mb-3">
+                              <input formControlName="amount" class="form-control" disabled>
+                            </div>
+                          </td>
+                      </tr>
+
+                      <tr>
+                        <td style="width: 150px">
+                                <label><b>Price (LKR)</b></label>                        
+    
+                        </td>
+                        <td>  
+                            <input formControlName="price" class="form-control"  disabled>
+                        </td>
+                    </tr>
+
+                    <tr>
+                      <td style="width: 150px">
+                              <label><b>Owner</b></label>                        
+  
+                      </td>
+                      <td>  
+                          <input formControlName="currentOwner" class="form-control"  disabled>
+                      </td>
+                  </tr>
+  
+                     <tr>
+                        <td style="width: 150px;" >
+                                <label for="farmId"><b>Vendor</b></label>                        
+    
+                        </td>
+                        <td>  
+                          <input formControlName="issuer" class="form-control"  disabled>
+                      </td>
+                    </tr>
+  
+                    <tr>
+                      <td style="width: 150px;" >
+                              <label for="farmId"><b>Manufactured Date</b></label>                        
+  
+                      </td>
+                      <td>  
+                        <input formControlName="manufactureDate" class="form-control"  disabled>
+                    </td>
+                  </tr>
+
+                  <tr>
+                    <td style="width: 150px;" >
+                            <label for="farmId"><b>Expiry Date</b></label>                        
+
+                    </td>
+                    <td>  
+                      <input formControlName="expiryDate" class="form-control"  disabled>
+                  </td>
+                </tr>
+
+                <tr>
+                  <td style="width: 150px;" >
+                          <label for="farmId"><b>Sale Date</b></label>                        
+
+                  </td>
+                  <td>  
+                    <input formControlName="dateOfSale" class="form-control"  disabled>
+                </td>
+              </tr>
+                  </table>
+  
+                </div>
+            </div>
+        </div>
+        
+        <div class="row setup-content" id="view-2">
+          <div class="col-xs-12">
+              <div class="col-md-12">
+                  <table id="detTbl">
+                      <tr>
+                        <td style="width: 150px">
+                                <label for="certificationNo"><b>Certification No.</b></label>                        
+    
+                        </td>
+                        <td>
+                            <input formControlName="certificationNo" class="form-control" disabled="disabled">  
+                          
+                        </td>
+                      </tr>
+    
+                      <tr>
+                          <td style="width: 150px">
+                                  <label for="certificationBody"><b>Certification Body</b></label>                        
+      
+                          </td>
+                          <td>
+                              <input formControlName="certificationBody" class="form-control" disabled="disabled">  
+                            
+                          </td>
+                        </tr>
+    
+                        <tr>
+                            <td style="width: 150px">
+                                    <label for="from"><b>From</b></label>                        
+        
+                            </td>
+                            <td>
+                                <input formControlName="from" class="form-control" disabled="disabled">  
+                              
+                            </td>
+                        </tr>
+
+                        <tr>
+                            <td style="width: 150px">
+                                    <label for="to"><b>To</b></label>                        
+        
+                            </td>
+                            <td>
+                                <input formControlName="to" class="form-control" disabled="disabled">  
+                              
+                            </td>
+                        </tr>
+    
+                        <tr>
+                            <td style="width: 150px; border-top: 1px solid #bababc" colspan="2">
+                                    <label for="farmId"><b>Images</b></label> 
+                                    
+                                    <div *ngIf = "certificationImages.length != 0">
+                                        <carousel [interval]="false">
+                                            <slide *ngFor = "let image of certificationImages">
+                                                <img style="width: 150px !important" src="{{image}}" style="display: block; width: 100%;" />
+                                            </slide>
+                                        </carousel>
+                                    </div>
+
+                                    <div *ngIf = "certificationImages.length == 0" class="col-md-12">
+                                        <img src="../../assets/error.png" style="display: block; margin-left: auto; margin-right: auto; margin-top: 50px">
+                                        <div class="alert alert-warning" role="alert" style="text-align: center; margin-top: 30px; padding: 5px;"><h4>No images available!</h4></div>
+                                    </div>
+        
+                            </td>
+                        </tr>
+
+                        <tr>
+                            <td style="width: 150px; border-top: 1px solid #bababc" colspan="2">
+                                    <label for="farmId"><b>Comments</b></label>                                          
+                            </td>
+                        </tr>
+                        <tr>
+                          <td colspan="2">
+                              <ol>
+                                  <li *ngFor="let comment of certiicationComment" >{{comment}}</li>   
+                                </ol> 
+                          </td>
+                        </tr>
+                      </table>
+              </div>
+          </div>
+      </div> 
+
+      
+      <div class="row setup-content" id="view-3">
+          <div class="col-xs-12">
+              <div class="col-md-12">
+                  <ol>
+                      <li *ngFor="let chem of chemicals" >{{chem}}</li>   
+                    </ol> 
+              </div>
+          </div>
+      </div>
+
+      <div class="row setup-content" id="view-4">
+          <div class="col-xs-12">
+              <div class="col-md-12">
+                </div>
+          </div>
+      </div>
+    </form>
+  
+  
+  <!-- Form ends here -->
+      </div>
+    </div>
+  </div>
+  </div>
+
+
 
 
 
@@ -316,8 +1134,9 @@
 	</div>
   
   <div class="row">
-    <div class="col-md-9">
-        <h1 class="asset-title" id='assetName'>Seed</h1>
+    <div class="col-md-9 row">
+        <img *ngIf = "allAssets != ''" src="../../assets/006-seed-bag.png" style="width: 45px; height: 45px">&nbsp;&nbsp;&nbsp;
+        <h1 class="asset-title" id='assetName'>Manage Seeds</h1>
     </div>
     <div class="col-md-3">
       <button (click)="resetForm()" type="button" class="btn btn-primary" data-toggle="modal" data-target="#addAssetModal">
@@ -326,40 +1145,26 @@
                 <path fill-rule="evenodd" d="M5.5,4.5 L9.5,4.5 L10,4.5 L10,5.5 L9.5,5.5 L5.5,5.5 L5.5,9.5 L5.5,10 L4.5,10 L4.5,9.5 L4.5,5.5 L0.5,5.5 L0,5.5 L0,4.5 L0.5,4.5 L4.5,4.5 L4.5,0.5 L4.5,0 L5.5,0 L5.5,0.5 L5.5,4.5 Z"/>
               </svg>
           </span>
-        Create Asset
+        Add Seeds
       </button>
     </div>
   </div>
   <br>
   <div class="row">
-    <div class="col-md-12">
-      <table class="table table-responsive">
+    <div *ngIf = "allAssets != ''" class="col-md-12">
+        <table class="table table-responsive"  style="margin: auto; width: 850px;">
         <thead class="thead">
           <tr class="thead-cols">
             
-                <th class="info">seedId</th>
+                <th class="info" style="min-width: 150px">Seed ID</th>
             
-                <th class="info">name</th>
+                <th class="info" style="min-width: 250px">Name</th>
             
-                <th class="info">manufactureDate</th>
+                <th class="info" style="min-width: 150px">Amount</th>
             
-                <th class="info">expiryDate</th>
+                <th class="info" style="min-width: 150px">Price (Rs.)</th>
             
-                <th class="info">dateOfSale</th>
-            
-                <th class="info">amount</th>
-            
-                <th class="info">price</th>
-            
-                <th class="info">activeChemicals</th>
-            
-                <th class="info">certification</th>
-            
-                <th class="info">currentOwner</th>
-            
-                <th class="info">issuer</th>
-            
-              <th class="info-actions">Actions</th>
+              <th class="info-actions" style="min-width: 150px">Actions</th>
           </tr>
         </thead>
         <tbody>
@@ -370,25 +1175,15 @@
             
                 <td class="asset-properties">{{asset.name}}</td>
             
-                <td class="asset-properties">{{asset.manufactureDate}}</td>
-            
-                <td class="asset-properties">{{asset.expiryDate}}</td>
-            
-                <td class="asset-properties">{{asset.dateOfSale}}</td>
-            
                 <td class="asset-properties">{{asset.amount}}</td>
             
                 <td class="asset-properties">{{asset.price}}</td>
             
-                <td class="asset-properties">{{asset.activeChemicals}}</td>
-            
-                <td class="asset-properties">{{asset.certification}}</td>
-            
-                <td class="asset-properties">{{asset.currentOwner}}</td>
-            
-                <td class="asset-properties">{{asset.issuer}}</td>
-            
             <td>
+                <button  type="button" title="view" (click)="getFormForView(asset.seedId);" class="btn btn-update" data-toggle="modal" data-target="#viewAssetModal">
+                    <img src="../../assets/view.png">
+                  </button>
+
               <button (click)="getForm(asset.seedId);" type="button" class="btn btn-update" data-toggle="modal" data-target="#updateAssetModal">
                   <svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
                   width="12.8px" height="12.8px" viewBox="0 0 30.7 30.7" style="enable-background:new 0 0 30.7 30.7;" xml:space="preserve">
@@ -416,6 +1211,11 @@
           </tr>
         </tbody>
       </table>
+    </div>
+
+    <div *ngIf = "allAssets == ''" class="col-md-12">
+        <img src="../../assets/006-seed-bag.png" style="display: block; margin-left: auto; margin-right: auto; margin-top: 50px">
+        <div class="alert alert-warning" role="alert" style="text-align: center; margin-top: 30px; padding: 5px;"><h4>No seeds available!</h4></div>
     </div>
   </div>
 </div>

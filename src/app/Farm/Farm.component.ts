@@ -20,6 +20,7 @@ import { LocalStorageService } from '../services/local-storage.service';
 import $ from 'jquery';
 import { StakeholderService } from '../Stakeholder/Stakeholder.service';
 import { FileHolder } from 'angular2-image-upload';
+import swal from 'sweetalert2';
 
 @Component({
   selector: 'app-farm',
@@ -49,6 +50,7 @@ export class FarmComponent implements OnInit {
   private availFarmer = [];
   private uploadImages = [];
   private uploadCertImages = [];
+  private toggleLoad;
 
   private userType = this.localStorageService.getFromLocal('currentUser').type;
 
@@ -342,33 +344,16 @@ export class FarmComponent implements OnInit {
     .then(() => {
       this.errorMessage = null;
       this.loadAll();
+
+      $('#addAssetModal .close').trigger('click');
+      swal(
+        'Success!',
+        'Farm is added successfully!',
+        'success'
+      )
       $('.loader').hide();
       $('.word').show();
-      this.updateForm.setValue({
-        'farmId': null,
-        'FarmLocation': null,
-        'waterSources': null,
-        'nearFactories': null,
-        'otherDescription': null,
-        'certification': null,
-        'owner': null,
-        'nearFactoriesN': null,
-        'nearFactoriesS': null,
-        'nearFactoriesE': null,
-        'nearFactoriesW': null,
-        'waterSourcesN': null,
-        'waterSourcesS': null,
-        'waterSourcesE': null,
-        'waterSourcesW': null,
-        'certificationNo' : null,
-        'certificationBody' : null,
-        'from' : null,
-        'to' : null,
-        'certiComments' : null,
-        'farmersFormArr' : null,
-        'imagesFormArr' : null,
-        'certImagesFormArr' : null
-        });
+      
     })
     .catch((error) => {
       if (error === 'Server error') {
@@ -382,7 +367,7 @@ export class FarmComponent implements OnInit {
     
   }
 
-  private toggleLoad;
+  
 
   updateAsset(form: any)  { 
 
@@ -456,6 +441,13 @@ export class FarmComponent implements OnInit {
     .then(() => {
       this.errorMessage = null;
       this.loadAll();
+
+      $('#updateAssetModal .close').trigger('click');
+      swal(
+        'Success!',
+        'Farm is updated successfully!',
+        'success'
+      )
       $('.loader').hide();
       $('.word').show();
     })
@@ -665,8 +657,8 @@ export class FarmComponent implements OnInit {
         formObject.certification = result.certification;
         formObject.certificationNo = result.certification.certificationNo;
         formObject.certificationBody = result.certification.certificationBody.stakeholderId;
-        formObject.from = result.certification.from.toString().split('T')[0];
-        formObject.to = result.certification.to.toString().split('T')[0];        
+        formObject.from = result.certification.from;
+        formObject.to = result.certification.to;        
         formObject.certiComments = result.certification.comment;
 
         this.certiicationComment = result.certification.comment;
@@ -852,6 +844,9 @@ export class FarmComponent implements OnInit {
 
   resetForm(): void {
     $('#add1').trigger('click');
+    this.updateForm.setControl('certImagesFormArr', this.fb.array([]));
+    this.updateForm.setControl('farmersFormArr', this.fb.array([]));
+    this.updateForm.setControl('imagesFormArr', this.fb.array([]));
 
       this.updateForm.setValue({
         'farmId': null,
