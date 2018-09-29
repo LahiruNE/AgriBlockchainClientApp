@@ -42,18 +42,18 @@ export class SeedComponent implements OnInit {
   private availParticipants = [];
   private availCertification = [];
   private availSeedProviders = [];
-  private uploadImages = [];
   private uploadCertImages = [];
   private toggleLoad;
   private certiicationComment = [];
   private chemicals = [];
-  
+  private productTypes = ['CARROT', 'TOMATO', 'PINEAPPLE'];  
 
   seedId = new FormControl('', Validators.required);
   name = new FormControl('', Validators.required);
   manufactureDate = new FormControl('', Validators.required);
   expiryDate = new FormControl('', Validators.required);
   dateOfSale = new FormControl('', Validators.required);
+  type = new FormControl('', Validators.required);
   amount = new FormControl('', Validators.required);
   price = new FormControl('', Validators.required);
   activeChemicals = new FormControl('', Validators.required);
@@ -75,6 +75,7 @@ export class SeedComponent implements OnInit {
       manufactureDate: this.manufactureDate,
       expiryDate: this.expiryDate,
       dateOfSale: this.dateOfSale,
+      type: this.type,
       amount: this.amount,
       price: this.price,
       activeChemicals: this.activeChemicals,
@@ -96,6 +97,7 @@ export class SeedComponent implements OnInit {
       manufactureDate: this.manufactureDate,
       expiryDate: this.expiryDate,
       dateOfSale: this.dateOfSale,
+      type: this.type,
       amount: this.amount,
       price: this.price,
       activeChemicals: this.activeChemicals,
@@ -272,6 +274,7 @@ export class SeedComponent implements OnInit {
       'manufactureDate': this.manufactureDate.value,
       'expiryDate': this.expiryDate.value,
       'dateOfSale': this.dateOfSale.value,
+      'type': this.type.value,
       'amount': this.amount.value,
       'price': this.price.value,
       'activeChemicals': chemicals,
@@ -340,6 +343,7 @@ export class SeedComponent implements OnInit {
       'manufactureDate': this.manufactureDate.value,
       'expiryDate': this.expiryDate.value,
       'dateOfSale': this.dateOfSale.value,
+      'type': this.type.value,
       'amount': this.amount.value,
       'price': this.price.value,
       'activeChemicals': chemicals,
@@ -411,6 +415,7 @@ export class SeedComponent implements OnInit {
         'manufactureDate': null,
         'expiryDate': null,
         'dateOfSale': null,
+        'type': null,
         'amount': null,
         'price': null,
         'activeChemicals': null,
@@ -454,6 +459,12 @@ export class SeedComponent implements OnInit {
         formObject.dateOfSale = result.dateOfSale;
       } else {
         formObject.dateOfSale = null;
+      }
+
+      if (result.type) {
+        formObject.type = result.type;
+      } else {
+        formObject.type = null;
       }
 
       if (result.amount) {
@@ -552,6 +563,7 @@ export class SeedComponent implements OnInit {
         'manufactureDate': null,
         'expiryDate': null,
         'dateOfSale': null,
+        'type': null,
         'amount': null,
         'price': null,
         'activeChemicals': null,
@@ -594,6 +606,12 @@ export class SeedComponent implements OnInit {
         formObject.dateOfSale = result.dateOfSale.toString().split('T')[0];;
       } else {
         formObject.dateOfSale = null;
+      }
+
+      if (result.type) {
+        formObject.type = result.type;
+      } else {
+        formObject.type = null;
       }
 
       if (result.amount) {
@@ -667,6 +685,7 @@ export class SeedComponent implements OnInit {
       'manufactureDate': null,
       'expiryDate': null,
       'dateOfSale': null,
+      'type': null,
       'amount': null,
       'price': null,
       'activeChemicals': null,
@@ -712,13 +731,7 @@ export class SeedComponent implements OnInit {
     fArray.removeAt(index);  
   }
 
-  onRemoved(file: FileHolder) {
-    var index = this.uploadImages.indexOf(file.src);
-    this.uploadImages.splice(index,1); 
-
-    let fArray = <FormArray>this.myForm.controls['imagesFormArr'];
-    fArray.removeAt(index);  
-  }
+ 
 
   addField(){
     this.chemFormArr = this.myForm.get('chemFormArr') as FormArray;

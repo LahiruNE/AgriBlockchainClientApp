@@ -11,278 +11,11 @@
  See the License for the specific language governing permissions and
  limitations under the License.
 -->
-<!-- <div class="modal fade" id="addAssetModal" tabindex="-1" role="dialog" aria-labelledby="addAssetModalLabel">
-  <div class="modal-dialog" role="document">
-    <div class="modal-content">
-      <div class="modal-header">
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-        <h4 class="modal-title" id="addAssetModalLabel">Create asset</h4>
-          <p class="modal-intro">Enter the required values below.</p>
-      </div>
-      <form [formGroup]="myForm">
-        <div class="modal-body">
-
-
-          
-
-            
-              <div class="form-group text-left">
-                <label for="seedId">seedId</label>
-                
-                  <input formControlName="seedId" type="text" class="form-control">
-                
-              </div>
-            
-          
-
-            
-              <div class="form-group text-left">
-                <label for="name">name</label>
-                
-                  <input formControlName="name" type="text" class="form-control">
-                
-              </div>
-            
-          
-
-            
-              <div class="form-group text-left">
-                <label for="manufactureDate">manufactureDate</label>
-                
-                  <input formControlName="manufactureDate" type="text" class="form-control">
-                
-              </div>
-            
-          
-
-            
-              <div class="form-group text-left">
-                <label for="expiryDate">expiryDate</label>
-                
-                  <input formControlName="expiryDate" type="text" class="form-control">
-                
-              </div>
-            
-          
-
-            
-              <div class="form-group text-left">
-                <label for="dateOfSale">dateOfSale</label>
-                
-                  <input formControlName="dateOfSale" type="text" class="form-control">
-                
-              </div>
-            
-          
-
-            
-              <div class="form-group text-left">
-                <label for="amount">amount</label>
-                
-                  <input formControlName="amount" type="number" class="form-control">
-                
-              </div>
-            
-          
-
-            
-              <div class="form-group text-left">
-                <label for="price">price</label>
-                
-                  <input formControlName="price" type="number" class="form-control">
-                
-              </div>
-            
-          
-
-            
-              <div class="form-group text-left">
-                <label for="activeChemicals">activeChemicals</label>
-                
-                  <input formControlName="activeChemicals" type="text" class="form-control">
-                
-              </div>
-            
-          
-
-            
-              <div class="form-group text-left">
-                <label for="certification">certification</label>
-                
-                    <textarea formControlName="certification" class="form-control" rows="3"></textarea>
-                
-              </div>
-            
-          
-
-            
-              <div class="form-group text-left">
-                <label for="currentOwner">currentOwner</label>
-                
-                    <textarea formControlName="currentOwner" class="form-control" rows="3"></textarea>
-                
-              </div>
-            
-          
-
-            
-              <div class="form-group text-left">
-                <label for="issuer">issuer</label>
-                
-                    <textarea formControlName="issuer" class="form-control" rows="3"></textarea>
-                
-              </div>
-            
-          
-
-        </div>
-        <div class="modal-footer">
-            <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
-          <button (click)="addAsset(myForm);" type="submit" class="btn btn-success" data-dismiss="modal">Confirm</button>
-
-        </div>
-      </form>
-    </div>
-  </div>
-</div>
-
-
-
-
-<div class="modal fade" id="updateAssetModal" tabindex="-1" role="dialog" aria-labelledby="updateAssetModalLabel">
-  <div class="modal-dialog" role="document">
-    <div class="modal-content">
-      <div class="modal-header">
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-        <h4 class="modal-title" id="updateAssetModalLabel">Update Asset</h4>
-      </div>
-      <form [formGroup]="myForm">
-        <div class="modal-body">
-
-
-          
-            <div class="form-group text-left">
-              <label for="seedId">seedId</label>
-              
-              
-                <input [ngModel]="seedId" formControlName="seedId" class="form-control" disabled="disabled">  
-              
-
-            </div>
-          
-            <div class="form-group text-left">
-              <label for="name">name</label>
-              
-              
-                <input [ngModel]="name"formControlName="name" type="text" class="form-control">
-              
-
-            </div>
-          
-            <div class="form-group text-left">
-              <label for="manufactureDate">manufactureDate</label>
-              
-              
-                <input [ngModel]="manufactureDate"formControlName="manufactureDate" type="text" class="form-control">
-              
-
-            </div>
-          
-            <div class="form-group text-left">
-              <label for="expiryDate">expiryDate</label>
-              
-              
-                <input [ngModel]="expiryDate"formControlName="expiryDate" type="text" class="form-control">
-              
-
-            </div>
-          
-            <div class="form-group text-left">
-              <label for="dateOfSale">dateOfSale</label>
-              
-              
-                <input [ngModel]="dateOfSale"formControlName="dateOfSale" type="text" class="form-control">
-              
-
-            </div>
-          
-            <div class="form-group text-left">
-              <label for="amount">amount</label>
-              
-              
-                <input [ngModel]="amount" formControlName="amount" type="number" class="form-control">
-              
-
-            </div>
-          
-            <div class="form-group text-left">
-              <label for="price">price</label>
-              
-              
-                <input [ngModel]="price" formControlName="price" type="number" class="form-control">
-              
-
-            </div>
-          
-            <div class="form-group text-left">
-              <label for="activeChemicals">activeChemicals</label>
-              
-              
-                <input [ngModel]="activeChemicals"formControlName="activeChemicals" type="text" class="form-control">
-              
-
-            </div>
-          
-            <div class="form-group text-left">
-              <label for="certification">certification</label>
-              
-              
-                
-                  <textarea [ngModel]="certification" formControlName="certification" class="form-control" rows="3"></textarea>
-                
-              
-
-            </div>
-          
-            <div class="form-group text-left">
-              <label for="currentOwner">currentOwner</label>
-              
-              
-                
-                  <textarea [ngModel]="currentOwner" formControlName="currentOwner" class="form-control" rows="3"></textarea>
-                
-              
-
-            </div>
-          
-            <div class="form-group text-left">
-              <label for="issuer">issuer</label>
-              
-              
-                
-                  <textarea [ngModel]="issuer" formControlName="issuer" class="form-control" rows="3"></textarea>
-                
-              
-
-            </div>
-          
-
-
-        </div>
-        <div class="modal-footer">
-          <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-          <button (click)="updateAsset(myForm)" type="submit" class="btn btn-success" data-dismiss="modal">Submit</button>
-        </div>
-      </form>
-    </div>
-  </div>
-</div> -->
-
 <div class="modal fade" id="addAssetModal" tabindex="-1" role="dialog" aria-labelledby="addAssetModalLabel">
     <div class="modal-dialog modal-lg">
       <div class="modal-content">
         <div class="modal-header">
-            <h4 class="modal-title" id="addParticipantModalLabel">Add New Plots</h4>
+            <h4 class="modal-title" id="addParticipantModalLabel">Add New Seeds</h4>
           <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">×</span><span class="sr-only">Close</span></button>
           
         </div>
@@ -345,6 +78,24 @@
                                 <input formControlName="name" class="form-control" >      
                             </td>
                           </tr>
+
+                        <tr>
+                            <td>
+                                    <label><b>Type</b></label>
+                            </td>
+                            <td>
+                                <label *ngFor="let item of productTypes" >
+                                    <input                                        
+                                        formControlName="type"                                        
+                                        name="type"
+                                        value={{item}}
+                                        type="radio"                                        
+                                    />
+                                    {{item}}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                </label> 
+                                
+                            </td>
+                        </tr>
       
                           <tr>
                               <td style="width: 150px">
@@ -622,6 +373,23 @@
                             <input formControlName="name" class="form-control" >      
                         </td>
                       </tr>
+                      <tr>
+                            <td>
+                                    <label><b>Type</b></label>
+                            </td>
+                            <td>
+                                <label *ngFor="let item of productTypes" >
+                                    <input                                        
+                                        formControlName="type"                                        
+                                        name="type"
+                                        value={{item}}
+                                        type="radio"                                        
+                                    />
+                                    {{item}}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                </label> 
+                                
+                            </td>
+                        </tr>
   
                       <tr>
                           <td style="width: 150px">
@@ -905,6 +673,16 @@
                             <input formControlName="name" class="form-control" disabled>      
                         </td>
                       </tr>
+
+                      <tr>
+                            <td>
+                                    <label><b>Type</b></label>
+                            </td>
+                            <td>
+                                    <input formControlName="type" class="form-control" disabled>
+                                
+                            </td>
+                        </tr>
   
                       <tr>
                           <td style="width: 150px">

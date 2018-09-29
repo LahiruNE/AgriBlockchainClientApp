@@ -38,6 +38,11 @@ import { FarmerDashboardComponent } from './farmer-dashboard/farmer-dashboard.co
 import { ScanComponent } from './scan/scan.component';
 import { CertificationhomeComponent } from './certificationhome/certificationhome.component';
 
+import { SeedingComponent } from './seeding/seeding.component';
+import { WateringComponent } from './watering/watering.component';
+import { ManuringComponent } from './manuring/manuring.component';
+import { HarvestingComponent } from './harvesting/harvesting.component';
+
 const routes: Routes = [
   { path: '', component: HomeComponent },
   { path: 'Product', component: ProductComponent },
@@ -57,6 +62,10 @@ const routes: Routes = [
   { path: 'StakeholderRegister', component: RegisterstakeholderComponent },
   { path: 'ScanProduct', component: ScanComponent },
   { path: 'CertificationHome', component: CertificationhomeComponent },
+  { path: 'Seeding', component: SeedingComponent },
+  { path: 'Watering', component: WateringComponent },
+  { path: 'Manuring', component: ManuringComponent },
+  { path: 'Harvesting', component: HarvestingComponent },
   { path: '**', redirectTo: '' }
 ];
 

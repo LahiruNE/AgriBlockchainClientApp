@@ -26,6 +26,8 @@ import {Event} from './org.hyperledger.composer.system';
       activities: Activity[];
       phReadings: PHReading[];
       certificationBodyComments: string[];
+      status : PlotStatus;
+      ProductType : ProductType;
       farm: Farm;
    }
    export class Farm extends Asset {
@@ -45,6 +47,7 @@ import {Event} from './org.hyperledger.composer.system';
       manufactureDate: Date;
       expiryDate: Date;
       dateOfSale: Date;
+      type : ProductType;
       amount: number;
       price: number;
       activeChemicals: string[];
@@ -113,6 +116,13 @@ import {Event} from './org.hyperledger.composer.system';
       TOMATO,
       PINEAPPLE,
    }
+
+   export enum PlotStatus {
+      NEW,
+      HARVESTED,
+      SEEDED
+  }
+
    export enum DistType {
       F2P,
       P2W,

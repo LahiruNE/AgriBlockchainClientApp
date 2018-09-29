@@ -51,6 +51,10 @@ import { BsDatepickerModule } from 'ngx-bootstrap';
 import {Angular2PromiseButtonModule} from 'angular2-promise-buttons/dist';
 import { NgDatepickerModule } from 'ng2-datepicker';
 import Swal from 'sweetalert2';
+import { SeedingComponent } from './seeding/seeding.component';
+import { HarvestingComponent } from './harvesting/harvesting.component';
+import { WateringComponent } from './watering/watering.component';
+import { ManuringComponent } from './manuring/manuring.component';
 
   @NgModule({
   declarations: [
@@ -73,7 +77,11 @@ import Swal from 'sweetalert2';
     FarmerDashboardComponent,
     RegisterstakeholderComponent,
     ScanComponent,
-    CertificationhomeComponent
+    CertificationhomeComponent,
+    SeedingComponent,
+    HarvestingComponent,
+    WateringComponent,
+    ManuringComponent
   ],
   imports: [
     BrowserModule,

@@ -49,6 +49,7 @@ export class PlotComponent implements OnInit {
   phReadings = new FormControl('', Validators.required);
   certificationBodyComments = new FormControl('', Validators.required);
   farm = new FormControl('', Validators.required);
+  status = new FormControl('', Validators.required);
 
   closerPlotsN = new FormControl('');
   closerPlotsS = new FormControl('');
@@ -66,6 +67,7 @@ export class PlotComponent implements OnInit {
       phReadings: this.phReadings,
       certificationBodyComments: this.certificationBodyComments,
       farm: this.farm, 
+      status: this.status,
       closerPlotsN : this.closerPlotsN,
       closerPlotsS : this.closerPlotsS,
       closerPlotsE : this.closerPlotsE,
@@ -188,7 +190,8 @@ export class PlotComponent implements OnInit {
       'activities': [],
       'phReadings': [],
       'certificationBodyComments': [],
-      'farm': "resource:org.ucsc.agriblockchain.Farm#" + this.farm.value,
+      'status': 'NEW',
+      'farm': "resource:org.ucsc.agriblockchain.Farm#" + this.farm.value,      
     };
 
     return  this.toggleLoad = this.servicePlot.addAsset(this.asset)
@@ -238,6 +241,7 @@ export class PlotComponent implements OnInit {
       'activities': [],
       'phReadings': [],
       'certificationBodyComments': [],
+      'status' : this.status.value,
       'farm': "resource:org.ucsc.agriblockchain.Farm#" + this.farm.value,
     };
     return this.toggleLoad = this.servicePlot.updateAsset(form.get('plotId').value, this.asset)
@@ -306,6 +310,7 @@ export class PlotComponent implements OnInit {
         'phReadings': null,
         'certificationBodyComments': null,
         'farm': null,
+        'status': null,
         'closerPlotsN' : null,
         'closerPlotsS' : null,
         'closerPlotsE' : null,
@@ -369,6 +374,12 @@ export class PlotComponent implements OnInit {
         formObject.farm = null;
       }
 
+      if (result.status) {
+        formObject.status = result.status;
+      } else {
+        formObject.status = null;
+      }
+
       this.myForm.setValue(formObject);
 
     })
@@ -399,6 +410,7 @@ export class PlotComponent implements OnInit {
         'phReadings': null,
         'certificationBodyComments': null,
         'farm': null,
+        'status':null,
         'closerPlotsN' : null,
         'closerPlotsS' : null,
         'closerPlotsE' : null,
@@ -464,6 +476,12 @@ export class PlotComponent implements OnInit {
         formObject.farm = null;
       }
 
+      if (result.status) {
+        formObject.status = result.status;
+      } else {
+        formObject.status = null;
+      }
+
       this.myForm.setValue(formObject);
 
     })
@@ -490,6 +508,7 @@ export class PlotComponent implements OnInit {
       'phReadings': null,
       'certificationBodyComments': null,
       'farm': null,
+      'status': null,
       'closerPlotsN' : null,
       'closerPlotsS' : null,
       'closerPlotsE' : null,
