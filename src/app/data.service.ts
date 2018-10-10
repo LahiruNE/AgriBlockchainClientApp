@@ -128,4 +128,62 @@ export class DataService<Type> {
           .map(this.extractData)
           .catch(this.handleError);
     }
+
+    public getHistorianstakeholder(){
+        let ns = 'queries/getFromHistorian';
+        /* let user='resource%3Aorg.ucsc.agriblockchain.Stakeholder%23'+id; */
+        /* console.log(user) */
+        let user ='resource%3Aorg.hyperledger.composer.system.NetworkAdmin%23admin';
+        console.log(this.actionUrl + ns + '?' + 'Stakeholder='+ user);
+        return this.http.get(this.actionUrl + ns + '?' + 'Stakeholder='+ user)
+        .map(this.extractData)
+        .catch(this.handleError);
+
+    }
+    public getHistorianissueidentity(transactionId){
+        let ns = 'queries/getFromHistorianidentity';
+        let Id = transactionId;
+        console.log(this.actionUrl+ns +'?' + 'Id='+ Id);
+        return this.http.get(this.actionUrl +ns +'?' + 'Id='+ Id)
+        .map(this.extractData)
+        .catch(this.handleError);
+
+    }
+
+    public getHistorianaddparticipant(transactionId){
+        let ns = 'queries/getFromHistorianadd';
+        let Id = transactionId;
+        console.log(this.actionUrl+ns +'?' + 'Id='+ Id);
+        return this.http.get(this.actionUrl +ns +'?' + 'Id='+ Id)
+        .map(this.extractData)
+        .catch(this.handleError);
+
+    }
+    public getHistorianupdateparticipant(transactionId){
+        let ns = 'queries/getFromHistorianupdate';
+        let Id = transactionId;
+        console.log(this.actionUrl+ns +'?' + 'Id='+ Id);
+        return this.http.get(this.actionUrl +ns +'?' + 'Id='+ Id)
+        .map(this.extractData)
+        .catch(this.handleError);
+
+    }
+    public getHistorianaddasset(transactionId){
+        let ns = 'queries/getFromHistorianaddasset';
+        let Id = transactionId;
+        console.log(this.actionUrl+ns +'?' + 'Id='+ Id);
+        return this.http.get(this.actionUrl +ns +'?' + 'Id='+ Id)
+        .map(this.extractData)
+        .catch(this.handleError);
+
+    }
+    public getHistorianupdateasset(transactionId){
+        let ns = 'queries/getFromHistorianupdateasset';
+        let Id = transactionId;
+        console.log(this.actionUrl+ns +'?' + 'Id='+ Id);
+        return this.http.get(this.actionUrl +ns +'?' + 'Id='+ Id)
+        .map(this.extractData)
+        .catch(this.handleError);
+
+    }
 }

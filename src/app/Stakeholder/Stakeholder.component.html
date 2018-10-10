@@ -1,4 +1,4 @@
-<!--
+<!-- 
  Licensed under the Apache License, Version 2.0 (the "License");
  you may not use this file except in compliance with the License.
  You may obtain a copy of the License at
@@ -779,15 +779,14 @@
                           <div class="col-md-6">
                               <div class="form-group text-left">
                                   <label for="from">Start Date</label>
-                                  
-                                      <input formControlName="from" type="date" class="form-control">
+                                         <input formControlName="from" class="form-control" [minDate]="minDate" bsDatepicker [bsConfig]="bsConfig">
                                   
                                 </div>
     
                                 <div class="form-group text-left">
                                     <label for="to">End Date</label>
-                                    
-                                        <input formControlName="to" type="date" class="form-control">
+
+                                        <input formControlName="to" class="form-control" [minDate]="minDate" bsDatepicker [bsConfig]="bsConfig">
                                     
                                   </div>
                              
@@ -1545,6 +1544,182 @@
 </div>
   
   
+
+<div class="modal fade" id="viewHistoryModal" tabindex="-1" role="dialog" aria-labelledby="modalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h4 class="modal-title" id="addParticipantModalLabel">Historian Details</h4>
+        <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">×</span><span class="sr-only">Close</span></button>
+      </div>
+      <div class="modal-body">
+         <div *ngIf = "TypeofTransaction == 'IssueIdentity'" class="col-md-12">
+            <div *ngFor = "let dataelements of alldata" class="col-md-12">
+                <table  class="table table-striped">
+                    <tr>
+                      <td>Participant</td>
+                      <td>{{dataelements.participant}}</td>
+                    </tr>
+                    <tr>
+                        <td>IdentityName</td>
+                        <td>{{dataelements.identityName}}</td>
+                      </tr>
+ 
+                  </table>
+
+              </div>
+      
+         </div>
+
+         <div *ngIf = "TypeofTransaction == 'AddParticipant'" class="col-md-12">
+            <div *ngFor = "let dataelements of alldata" class="col-md-12">
+                <table  class="table table-striped">
+                  <tr>
+                    <td>StakeholderId</td>
+                    <td>{{dataelements.stakeholderId}}</td>
+                  </tr>
+                  <tr>
+                      <td>Name</td>
+                      <td>{{dataelements.name}}</td>
+                    </tr>
+                    <tr>
+                        <td>City</td>
+                        <td>{{dataelements.address.city}}</td>
+                      </tr>
+                      <tr>
+                          <td>CertificationNo</td>
+                          <td>{{dataelements.certification.certificationNo}}</td>
+                        </tr>
+                        <tr>
+                            <td>CertificationBody</td>
+                            <td>{{dataelements.certification.certificationBody}}</td>
+                          </tr>
+                          <tr>
+                              <td>From</td>
+                              <td>{{dataelements.certification.from}}</td>
+                            </tr>
+                            <tr>
+                                <td>To</td>
+                                <td>{{dataelements.certification.to}}</td>
+                              </tr>
+                              <tr>
+                                  <td>Telephone</td>
+                                  <td>{{dataelements.telephone}}</td>
+                          </tr>
+                          <tr>
+                            <td>Comments</td>
+                            <td>{{dataelements.comment}}</td>
+                        </tr>
+                        <tr>
+                          <td>Rating</td>
+                          <td>{{dataelements.rating}}</td>
+                        </tr>
+
+                </table>
+                
+              </div>
+      
+         </div>
+
+         <div *ngIf = "TypeofTransaction == 'UpdateParticipant'" class="col-md-12">
+            <div *ngFor = "let dataelements of alldata" class="col-md-12">
+                <table  class="table table-striped">
+                  <tr>
+                    <td>StakeholderId</td>
+                    <td>{{dataelements.stakeholderId}}</td>
+                  </tr>
+                  <tr>
+                      <td>Name</td>
+                      <td>{{dataelements.name}}</td>
+                    </tr>
+                    <tr>
+                        <td>City</td>
+                        <td>{{dataelements.address.city}}</td>
+                      </tr>
+                      <tr>
+                          <td>CertificationNo</td>
+                          <td>{{dataelements.certification.certificationNo}}</td>
+                        </tr>
+                        <tr>
+                            <td>CertificationBody</td>
+                            <td>{{dataelements.certification.certificationBody}}</td>
+                          </tr>
+                          <tr>
+                              <td>From</td>
+                              <td>{{dataelements.certification.from}}</td>
+                            </tr>
+                            <tr>
+                                <td>To</td>
+                                <td>{{dataelements.certification.to}}</td>
+                              </tr>
+                              <tr>
+                                  <td>Telephone</td>
+                                  <td>{{dataelements.telephone}}</td>
+                          </tr>
+                          <tr>
+                            <td>Comments</td>
+                            <td>{{dataelements.comment}}</td>
+                        </tr>
+                        <tr>
+                          <td>Rating</td>
+                          <td>{{dataelements.rating}}</td>
+                        </tr>
+
+                </table>
+                
+              </div>
+      
+         </div>
+
+         <div *ngIf = "TypeofTransaction == 'AddAsset'" class="col-md-12">
+          <div *ngFor = "let dataelements of alldata" class="col-md-12">
+              <table  class="table table-striped">
+                <tr>
+                  <td>ProductId</td>
+                  <td>{{dataelements.productId}}</td>
+                </tr>
+                <tr>
+                    <td>ProductType</td>
+                    <td>{{dataelements.productType}}</td>
+                  </tr>
+                  <tr>
+                      <td>pluckedDate</td>
+                      <td>{{dataelements.pluckedDate}}</td>
+                    </tr>
+                    <tr>
+                        <td>CertificationNo</td>
+                        <td>{{dataelements.certification.certificationNo}}</td>
+                      </tr>
+                      <tr>
+                          <td>CertificationBody</td>
+                          <td>{{dataelements.certification.certificationBody}}</td>
+                        </tr>
+                        <tr>
+                            <td>From</td>
+                            <td>{{dataelements.certification.from}}</td>
+                          </tr>
+                          <tr>
+                              <td>To</td>
+                              <td>{{dataelements.certification.to}}</td>
+                            </tr>
+                            <tr>
+                                <td>CurrentOwner</td>
+                                <td>{{dataelements.currentOwner}}</td>
+                        </tr>
+              </table>
+              
+            </div>
+    
+       </div>
+          
+ 
+
+
+
+    </div>
+  </div>
+</div>
+</div>
   
   
   
@@ -1577,7 +1752,7 @@
     <br>
     <div class="row">
       <div class="col-md-12">
-        <table id="table1" class="table-bordered table" style="width: 800px;box-shadow: 0px 0px 4px 3px #e0e0e0;">
+        <table id="table1" class="table-bordered table" style="margin: auto">
           <thead class="thead">
             <tr class="thead-cols">
               
@@ -1676,11 +1851,15 @@
 
                   <td class="participant-properties">{{participant.rating}}</td>
               
-              <td style="background-color: #fff !important">
-                  <button (click)="getForm(participant.stakeholderId);"  type="button" title="view" class="btn btn-update" data-toggle="modal" data-target="#requestform">
-                      <img src="../../assets/view.png">
+                <td style="background-color: #fff !important">
+                  <button (click)="getForm(participant.stakeholderId)"  type="button" title="view" class="btn btn-update" data-toggle="modal" data-target="#requestform">
+                      <img src="../../assets/view.png" >
                     </button>
-                    <button  (click)="getForm(participant.stakeholderId);" type="button" title="view" class="btn btn-update" data-toggle="modal" data-target="#addcomment">
+
+                   <!--  <button (click)="getForm(participant.stakeholderId);showDiv()"  type="button" title="view" class="log btn btn-update">
+                        <img src="../../assets/book.png" style="width: 20px;">
+                      </button> -->
+                    <button *ngIf = "loggingType == 'CERTIFICATION'" (click)="getForm(participant.stakeholderId);" type="button" title="view" class="btn btn-update" data-toggle="modal" data-target="#addcomment">
                       <img src="../../assets/comment.png" style="width: 20px;">
                     </button>
 
@@ -1711,10 +1890,58 @@
             </tr>
           </tbody>
         </table>
+        <br><br>
       </div>
       <div *ngIf = "allParticipants == ''" class="col-md-12">
-          <img src="../../assets/farmer1.png" style="width: 120px; height: 120px ;display: block; margin-left: auto; margin-right: auto; margin-top: 50px">
-          <div class="alert alert-warning" role="alert" style="text-align: center; margin-top: 30px; padding: 5px;"><h4>No Stakeholders available!</h4></div>
+          <img src="../../assets/farmer1.png" style="width: 120px; height: 120px ;display: block; margin-left: auto; margin-right: auto;">
+          <div class="alert alert-warning" role="alert" style="text-align: center; margin-top: 10px; padding: 5px;"><h4>No Stakeholders available!</h4></div>
       </div>
+      <br><br>
+      <div class="historianwrapper col-md-12">
+          <div class="col-md-9 row">
+              <img *ngIf = "alldata != ''" src="../../assets/search.png" style="width: 45px; height: 45px">&nbsp;&nbsp;&nbsp;
+              <h1 class="asset-title" id='assetName'> Stakeholder Historian</h1>
+          </div>
+          <div class="col-md-12">
+            <br><br>
+              <table class="table table-striped" id="detTbl">
+               <!--  <thead>
+                  <th><img src="../../assets/clock.png" width="20px" height="20px">  Timestamp</th>
+                  <th><img src="../../assets/tran.png" width="26px" height="28px">   Transaction Type</th>
+                </thead> -->
+                <tbody *ngFor="let participant of userHistorians AND let element of transactionHistorians" >
+                  
+                      <tr style="box-shadow: 0px 0px 1px 1px #ddd;">
+                          <td><img src="../../assets/clock.png" width="20px" height="20px"> 
+                              {{participant.transactionTimestamp}}
+                          </td>
+                          <td><!-- <img src="../../assets/tran.png" width="26px" height="28px"> -->
+                              {{element}}
+                          </td>
+                          <td>
+                            <a style="cursor: pointer" (click) = "userHis(participant.transactionInvoked)" data-toggle="modal" data-target="#viewHistoryModal">View More</a>
+                          </td><br>
+                          
+                        </tr>
+                        <tr >
+
+                        <img src="../../assets/arrow.png" width="30px" height="25px" style="margin-left: 100%">
+
+                        </tr> 
+                </tbody>
+                </table>
+          </div>
+      </div>
+
+      <br><br>
+      <div *ngIf = "alldata == ''" class="col-md-12">
+          <img src="../../assets/farmer1.png" style="width: 120px; height: 120px ;display: block; margin-left: auto; margin-right: auto; margin-top: 50px">
+          <div class="alert alert-warning" role="alert" style="text-align: center; margin-top: 30px; padding: 5px;"><h4>No Historian Data available!</h4></div>
+      </div>
+
+
+
+
+      
     </div>
   </div>

@@ -22,7 +22,9 @@ import { StakeholderService } from './Stakeholder.service';
 import 'rxjs/add/operator/toPromise';
 import { DataService } from '../data.service';
 import { Stakeholder } from '../org.ucsc.agriblockchain';
-
+import { BsDatepickerConfig } from 'ngx-bootstrap/datepicker';
+import { AddParticipant } from '../org.hyperledger.composer.system';
+import swal from 'sweetalert2';
 @Component({
   selector: 'app-stakeholder',
   templateUrl: './Stakeholder.component.html',
@@ -31,12 +33,22 @@ import { Stakeholder } from '../org.ucsc.agriblockchain';
 })
 export class StakeholderComponent implements OnInit {
 
+  minDate: Date;
+  colorTheme = 'theme-dark-blue';
+  bsConfig = Object.assign({}, { containerClass: this.colorTheme },{dateInputFormat: 'YYYY-MM-DD'});
+  
+
   myForm: FormGroup;
   maintype:String;
   loggingUser:string;
   loggingType: string;
+  loggingId: string;
   StakeholderType :String;
+  TypeofTransaction :String;
   private allParticipants;
+  private alldata;
+  private userHistorians;
+  private transactionHistorians;
   private Participants;
   private participant;
   private identity;
@@ -104,13 +116,15 @@ export class StakeholderComponent implements OnInit {
   console.log('logname'+this.loggingUser)
   this.loggingType = this.localStorageService.getFromLocal('currentUser').type;
   console.log(this.loggingType)
+  /* this.loggingId = this.localStorageService.getFromLocal('currentUser').stakeholderId;
+  console.log('logname'+this.loggingId) */
 
   /* $("select").change(function(){
     $("option:selected",this).text().trim().toLowerCase() == "Active" ? $(this).closest("tr").css("background-color","red") : $(this).closest("tr").css("background-color","green")
     
     })
    */
- 
+/* $('.historianwrapper').hide(); */
 $('#stage1').trigger('click');
 
  $(document).ready(function () {
@@ -157,7 +171,7 @@ $('#stage1').trigger('click');
     $('div.setup-panel div a.btn-primary').trigger('click');
 });
  
- 
+
 
     this.router.params.subscribe((params) => {
       this.StakeholderType = params['id']
@@ -191,7 +205,49 @@ $('#stage1').trigger('click');
       console.log( this.Participants)
     })
 
+   this.getStakeholder();
+    
+    
   }
+
+ /*  getStakeholder(id: any):Promise<any> {
+    const userHistorian = [];
+    console.log(id)
+    return this.dataService.getHistorianstakeholder(id)
+    .toPromise()
+    .then((stake) => {
+      stake.forEach(userhis =>{
+          userHistorian.push(userhis)
+      })
+      this.userHistorians = userHistorian;
+      console.log(this.userHistorians)
+      console.log('It works')
+    })
+    
+  } */
+
+  getStakeholder():Promise<any> {
+    const userHistorian = [];
+    const tranHistorian =[];
+    return this.dataService.getHistorianstakeholder()
+    .toPromise()
+    .then((stake) => {
+      stake.forEach(userhis =>{
+          let arr = userhis.transactionType.split(".");
+          let txType = arr[arr.length-1];
+          tranHistorian.push(txType)
+          userHistorian.push(userhis)
+      })
+      this.transactionHistorians = tranHistorian;
+      this.userHistorians = userHistorian;
+      console.log(this.userHistorians)
+      console.log(this.transactionHistorians)
+      let arr= this.userHistorians.concat(this.transactionHistorians);
+      console.log(arr)
+    })
+    
+  }
+
 
   loadAll(): Promise<any> {
     const tempList = [];
@@ -250,6 +306,83 @@ $('#stage1').trigger('click');
       console.log( this.allParticipants)
       
     })
+  }
+
+  userHis(asset){
+    var trantid = asset.split('#');
+    var trantype = asset.split('.')
+    const data = [];
+    
+    var transactiontype = trantype[trantype.length-1].split('#')
+    var tratype = transactiontype[0]
+    var transactionId = trantid[trantid.length-1]
+    this.TypeofTransaction = tratype;
+    console.log(tratype)
+    console.log(transactionId)
+    if(tratype == 'IssueIdentity'){
+      return this.dataService.getHistorianissueidentity(transactionId)
+    .toPromise()
+    .then((iden) => {
+      iden.forEach(datalist => {
+          data.push(datalist);
+          
+      });
+      this.alldata = data;
+      console.log(this.alldata)
+    })
+    }
+    if(tratype == 'AddParticipant'){
+      return this.dataService.getHistorianaddparticipant(transactionId)
+      .toPromise()
+      .then((iden) => {
+        iden.forEach(datalist => {
+            data.push(datalist.resources[0]);
+            
+        });
+        this.alldata = data;
+        console.log(this.alldata)
+      })
+    }
+    if(tratype == 'UpdateParticipant'){
+      return this.dataService.getHistorianupdateparticipant(transactionId)
+      .toPromise()
+      .then((iden) => {
+        iden.forEach(datalist => {
+            data.push(datalist.resources[0]);
+            
+        });
+        this.alldata = data;
+        console.log(this.alldata)
+      })
+    }
+    if(tratype == 'AddAsset'){
+      return this.dataService.getHistorianaddasset(transactionId)
+      .toPromise()
+      .then((iden) => {
+        iden.forEach(datalist => {
+            data.push(datalist.resources[0]);
+            
+        });
+        this.alldata = data;
+        console.log(this.alldata)
+      })
+    }
+    if(tratype == 'UpdateAsset'){
+      return this.dataService.getHistorianupdateasset(transactionId)
+      .toPromise()
+      .then((iden) => {
+        iden.forEach(datalist => {
+            data.push(datalist.resources[0]);
+            
+        });
+        this.alldata = data;
+        console.log(this.alldata)
+      })
+    }
+  }
+
+  showDiv(){
+    $('.historianwrapper').show();
   }
 
 	/**

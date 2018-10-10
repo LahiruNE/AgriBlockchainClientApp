@@ -773,7 +773,7 @@ export class FarmComponent implements OnInit {
         formObject.images = null;
       }
 
-      if (result.waterSources) {
+      if (result.waterSources) {        
         formObject.waterSourcesN = result.waterSources.North;
         formObject.waterSourcesS = result.waterSources.South;
         formObject.waterSourcesE = result.waterSources.East;
