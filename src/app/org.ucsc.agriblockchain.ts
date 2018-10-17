@@ -54,6 +54,7 @@ import {Event} from './org.hyperledger.composer.system';
       activeChemicals: string[];
       certification: Certification;
       currentOwner: Stakeholder;
+      productpath :Trace[];
       issuer: Stakeholder;
       parentProduct: Seed;
       divideStatus: DivideStatus; 

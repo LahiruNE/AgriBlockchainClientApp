@@ -186,4 +186,50 @@ export class DataService<Type> {
         .catch(this.handleError);
 
     }
+    public getHistorianactivity(transactionId){
+        let ns = 'queries/getFromHistorianactivity';
+        let Id = transactionId;
+        console.log(this.actionUrl+ns +'?' + 'Id='+ Id);
+        return this.http.get(this.actionUrl +ns +'?' + 'Id='+ Id)
+        .map(this.extractData)
+        .catch(this.handleError);
+
+    }
+    public getHistorianph(transactionId){
+        let ns = 'queries/getFromHistorianph';
+        let Id = transactionId;
+        console.log(this.actionUrl+ns +'?' + 'Id='+ Id);
+        return this.http.get(this.actionUrl +ns +'?' + 'Id='+ Id)
+        .map(this.extractData)
+        .catch(this.handleError);
+
+    }
+    public getHistoriantransfer(transactionId){
+        let ns = 'queries/getFromHistoriantransferpackage';
+        let Id = transactionId;
+        console.log(this.actionUrl+ns +'?' + 'Id='+ Id);
+        return this.http.get(this.actionUrl +ns +'?' + 'Id='+ Id)
+        .map(this.extractData)
+        .catch(this.handleError);
+
+    }
+    public getHistorianmerge(transactionId){
+        let ns = 'queries/getFromHistorianmergeasset';
+        let Id = transactionId;
+        console.log(this.actionUrl+ns +'?' + 'Id='+ Id);
+        return this.http.get(this.actionUrl +ns +'?' + 'Id='+ Id)
+        .map(this.extractData)
+        .catch(this.handleError);
+
+    }
+    public getHistoriandivide(transactionId){
+        let ns = 'queries/getFromHistoriandivideasset';
+        let Id = transactionId;
+        console.log(this.actionUrl+ns +'?' + 'Id='+ Id);
+        return this.http.get(this.actionUrl +ns +'?' + 'Id='+ Id)
+        .map(this.extractData)
+        .catch(this.handleError);
+
+    }
+ 
 }

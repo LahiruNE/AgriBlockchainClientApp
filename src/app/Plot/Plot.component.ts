@@ -35,6 +35,9 @@ export class PlotComponent implements OnInit {
   private asset;
   private currentId;
   private errorMessage;
+  private activity;
+  private ph;
+  private plotinfo;
   private availFarms = [];
   private certiicationComment = [];
   private toggleLoad;
@@ -120,6 +123,21 @@ export class PlotComponent implements OnInit {
         if (isValid)
             nextStepWizard.trigger('click');
     });
+  }
+
+  getPlotdata(plotid): Promise<any>{
+    const plotsdata = [];
+    return this.servicePlot.getAsset(plotid)
+    .toPromise()
+    .then((result) => {
+      this.activity = result.activities ;
+      this.ph = result.phReadings;
+      this.plotinfo = result;
+      console.log(this.plotinfo)
+      console.log(this.activity )
+      console.log(this.ph)
+    })
+    
   }
 
   loadAll(): Promise<any> {

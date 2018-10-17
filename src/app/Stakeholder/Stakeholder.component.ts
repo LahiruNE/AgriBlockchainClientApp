@@ -48,12 +48,16 @@ export class StakeholderComponent implements OnInit {
   private allParticipants;
   private alldata;
   private userHistorians;
+  private onlyaddasset;
+  private onlyactivities;
+  private onlytransfers;
   private transactionHistorians;
   private Participants;
   private participant;
   private identity;
   private currentId;
   private errorMessage;
+  private clas;
 
   stakeholderId = new FormControl('', Validators.required);
   name = new FormControl('', Validators.required);
@@ -229,6 +233,9 @@ $('#stage1').trigger('click');
   getStakeholder():Promise<any> {
     const userHistorian = [];
     const tranHistorian =[];
+    const addasset = [];
+    const onlyactivity = [];
+    const onlytransfer = [];
     return this.dataService.getHistorianstakeholder()
     .toPromise()
     .then((stake) => {
@@ -237,7 +244,24 @@ $('#stage1').trigger('click');
           let txType = arr[arr.length-1];
           tranHistorian.push(txType)
           userHistorian.push(userhis)
+          if(txType == 'AddAsset'){
+            addasset.push(userhis)
+          }
+          if(txType == 'Activity'){
+            onlyactivity.push(userhis)
+          }
+          if(txType == 'TransferPackage'){
+            
+            onlytransfer.push(userhis)
+          }
+          
       })
+      this.onlyaddasset = addasset;
+      console.log(this.onlyaddasset)
+      this.onlyactivities = onlyactivity;
+      console.log( this.onlyactivities)
+      this.onlytransfers = onlytransfer;
+      console.log( 'tranfers='+this.onlytransfers)
       this.transactionHistorians = tranHistorian;
       this.userHistorians = userHistorian;
       console.log(this.userHistorians)
@@ -313,6 +337,8 @@ $('#stage1').trigger('click');
     var trantype = asset.split('.')
     const data = [];
     
+    
+    
     var transactiontype = trantype[trantype.length-1].split('#')
     var tratype = transactiontype[0]
     var transactionId = trantid[trantid.length-1]
@@ -329,6 +355,7 @@ $('#stage1').trigger('click');
       });
       this.alldata = data;
       console.log(this.alldata)
+     
     })
     }
     if(tratype == 'AddParticipant'){
@@ -338,9 +365,11 @@ $('#stage1').trigger('click');
         iden.forEach(datalist => {
             data.push(datalist.resources[0]);
             
+            
         });
         this.alldata = data;
         console.log(this.alldata)
+        
       })
     }
     if(tratype == 'UpdateParticipant'){
@@ -353,6 +382,7 @@ $('#stage1').trigger('click');
         });
         this.alldata = data;
         console.log(this.alldata)
+        
       })
     }
     if(tratype == 'AddAsset'){
@@ -361,10 +391,12 @@ $('#stage1').trigger('click');
       .then((iden) => {
         iden.forEach(datalist => {
             data.push(datalist.resources[0]);
-            
+            this.clas = datalist.resources[0].$class 
         });
         this.alldata = data;
-        console.log(this.alldata)
+        console.log(this.onlyaddasset)
+        console.log('hel='+this.clas)
+        console.log('class='+this.clas)
       })
     }
     if(tratype == 'UpdateAsset'){
@@ -373,10 +405,50 @@ $('#stage1').trigger('click');
       .then((iden) => {
         iden.forEach(datalist => {
             data.push(datalist.resources[0]);
-            
+            this.clas = datalist.resources[0].$class 
         });
         this.alldata = data;
         console.log(this.alldata)
+        console.log('class='+this.clas)
+      })
+    }
+    if(tratype == 'Activity'){
+      return this.dataService.getHistorianactivity(transactionId)
+      .toPromise()
+      .then((iden) => {
+        iden.forEach(datalist => {
+            data.push(datalist);
+            this.clas = datalist.$class 
+        });
+        this.alldata = data;
+        console.log(this.alldata)
+        console.log('class='+this.clas)
+      })
+    }
+    if(tratype == 'TransferPackage'){
+      return this.dataService.getHistoriantransfer(transactionId)
+      .toPromise()
+      .then((iden) => {
+        iden.forEach(datalist => {
+            data.push(datalist);
+            this.clas = datalist.$class 
+        });
+        this.alldata = data;
+        console.log(this.alldata)
+        console.log('class='+this.clas)
+      })
+    }
+    if(tratype == 'PHReading'){
+      return this.dataService.getHistorianph(transactionId)
+      .toPromise()
+      .then((iden) => {
+        iden.forEach(datalist => {
+            data.push(datalist);
+            this.clas = datalist.$class 
+        });
+        this.alldata = data;
+        console.log(this.alldata)
+        console.log('class='+this.clas)
       })
     }
   }

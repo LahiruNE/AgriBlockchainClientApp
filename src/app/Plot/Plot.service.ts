@@ -46,5 +46,4 @@ export class PlotService {
   public deleteAsset(id: any): Observable<Plot> {
     return this.dataService.delete(this.NAMESPACE, id);
   }
-
 }

@@ -1558,7 +1558,7 @@
                 <table  class="table table-striped">
                     <tr>
                       <td>Participant</td>
-                      <td>{{dataelements.participant}}</td>
+                      <td>{{dataelements.participant.split('#')[1]}}</td>
                     </tr>
                     <tr>
                         <td>IdentityName</td>
@@ -1571,7 +1571,7 @@
       
          </div>
 
-         <div *ngIf = "TypeofTransaction == 'AddParticipant'" class="col-md-12">
+         <div *ngIf = "TypeofTransaction == 'AddParticipant' || clas == 'org.ucsc.agriblockchain.Stakeholder'" class="col-md-12">
             <div *ngFor = "let dataelements of alldata" class="col-md-12">
                 <table  class="table table-striped">
                   <tr>
@@ -1592,7 +1592,7 @@
                         </tr>
                         <tr>
                             <td>CertificationBody</td>
-                            <td>{{dataelements.certification.certificationBody}}</td>
+                            <td>{{dataelements.certification.certificationBody.split('#')[1]}}</td>
                           </tr>
                           <tr>
                               <td>From</td>
@@ -1621,7 +1621,7 @@
       
          </div>
 
-         <div *ngIf = "TypeofTransaction == 'UpdateParticipant'" class="col-md-12">
+         <div *ngIf = "TypeofTransaction == 'UpdateParticipant'|| clas == 'org.ucsc.agriblockchain.Stakeholder'" class="col-md-12">
             <div *ngFor = "let dataelements of alldata" class="col-md-12">
                 <table  class="table table-striped">
                   <tr>
@@ -1642,7 +1642,7 @@
                         </tr>
                         <tr>
                             <td>CertificationBody</td>
-                            <td>{{dataelements.certification.certificationBody}}</td>
+                            <td>{{dataelements.certification.certificationBody.split('#')[1]}}</td>
                           </tr>
                           <tr>
                               <td>From</td>
@@ -1671,7 +1671,7 @@
       
          </div>
 
-         <div *ngIf = "TypeofTransaction == 'AddAsset'" class="col-md-12">
+         <div *ngIf = "(clas == 'org.ucsc.agriblockchain.Product') && (TypeofTransaction == 'AddAsset')" class="col-md-12">
           <div *ngFor = "let dataelements of alldata" class="col-md-12">
               <table  class="table table-striped">
                 <tr>
@@ -1711,8 +1711,295 @@
             </div>
     
        </div>
-          
- 
+       <div *ngIf = "(clas == 'org.ucsc.agriblockchain.Seed') && (TypeofTransaction == 'UpdateAsset')" class="col-md-12">
+          <div *ngFor = "let dataelements of alldata" class="col-md-12">
+              <table  class="table table-striped">
+                <tr>
+                  <td>seedId</td>
+                  <td>{{dataelements.seedId}}</td>
+                </tr>
+                <tr>
+                    <td>Name</td>
+                    <td>{{dataelements.name}}</td>
+                  </tr>
+              </table>
+              
+            </div>
+    
+       </div> 
+       <div *ngIf = "(clas == 'org.ucsc.agriblockchain.Product') && (TypeofTransaction == 'UpdateAsset')" class="col-md-12">
+          <div *ngFor = "let dataelements of alldata" class="col-md-12">
+              <table  class="table table-striped">
+                <tr>
+                  <td>productId</td>
+                  <td>{{dataelements.productId}}</td>
+                </tr>
+                <tr>
+                    <td>Name</td>
+                    <td>{{dataelements.name}}</td>
+                  </tr>
+              </table>
+              
+            </div>
+    
+       </div> 
+       <div *ngIf = "(clas == 'org.ucsc.agriblockchain.Pesticide') && (TypeofTransaction == 'UpdateAsset')" class="col-md-12">
+          <div *ngFor = "let dataelements of alldata" class="col-md-12">
+              <table  class="table table-striped">
+                <tr>
+                  <td>pesticideId</td>
+                  <td>{{dataelements.pesticideId}}</td>
+                </tr>
+                <tr>
+                    <td>Name</td>
+                    <td>{{dataelements.name}}</td>
+                  </tr>
+              </table>
+              
+            </div>
+    
+       </div> 
+       <div *ngIf = "(clas == 'org.ucsc.agriblockchain.Fertilizer') && (TypeofTransaction == 'UpdateAsset')" class="col-md-12">
+          <div *ngFor = "let dataelements of alldata" class="col-md-12">
+              <table  class="table table-striped">
+                <tr>
+                  <td>fertilizerId</td>
+                  <td>{{dataelements.fertilizerId}}</td>
+                </tr>
+                <tr>
+                    <td>Name</td>
+                    <td>{{dataelements.name}}</td>
+                  </tr>
+              </table>
+              
+            </div>
+    
+       </div> 
+       <div *ngIf = "(clas == 'org.ucsc.agriblockchain.Farm') && (TypeofTransaction == 'UpdateAsset')" class="col-md-12">
+          <div *ngFor = "let dataelements of alldata" class="col-md-12">
+              <table  class="table table-striped">
+                <tr>
+                  <td>farmId</td>
+                  <td>{{dataelements.farmId}}</td>
+                </tr>
+                <tr>
+                    <td>FarmLocation</td>
+                    <td>{{dataelements.FarmLocation}}</td>
+                  </tr>
+                  <tr>
+                      <td>Owner</td>
+                      <td>{{dataelements.owner}}</td>
+                    </tr>
+              </table>
+              
+            </div>
+    
+       </div> 
+       
+       <div *ngIf = "(clas == 'org.ucsc.agriblockchain.Pesticide') && (TypeofTransaction == 'AddAsset')" class="col-md-12">
+          <div *ngFor = "let dataelements of alldata" class="col-md-12">
+              <table  class="table table-striped">
+                <tr>
+                  <td>pesticideId</td>
+                  <td>{{dataelements.pesticideId}}</td>
+                </tr>
+                <tr>
+                    <td>Name</td>
+                    <td>{{dataelements.name}}</td>
+                  </tr>
+                  <tr>
+                      <td>ManufactureDate</td>
+                      <td>{{dataelements.manufactureDate}}</td>
+                    </tr>
+                    <tr>
+                        <td>ExpiryDate</td>
+                        <td>{{dataelements.expiryDate}}</td>
+                      </tr>
+                      <tr>
+                          <td>DateOfSale</td>
+                          <td>{{dataelements.dateOfSale}}</td>
+                        </tr>
+                        <tr>
+                            <td>Amount</td>
+                            <td>{{dataelements.amount}}</td>
+                          </tr>
+                          <tr>
+                              <td>Price</td>
+                              <td>{{dataelements.price}}</td>
+                            </tr>
+                          
+              </table>
+              
+            </div>
+    
+       </div> 
+       <div *ngIf = "(clas == 'org.ucsc.agriblockchain.Fertilizer') && (TypeofTransaction == 'AddAsset')" class="col-md-12">
+          <div *ngFor = "let dataelements of alldata" class="col-md-12">
+              <table  class="table table-striped">
+                <tr>
+                  <td>fertilizerId</td>
+                  <td>{{dataelements.fertilizerId}}</td>
+                </tr>
+                <tr>
+                    <td>Name</td>
+                    <td>{{dataelements.name}}</td>
+                  </tr>
+                  <tr>
+                      <td>ManufactureDate</td>
+                      <td>{{dataelements.manufactureDate}}</td>
+                    </tr>
+                    <tr>
+                        <td>ExpiryDate</td>
+                        <td>{{dataelements.expiryDate}}</td>
+                      </tr>
+                      <tr>
+                          <td>DateOfSale</td>
+                          <td>{{dataelements.dateOfSale}}</td>
+                        </tr>
+                        <tr>
+                            <td>Amount</td>
+                            <td>{{dataelements.amount}}</td>
+                          </tr>
+                          <tr>
+                              <td>Price</td>
+                              <td>{{dataelements.price}}</td>
+                            </tr>
+                          
+              </table>
+              
+            </div>
+    
+       </div> 
+       <div *ngIf = "(clas == 'org.ucsc.agriblockchain.Farm') && (TypeofTransaction == 'AddAsset')" class="col-md-12">
+          <div *ngFor = "let dataelements of alldata" class="col-md-12">
+              <table  class="table table-striped">
+                <tr>
+                  <td>FarmId</td>
+                  <td>{{dataelements.farmId}}</td>
+                </tr>
+                <tr>
+                    <td>FarmLocation</td>
+                    <td>{{dataelements.FarmLocation}}</td>
+                  </tr>
+                  <tr>
+                      <td>Owner</td>
+                      <td>{{dataelements.owner}}</td>
+                    </tr>
+                    <tr>
+                        <td>CertificationNo</td>
+                        <td>{{dataelements.certification.certificationNo}}</td>
+                      </tr>
+                      <tr>
+                          <td>CertificationBody</td>
+                          <td>{{dataelements.certification.certificationBody.split('#')[1]}}</td>
+                        </tr>
+  
+              </table>
+              
+            </div>
+    
+       </div> 
+       <div *ngIf = "(clas == 'org.ucsc.agriblockchain.Seed') && (TypeofTransaction == 'AddAsset')" class="col-md-12">
+          <div *ngFor = "let dataelements of alldata" class="col-md-12">
+              <table  class="table table-striped">
+                <tr>
+                  <td>SeedId</td>
+                  <td>{{dataelements.seedId}}</td>
+                </tr>
+                <tr>
+                    <td>Name</td>
+                    <td>{{dataelements.name}}</td>
+                  </tr>
+                  <tr>
+                      <td>Type</td>
+                      <td>{{dataelements.type}}</td>
+                    </tr>
+                  <tr>
+                      <td>ManufactureDate</td>
+                      <td>{{dataelements.manufactureDate}}</td>
+                    </tr>
+                    <tr>
+                        <td>ExpiryDate</td>
+                        <td>{{dataelements.expiryDate}}</td>
+                      </tr>
+                      <tr>
+                          <td>DateOfSale</td>
+                          <td>{{dataelements.dateOfSale}}</td>
+                        </tr>
+                        <tr>
+                            <td>Amount</td>
+                            <td>{{dataelements.amount}}</td>
+                          </tr>
+                          <tr>
+                              <td>Price</td>
+                              <td>{{dataelements.price}}</td>
+                            </tr>
+  
+              </table>
+              
+            </div>
+    
+       </div> 
+       <div *ngIf = "(clas == 'org.ucsc.agriblockchain.Activity') && (TypeofTransaction == 'Activity')" class="col-md-12">
+          <div *ngFor = "let dataelements of alldata" class="col-md-12">
+              <table  class="table table-striped">
+                <tr>
+                  <td>plot</td>
+                  <td>{{dataelements.plot.split('#')[1]}}</td>
+                </tr>
+                <tr>
+                    <td>ActivityType</td>
+                    <td>{{dataelements.activitytype}}</td>
+                  </tr>
+                  <tr>
+                      <td>Time</td>
+                      <td>{{dataelements.time}}</td>
+                    </tr>
+                  
+  
+              </table>
+              
+            </div>
+    
+       </div> 
+       <div *ngIf = "clas == 'org.ucsc.agriblockchain.PHReading'" class="col-md-12">
+          <div *ngFor = "let dataelements of alldata" class="col-md-12">
+              <table  class="table table-striped">
+                <tr>
+                  <td>plot</td>
+                  <td>{{dataelements.plot.split('#')[1]}}</td>
+                </tr>
+                <tr>
+                    <td>PH Value</td>
+                    <td>{{dataelements.ph}}</td>
+                  </tr>
+                  <tr>
+                      <td>Time</td>
+                      <td>{{dataelements.readingTime}}</td>
+                    </tr>
+                  
+  
+              </table>
+              
+            </div>
+    
+       </div> 
+       <div *ngIf = "(clas == 'org.ucsc.agriblockchain.TransferPackage') && (TypeofTransaction == 'TransferPackage')" class="col-md-12">
+          <div *ngFor = "let dataelements of alldata" class="col-md-12">
+              <table  class="table table-striped">
+                <tr>
+                  <td>productId</td>
+                  <td>{{dataelements.product.split('#')[1]}}</td>
+                </tr>
+                <tr>
+                    <td>newOwner</td>
+                    <td>{{dataelements.newOwner.split('#')[1]}}</td>
+                  </tr>
+              </table>
+              
+            </div>
+    
+       </div> 
 
 
 
@@ -1893,55 +2180,180 @@
         <br><br>
       </div>
       <div *ngIf = "allParticipants == ''" class="col-md-12">
-          <img src="../../assets/farmer1.png" style="width: 120px; height: 120px ;display: block; margin-left: auto; margin-right: auto;">
+          <img src="../../assets/farmer1.png" style="width: 80px; height: 80px ;display: block; margin-left: auto; margin-right: auto;">
           <div class="alert alert-warning" role="alert" style="text-align: center; margin-top: 10px; padding: 5px;"><h4>No Stakeholders available!</h4></div>
       </div>
       <br><br>
-      <div class="historianwrapper col-md-12">
+
+      <div class="col-md-12" style="box-shadow: 0px 0px 6px 2px #ddd;">
+          <br>
           <div class="col-md-9 row">
               <img *ngIf = "alldata != ''" src="../../assets/search.png" style="width: 45px; height: 45px">&nbsp;&nbsp;&nbsp;
               <h1 class="asset-title" id='assetName'> Stakeholder Historian</h1>
           </div>
-          <div class="col-md-12">
-            <br><br>
-              <table class="table table-striped" id="detTbl">
-               <!--  <thead>
-                  <th><img src="../../assets/clock.png" width="20px" height="20px">  Timestamp</th>
-                  <th><img src="../../assets/tran.png" width="26px" height="28px">   Transaction Type</th>
-                </thead> -->
-                <tbody *ngFor="let participant of userHistorians AND let element of transactionHistorians" >
                   
-                      <tr style="box-shadow: 0px 0px 1px 1px #ddd;">
-                          <td><img src="../../assets/clock.png" width="20px" height="20px"> 
-                              {{participant.transactionTimestamp}}
-                          </td>
-                          <td><!-- <img src="../../assets/tran.png" width="26px" height="28px"> -->
-                              {{element}}
-                          </td>
-                          <td>
-                            <a style="cursor: pointer" (click) = "userHis(participant.transactionInvoked)" data-toggle="modal" data-target="#viewHistoryModal">View More</a>
-                          </td><br>
-                          
-                        </tr>
-                        <tr >
-
-                        <img src="../../assets/arrow.png" width="30px" height="25px" style="margin-left: 100%">
-
-                        </tr> 
-                </tbody>
-                </table>
-          </div>
-      </div>
-
+                  <!--our-quality-shadow-->
+                  <div class="clearfix"></div>
+                  <!-- <h1 class="heading1">Plot Historian</h1> -->
+                  <div class="tabbable-panel margin-tops4 ">
+                    <div class="tabbable-line">
+                      <ul class="nav nav-tabs tabtop  tabsetting">
+                        <li class="active"> <a href="#tab_default_1" data-toggle="tab"> All Activities </a> </li>
+                        <li> <a href="#tab_default_2" data-toggle="tab"> Add Assets</a> </li>
+                        <li> <a href="#tab_default_3" data-toggle="tab"> Farm Activities</a> </li>
+                        <li> <a href="#tab_default_4" data-toggle="tab"> Transfer Package</a> </li>
+                       
+                      </ul>
+                      <div class="tab-content margin-tops">
+                        <div class="tab-pane active fade in" id="tab_default_1">
+                          <div class="col-md-12">
+                              <div *ngIf ="userHistorians==''" class="alert alert-warning" role="alert" style="text-align: center; margin-top: 10px; padding: 5px;"><h4>No Activities available!</h4></div>
+                              <table class="table table-striped" id="detTbl">
+                                  <!--  <thead>
+                                     <th><img src="../../assets/clock.png" width="20px" height="20px">  Timestamp</th>
+                                     <th><img src="../../assets/tran.png" width="26px" height="28px">   Transaction Type</th>
+                                   </thead> -->
+                                   <tbody *ngFor="let participant of userHistorians" >
+                                     
+                                         <tr style="box-shadow: 0px 0px 1px 1px #ddd;">
+                                             <td><img src="../../assets/clock.png" width="20px" height="20px"> 
+                                                 {{participant.transactionTimestamp.split('T')[0]}}
+                                             </td>
+                                             <td><!-- <img src="../../assets/tran.png" width="26px" height="28px"> -->
+                                                 {{participant.transactionType.split('.')[4]}}
+                                             </td>
+                                             <td>
+                                               <a style="cursor: pointer" (click) = "userHis(participant.transactionInvoked)" data-toggle="modal" data-target="#viewHistoryModal">View More</a>
+                                             </td><br>
+                                             
+                                           </tr>
+                                           <tr >
+                   
+                                           <img src="../../assets/arrow.png" width="30px" height="25px" style="margin-left: 120%">
+                   
+                                           </tr> 
+                                           
+                                   </tbody>
+                                   
+                                      <div>
+                                          <img src="../../assets/3-dots.png" width="30px" height="25px" style="margin-left: 120%">
+                                      </div> 
+                                   
+                                   </table>
+                          </div>
+                        </div>
+                        <div class="tab-pane fade" id="tab_default_2">
+                          <div class="col-md-12">
+                              <div *ngIf ="onlyaddasset==''" class="alert alert-warning" role="alert" style="text-align: center; margin-top: 10px; padding: 5px;"><h4>No Add Assets available!</h4></div>
+                              <table class="table table-striped" id="detTbl">
+                                  <!--  <thead>
+                                     <th><img src="../../assets/clock.png" width="20px" height="20px">  Timestamp</th>
+                                     <th><img src="../../assets/tran.png" width="26px" height="28px">   Transaction Type</th>
+                                   </thead> -->
+                                   <tbody *ngFor="let el of onlyaddasset" >
+                                     
+                                         <tr style="box-shadow: 0px 0px 1px 1px #ddd;">
+                                             <td><img src="../../assets/clock.png" width="20px" height="20px"> 
+                                                 {{el.transactionTimestamp.split('T')[0]}}
+                                             </td>
+                                             <td><!-- <img src="../../assets/tran.png" width="26px" height="28px"> -->
+                                                 {{el.transactionType.split('.')[4]}}
+                                             </td>
+                                             <td>
+                                               <a style="cursor: pointer" (click) = "userHis(el.transactionInvoked)" data-toggle="modal" data-target="#viewHistoryModal">View More</a>
+                                             </td><br>
+                                             
+                                           </tr>
+                                           <tr >
+                   
+                                           <img src="../../assets/arrow.png" width="30px" height="25px" style="margin-left: 120%">
+                   
+                                           </tr> 
+                                   </tbody>
+                                   <div>
+                                      <img src="../../assets/3-dots.png" width="30px" height="25px" style="margin-left: 120%">
+                                  </div> 
+                                   </table>
+                           </div>
+                        </div>
+                        <div class="tab-pane fade" id="tab_default_3">
+                          <div class="col-md-12">
+                              <div *ngIf ="onlyactivities==''" class="alert alert-warning" role="alert" style="text-align: center; margin-top: 10px; padding: 5px;"><h4>No Farm Activities available!</h4></div>
+                              <table class="table table-striped" id="detTbl">
+                                  <!--  <thead>
+                                     <th><img src="../../assets/clock.png" width="20px" height="20px">  Timestamp</th>
+                                     <th><img src="../../assets/tran.png" width="26px" height="28px">   Transaction Type</th>
+                                   </thead> -->
+                                   <tbody *ngFor="let ele of onlyactivities" >
+                                     
+                                         <tr style="box-shadow: 0px 0px 1px 1px #ddd;">
+                                             <td><img src="../../assets/clock.png" width="20px" height="20px"> 
+                                                 {{ele.transactionTimestamp.split('T')[0]}}
+                                             </td>
+                                             <td><!-- <img src="../../assets/tran.png" width="26px" height="28px"> -->
+                                                 {{ele.transactionType.split('.')[3]}}
+                                             </td>
+                                             <td>
+                                               <a style="cursor: pointer" (click) = "userHis(ele.transactionInvoked)" data-toggle="modal" data-target="#viewHistoryModal">View More</a>
+                                             </td><br>
+                                             
+                                           </tr>
+                                           <tr >
+                   
+                                           <img src="../../assets/arrow.png" width="30px" height="25px" style="margin-left: 110%">
+                   
+                                           </tr> 
+                                   </tbody>
+                                   <div>
+                                      <img src="../../assets/3-dots.png" width="30px" height="25px" style="margin-left: 110%">
+                                  </div> 
+                                   </table>
+                                   </div>
+                        </div>
+                        <div class="tab-pane fade" id="tab_default_4">
+                            <div class="col-md-12">
+                                <div *ngIf ="onlytransfers==''" class="alert alert-warning" role="alert" style="text-align: center; margin-top: 10px; padding: 5px;"><h4>No Transfers available!</h4></div>
+                                <table class="table table-striped" id="detTbl">
+                                    <!--  <thead>
+                                       <th><img src="../../assets/clock.png" width="20px" height="20px">  Timestamp</th>
+                                       <th><img src="../../assets/tran.png" width="26px" height="28px">   Transaction Type</th>
+                                     </thead> -->
+                                     <tbody *ngFor="let ite of onlytransfers" >
+                                       
+                                           <tr style="box-shadow: 0px 0px 1px 1px #ddd;">
+                                               <td><img src="../../assets/clock.png" width="20px" height="20px"> 
+                                                   {{ite.transactionTimestamp.split('T')[0]}}
+                                               </td>
+                                               <td><!-- <img src="../../assets/tran.png" width="26px" height="28px"> -->
+                                                   {{ite.transactionType.split('.')[3]}}
+                                               </td>
+                                               <td>
+                                                 <a style="cursor: pointer" (click) = "userHis(ite.transactionInvoked)" data-toggle="modal" data-target="#viewHistoryModal">View More</a>
+                                               </td><br>
+                                               
+                                             </tr>
+                                             <tr >
+                     
+                                             <img src="../../assets/arrow.png" width="30px" height="25px" style="margin-left: 120%">
+                     
+                                             </tr> 
+                                     </tbody>
+                                     <div>
+                                        <img src="../../assets/3-dots.png" width="30px" height="25px" style="margin-left: 120%">
+                                    </div> 
+                                     </table>
+                                     </div>
+                          </div>
+                      </div>
+                    </div>
+                  </div>
+               
+        </div>
       <br><br>
       <div *ngIf = "alldata == ''" class="col-md-12">
           <img src="../../assets/farmer1.png" style="width: 120px; height: 120px ;display: block; margin-left: auto; margin-right: auto; margin-top: 50px">
           <div class="alert alert-warning" role="alert" style="text-align: center; margin-top: 30px; padding: 5px;"><h4>No Historian Data available!</h4></div>
       </div>
-
-
-
-
-      
     </div>
   </div>
+  <br><br>

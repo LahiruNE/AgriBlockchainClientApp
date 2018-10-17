@@ -542,12 +542,12 @@
                       </div>
                   </td>
   
-                <td>
+               <!--  <td>
                     <div class="requestwizard-step">
                         <a href="#view-2" type="button" class="btn btn-default btn-circle" disabled="disabled">2</a>
                         <p>Historian Details</p>
                     </div>
-                </td>                
+                </td>   -->              
         
               </tr>
             </table>
@@ -741,15 +741,15 @@
         <thead class="thead">
           <tr class="thead-cols">
             
-                <th class="info" style="min-width: 150px">Plot ID</th>
+                <th class="info" style="min-width: 80px">Plot ID</th>
             
-                <th class="info" style="min-width: 250px">Cultivation Start Date</th>
+                <th class="info" style="min-width: 220px">Cultivation Start Date</th>
             
                 <th class="info" style="min-width: 150px">Area Extent (m2)</th>
             
-                <th class="info" style="min-width: 250px">Farm</th>
+                <th class="info" style="min-width: 190px">Farm</th>
             
-              <th class="info-actions" style="min-width: 150px">Actions</th>
+              <th class="info-actions" style="min-width: 200px">Actions</th>
           </tr>
         </thead>
         <tbody>
@@ -768,6 +768,9 @@
                 <button  type="button" title="view" (click)="getFormForView(asset.plotId);" class="btn btn-update" data-toggle="modal" data-target="#viewAssetModal">
                     <img src="../../assets/view.png">
                   </button>
+                  <button (click)="getPlotdata(asset.plotId)"  type="button" title="view" class="log btn btn-update">
+                      <img src="../../assets/book.png" style="width: 20px;">
+                    </button>
 
               <button (click)="getForm(asset.plotId);" type="button" class="btn btn-update" data-toggle="modal" data-target="#updateAssetModal">
                   <svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
@@ -796,11 +799,98 @@
           </tr>
         </tbody>
       </table>
+      <br><br>
     </div>
-
+<br><br>
     <div *ngIf = "allAssets == ''" class="col-md-12">
         <img src="../../assets/007-sprout.png" style="display: block; margin-left: auto; margin-right: auto; margin-top: 50px">
         <div class="alert alert-warning" role="alert" style="text-align: center; margin-top: 30px; padding: 5px;"><h4>No plots available!</h4></div>
     </div>
+
+<div class="col-md-12" style="box-shadow: 0px 0px 6px 2px #ddd;">
+  <br>
+    <div class="col-md-9 row">
+        <img src="../../assets/search.png" style="width: 45px; height: 45px">&nbsp;&nbsp;&nbsp;
+        <h1 class="asset-title" id='assetName'> Plot Historian</h1>
+    </div>
+          
+          <!--our-quality-shadow-->
+          <div class="clearfix"></div>
+          <!-- <h1 class="heading1">Plot Historian</h1> -->
+          <div class="tabbable-panel margin-tops4 ">
+            <div class="tabbable-line">
+              <ul class="nav nav-tabs tabtop  tabsetting">
+                <li class="active"> <a href="#tab_default_1" data-toggle="tab"> Activities </a> </li>
+                <li> <a href="#tab_default_2" data-toggle="tab"> PH Readings</a> </li>
+                <li> <a href="#tab_default_3" data-toggle="tab"> Other Details</a> </li>
+               
+              </ul>
+              <div class="tab-content margin-tops">
+                <div class="tab-pane active fade in" id="tab_default_1">
+                  <div class="col-md-12">
+                      <div *ngIf ="activity==''" class="alert alert-warning" role="alert" style="text-align: center; margin-top: 10px; padding: 5px;"><h4>No Plot Activities available!</h4></div>
+                      <table *ngIf ="activity !=''"  class="table table-striped">
+                        <thead>
+                          <th>Timestamp</th>
+                          <th>Activity</th>
+                        </thead>
+                        <tbody>
+                            <tr *ngFor = 'let element of activity'>
+                                <td>{{element.timestamp.split('T')[0]}}</td>
+                                <td>{{element.activitytype}}</td>
+                               
+                              </tr>
+                        </tbody>
+                        </table>
+                  </div>
+                </div>
+                <div class="tab-pane fade" id="tab_default_2">
+                  <div class="col-md-12">
+                      <div *ngIf ="ph==''" class="alert alert-warning" role="alert" style="text-align: center; margin-top: 10px; padding: 5px;"><h4>No Ph Readings available!</h4></div>
+                      <table *ngIf ="ph !=''"  class="table">
+                          <thead>
+                            <th>ReadingTime</th>
+                            <th>PH Value</th>
+                          </thead>
+                          <tbody>
+                              <tr *ngFor = 'let element of ph' [ngClass]="{'color': (element.ph > 20 && element.ph < 50)}">
+                                  <td>{{element.timestamp}}</td>
+                                  <td>{{element.ph}}</td>
+                                 
+                                </tr>
+                          </tbody>
+                          </table>
+                   </div>
+                </div>
+                <div class="tab-pane fade" id="tab_default_3">
+                  <div class="col-md-12">
+                      <table class="table">
+                          <tbody>
+                              <tr>
+                                  <td>FarmLocation</td>
+                                  <td>{{plotinfo.farm.FarmLocation}}</td>
+                                </tr>
+                                <tr>
+                                    <td>Owner Name</td>
+                                    <td>{{plotinfo.farm.owner.name}}</td>
+                                  </tr>
+                                  <tr>
+                                      <td>Certification Body</td>
+                                      <td>{{plotinfo.farm.certification.certificationBody.name}}</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Company</td>
+                                        <td>{{plotinfo.farm.owner.company.name}}</td>
+                                      </tr>
+                          </tbody>
+                          </table>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+       
+</div>
   </div>
 </div>
+<br><br>

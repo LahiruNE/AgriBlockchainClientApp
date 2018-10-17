@@ -37,6 +37,8 @@ export class SeedComponent implements OnInit {
   private allAssets;
   private asset;
   private currentId;
+  private activity;
+  private seedpath;
   private errorMessage;
   private certificationImages = [];
   private availParticipants = [];
@@ -185,7 +187,16 @@ export class SeedComponent implements OnInit {
       }
     });
   }
-
+  getSeeddata(seedid): Promise<any>{
+    return this.serviceSeed.getAsset(seedid)
+    .toPromise()
+    .then((result) => {
+      this.seedpath = result.productpath;
+     console.log(this.seedpath)
+     
+    })
+    
+  }
   loadParticipants(): Promise<any>{
     const tempList = [];
     return this.serviceStakeholder.getAll()
