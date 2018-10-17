@@ -1,8 +1,8 @@
-<div class="modal fade" id="wateringModal" tabindex="-1" role="dialog" aria-labelledby="wateringModalLabel">
+<div class="modal fade" id="manuringModal" tabindex="-1" role="dialog" aria-labelledby="manuringModalLabel">
   <div class="modal-dialog modal-lg">
     <div class="modal-content">
       <div class="modal-header">
-          <h4 class="modal-title" id="addParticipantModalLabel">Wartering</h4>
+          <h4 class="modal-title" id="addParticipantModalLabel">Manuring</h4>
         <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">×</span><span class="sr-only">Close</span></button>
         
       </div>
@@ -14,8 +14,8 @@
             <tr>
                 <td>
                     <div class="requestwizard-step">
-                        <a id="water1" href="#water-1" type="button" class="btn btn-default btn-circle" disabled="disabled">1</a>
-                        <p>Watering</p>
+                        <a id="maure1" href="#manure-1" type="button" class="btn btn-default btn-circle" disabled="disabled">1</a>
+                        <p>Manuring</p>
                     </div>
                 </td>  
               
@@ -27,17 +27,71 @@
       <hr>
   
   <form [formGroup]="myForm">
-      <div class="row setup-content" id="water-1">
+      <div class="row setup-content" id="manure-1">
           <div class="col-xs-12">
             <div class="col-md-12">
                 <table id="detTbl">
+                    <tr>
+                        <td>
+                                <label><b>Manure Type</b></label>
+                        </td>
+                        <td>
+                            <label *ngFor="let item of manureTypes" >
+                                <input                                                                   
+                                    name="manureType"
+                                    value={{item}}
+                                    type="radio" 
+                                    (change)="setManure(item)"                                       
+                                />
+                                {{item}}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                            </label> 
+                            
+                        </td>
+                    </tr>
+
+                    <tr id="fertRow" style="display:none">
+                        <td style="width: 150px">
+                                <label ><b>Fertilizer</b></label>                        
+    
+                        </td>
+                        <td> 
+                            <select class="form-control input" formControlName="fertilizer" id="fertilizer">
+                                <option value = "">- Select -</option>
+                                <option *ngFor="let item of availFerti" value = {{item.fertilizerId}}>#{{ item.fertilizerId +" - "+item.name }}</option>
+                            </select> 
+                        </td>
+                      </tr>
+
+                      <tr id="pestRow" style="display:none">
+                          <td style="width: 150px">
+                                  <label ><b>Pesticide</b></label>                        
+      
+                          </td>
+                          <td> 
+                              <select class="form-control input" formControlName="pesticide" id="pesticide">
+                                  <option value = "">- Select -</option>
+                                  <option *ngFor="let item of availPest" value = {{item.pesticideId}}>#{{ item.pesticideId +" - "+item.name }}</option>
+                              </select> 
+                          </td>
+                        </tr>
+
+                        <tr>
+                            <td style="width: 150px">
+                                    <label><b>Amount</b></label>                        
+        
+                            </td>
+                            <td>
+                                <input formControlName="amount" class="form-control">      
+                            </td>
+                          </tr>
+
                     <tr>
                         <td style="width: 150px">
                                 <label><b>Date</b></label>                        
     
                         </td>
                         <td>
-                            <input formControlName="wateringDate" class="form-control" bsDatepicker [bsConfig]="{ dateInputFormat: 'YYYY-MM-DD' }">      
+                            <input formControlName="manuringDate" class="form-control" bsDatepicker [bsConfig]="{ dateInputFormat: 'YYYY-MM-DD' }">      
                         </td>
                       </tr>
 
@@ -47,7 +101,7 @@
       
                           </td>
                           <td>
-                              <timepicker formControlName="wateringTime"></timepicker>
+                              <timepicker formControlName="manuringTime"></timepicker>
                           </td>
                         </tr>
                 </table>
@@ -287,7 +341,7 @@
             <h5>Cultivated Date : {{plot.cultivationStartDate.toString().split('T')[0]}}</h5>
             <h5>Seeded Date : {{plot.seededDate.toString().split('T')[0]}}</h5>
             <a (click)="getFormForView(plot, 'view');" class="btn btn-primary" data-toggle="modal" data-target="#viewAssetModal" style="color: #fff;">View Details</a>
-            <br><a (click)="getFormForView(plot, 'water');" class="btn btn-primary" data-toggle="modal" data-target="#wateringModal" style="color: #fff;">Water</a>
+            <br><a (click)="getFormForView(plot, 'manure');" class="btn btn-primary" data-toggle="modal" data-target="#manuringModal" style="color: #fff;">Manure</a>
           </div>
         </div> 
         </ng-container>
@@ -299,4 +353,4 @@
   </div> 
 
 </div>
-</div>  
+</div> 

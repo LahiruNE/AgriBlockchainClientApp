@@ -7,12 +7,14 @@ import { LocalStorageService } from '../services/local-storage.service';
 import $ from 'jquery';
 import swal from 'sweetalert2';
 import { ActivityService } from '../Activity/Activity.service';
+import { FertilizerService } from '../Fertilizer/Fertilizer.service';
+import { PesticideService } from '../Pesticide/Pesticide.service';
 
 @Component({
   selector: 'app-manuring',
   templateUrl: './manuring.component.html',
   styleUrls: ['./manuring.component.css'],
-  providers: [PlotService, ActivityService]
+  providers: [PlotService, ActivityService, FertilizerService, PesticideService]
 })
 export class ManuringComponent implements OnInit {
 
@@ -24,7 +26,10 @@ export class ManuringComponent implements OnInit {
   private certificationComment = [];
   private toggleLoad;
   private asset;
-  private availSeeds = [];
+  private availFerti = [];
+  private availPest = [];
+  private manureTypes = ['Pesticide', 'Fertilizer'];
+  private manureType;
 
   plotId = new FormControl('', Validators.required);
   cultivationStartDate = new FormControl('', Validators.required);
@@ -42,10 +47,12 @@ export class ManuringComponent implements OnInit {
   closerPlotsS = new FormControl('');
   closerPlotsE = new FormControl('');
   closerPlotsW = new FormControl('');
-  wateringDate = new FormControl('');
-  wateringTime = new FormControl('');
-
-  constructor(private localStorageService: LocalStorageService, public servicePlot: PlotService, public serviceActivity: ActivityService, fb: FormBuilder) {
+  manuringDate = new FormControl('');
+  manuringTime = new FormControl('');
+  fertilizer = new FormControl('');
+  pesticide = new FormControl('');
+  
+  constructor(private localStorageService: LocalStorageService, public servicePlot: PlotService, public serviceActivity: ActivityService, public serviceFertilizer: FertilizerService, public servicePesticide: PesticideService, fb: FormBuilder) {
     this.myForm = fb.group({
       plotId: this.plotId,
       cultivationStartDate: this.cultivationStartDate,
@@ -63,13 +70,17 @@ export class ManuringComponent implements OnInit {
       closerPlotsS : this.closerPlotsS,
       closerPlotsE : this.closerPlotsE,
       closerPlotsW : this.closerPlotsW,
-      wateringDate : this.wateringDate,
-      wateringTime : this.wateringTime
+      manuringDate : this.manuringDate,
+      manuringTime : this.manuringTime,
+      fertilizer : this.fertilizer,
+      pesticide : this.pesticide
     });
   };
 
   ngOnInit() {
     this.loadPlots();
+    this.loadFertilizer();
+    this.loadPesticide();
 
     //setup wizard   
     var navListItems = $('div.setup-panel div a'),
@@ -110,7 +121,7 @@ export class ManuringComponent implements OnInit {
 
         if (isValid)
             nextStepWizard.trigger('click');
-    });
+    });    
   }
 
   loadPlots() {
@@ -148,12 +159,74 @@ export class ManuringComponent implements OnInit {
     });
   }
 
+  loadFertilizer() {
+    this.availFerti = [];
+
+    return this.serviceFertilizer.getAll()
+    .toPromise()
+    .then((fertilizer) => {
+      this.errorMessage = null;
+      fertilizer.forEach(asset => {
+        if(asset.amount > 0){
+            this.availFerti.push(asset);
+        }
+      });
+
+    })
+    .catch((error) => {
+      if (error === 'Server error') {
+        this.errorMessage = 'Could not connect to REST server. Please check your configuration details';
+      } else if (error === '404 - Not Found') {
+        this.errorMessage = '404 - Could not find API route. Please check your available APIs.';
+      } else {
+        this.errorMessage = error;
+      }
+    });
+
+  }
+
+  loadPesticide() {
+    this.availPest = [];
+
+    return this.servicePesticide.getAll()
+    .toPromise()
+    .then((pesticide) => {
+      this.errorMessage = null;
+      pesticide.forEach(asset => {
+        if(asset.amount > 0){
+            this.availPest.push(asset);
+        }
+      });
+
+    })
+    .catch((error) => {
+      if (error === 'Server error') {
+        this.errorMessage = 'Could not connect to REST server. Please check your configuration details';
+      } else if (error === '404 - Not Found') {
+        this.errorMessage = '404 - Could not find API route. Please check your available APIs.';
+      } else {
+        this.errorMessage = error;
+      }
+    });
+
+  }
+
+  loadFert(id) {
+    return this.serviceFertilizer.getAsset(id)
+    .toPromise()
+  }
+
+  loadPest(id) {
+    return this.servicePesticide.getAsset(id)
+    .toPromise()
+  }
+
   getFormForView(plot: Plot, type) {
     if(type == 'view'){
       $('#view1').click();
     }
     else{
-      $('#water1').click();
+      $('#maure1').click();
     }
 
     const formObject = {
@@ -173,8 +246,10 @@ export class ManuringComponent implements OnInit {
       'closerPlotsS' : null,
       'closerPlotsE' : null,
       'closerPlotsW' : null, 
-      'wateringDate' : null,
-      'wateringTime' : null
+      'manuringDate' : null,
+      'manuringTime' : null,
+      'fertilizer' : null,
+      'pesticide' : null
     };
 
     if (plot.plotId) {
@@ -262,29 +337,94 @@ export class ManuringComponent implements OnInit {
     $('.loader').show();
     $('.word').hide();
 
-    let date = new Date(this.wateringDate.value);
-    let time = new Date(this.wateringTime.value);
+    let date = new Date(this.manuringDate.value);
+    let time = new Date(this.manuringTime.value);
     
     let dateTime = new Date(date.getFullYear(), date.getMonth(), date.getDate(), time.getHours(), time.getMinutes(), time.getSeconds());
 
-    alert(dateTime);
     this.asset = {
       $class: 'org.ucsc.agriblockchain.Activity',
       'plot': "resource:org.ucsc.agriblockchain.Plot#" + this.plotId.value,
-      'activitytype': 'WATERING',
+      'activitytype': 'MANURING',
+      'amount': this.amount.value,
       'time': dateTime,
     };
 
+    if($('#fertilizer').val() != ""){
+      this.manureType = 'FERTILIZER';
+      this.asset.fertilizer = "resource:org.ucsc.agriblockchain.Fertilizer#" + this.fertilizer.value;
+    }
+    
+    if($('#pesticide').val() != ""){
+      this.manureType = 'PESTICIDE';
+      this.asset.pesticide = "resource:org.ucsc.agriblockchain.Pesticide#" + this.pesticide.value;
+    }
+    
     return this.toggleLoad = this.serviceActivity.addTransaction(this.asset)
     .toPromise()
+    .then(() => {  
+      let ret;
+      
+      if($('#fertilizer').val() != ""){
+        ret = this.loadFert(this.fertilizer.value); 
+      }
+      
+      if($('#pesticide').val() != ""){
+        ret = this.loadPest(this.pesticide.value); 
+      }
+      
+      return ret;
+    })
+    .then((manure)=>{      
+      let certi = {
+        $class: "org.ucsc.agriblockchain.Certification",
+        "certificationNo": manure.certification.certificationNo,
+        "certificationBody": "resource:org.ucsc.agriblockchain.Stakeholder#" + manure.certification.certificationBody.stakeholderId,
+        "from": manure.certification.from,
+        "to": manure.certification.to,
+        "images": manure.certification.images,
+      };
+
+      this.asset = {        
+        'name': manure.name,
+        'manufactureDate': manure.manufactureDate,
+        'expiryDate': manure.expiryDate,
+        'dateOfSale': manure.dateOfSale,
+        'amount': manure.amount - this.amount.value,
+        'price': manure.price,
+        'activeChemicals': manure.activeChemicals,
+        'certification': certi,
+        'currentOwner': "resource:org.ucsc.agriblockchain.Stakeholder#" + manure.currentOwner.stakeholderId,
+        'issuer': "resource:org.ucsc.agriblockchain.Stakeholder#" + manure.issuer.stakeholderId,
+        'divideStatus': manure.divideStatus,
+        'activeStatus': manure.activeStatus
+      };
+
+      if(manure.hasOwnProperty('parentProduct')) {                        
+        this.asset.parentProduct = manure.parentProduct;   
+      }
+
+      if($('#fertilizer').val() != ""){
+        this.asset.$class = 'org.ucsc.agriblockchain.Fertilizer';
+        return this.serviceFertilizer.updateAsset(manure.fertilizerId, this.asset)
+        .toPromise()
+      }
+      
+      if($('#pesticide').val() != ""){
+        this.asset.$class = 'org.ucsc.agriblockchain.Pesticide';
+        return this.servicePesticide.updateAsset(manure.pesticideId, this.asset)
+        .toPromise()
+      }      
+
+    })          
     .then(()=>{
       this.errorMessage = null;
       this.loadPlots();
 
-      $('#harvestingModal .close').trigger('click');
+      $('#manuringModal .close').trigger('click');
       swal(
         'Success!',
-        'Watering logged successfully!',
+        'Manuring logged successfully!',
         'success'
       )
       $('.loader').hide();
@@ -299,6 +439,19 @@ export class ManuringComponent implements OnInit {
         this.errorMessage = error;
       }
     }); 
+  }
+
+  setManure(ele) {
+    if(ele == "Fertilizer"){
+      $("#fertRow").show();
+      $("#pestRow").hide();
+      $('#pesticide').val('').change();
+    }
+    else if(ele == "Pesticide"){
+      $("#fertRow").hide();
+      $("#pestRow").show();
+      $('#fertilizer').val('').change();
+    }
   }
 
 }

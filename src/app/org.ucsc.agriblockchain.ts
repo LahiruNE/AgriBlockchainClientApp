@@ -212,6 +212,8 @@ import {Event} from './org.hyperledger.composer.system';
    export class Activity extends Transaction {
       plot: Plot;
       activitytype: ActivityType;
+      fertilizer: Fertilizer; 
+      pesticide: Pesticide;
       amount: number;
       time: Date;
    }

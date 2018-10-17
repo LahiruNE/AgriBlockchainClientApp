@@ -24,7 +24,6 @@ export class WateringComponent implements OnInit {
   private certificationComment = [];
   private toggleLoad;
   private asset;
-  private availSeeds = [];
 
   plotId = new FormControl('', Validators.required);
   cultivationStartDate = new FormControl('', Validators.required);
@@ -267,7 +266,6 @@ export class WateringComponent implements OnInit {
     
     let dateTime = new Date(date.getFullYear(), date.getMonth(), date.getDate(), time.getHours(), time.getMinutes(), time.getSeconds());
 
-    alert(dateTime);
     this.asset = {
       $class: 'org.ucsc.agriblockchain.Activity',
       'plot': "resource:org.ucsc.agriblockchain.Plot#" + this.plotId.value,
@@ -281,7 +279,7 @@ export class WateringComponent implements OnInit {
       this.errorMessage = null;
       this.loadPlots();
 
-      $('#harvestingModal .close').trigger('click');
+      $('#wateringModal .close').trigger('click');
       swal(
         'Success!',
         'Watering logged successfully!',
