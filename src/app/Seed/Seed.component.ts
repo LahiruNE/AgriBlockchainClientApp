@@ -68,6 +68,10 @@ export class SeedComponent implements OnInit {
   certiImages = new FormControl('');
   certiComments = new FormControl('');
 
+  parentProduct;
+  divideStatus;
+  activeStatus;
+
   constructor(public serviceSeed: SeedService, private fb: FormBuilder, public serviceStakeholder : StakeholderService) {
     this.myForm = fb.group({
       seedId: this.seedId,
@@ -88,7 +92,7 @@ export class SeedComponent implements OnInit {
       to : this.to,
       certImagesFormArr : fb.array([]),
       certiComments : this.certiComments,
-      chemFormArr : fb.array([])
+      chemFormArr : fb.array([]),
     });
 
     this.viewForm = fb.group({
@@ -280,7 +284,9 @@ export class SeedComponent implements OnInit {
       'activeChemicals': chemicals,
       'certification': certi,
       'currentOwner': "resource:org.ucsc.agriblockchain.Stakeholder#" + this.currentOwner.value,
-      'issuer': "resource:org.ucsc.agriblockchain.Stakeholder#" + this.issuer.value
+      'issuer': "resource:org.ucsc.agriblockchain.Stakeholder#" + this.issuer.value,
+      'divideStatus': 'ORIGINAL',
+      'activeStatus': 'ACTIVE'
     };
 
     return this.toggleLoad = this.serviceSeed.addAsset(this.asset)
@@ -312,6 +318,7 @@ export class SeedComponent implements OnInit {
     $('.loader').show();
     $('.word').hide();
 
+    let parent = "";
     let certImageArr = this.myForm.value['certImagesFormArr'];
     let certImages = [];
 
@@ -349,8 +356,14 @@ export class SeedComponent implements OnInit {
       'activeChemicals': chemicals,
       'certification': certi,
       'currentOwner': "resource:org.ucsc.agriblockchain.Stakeholder#" + this.currentOwner.value,
-      'issuer': "resource:org.ucsc.agriblockchain.Stakeholder#" + this.issuer.value
+      'issuer': "resource:org.ucsc.agriblockchain.Stakeholder#" + this.issuer.value,
+      'divideStatus': this.divideStatus,
+      'activeStatus': this.activeStatus,
     };
+
+    if(this.parentProduct != "") {                        
+      this.asset.parentProduct = this.parentProduct;   
+    }
 
     return this.toggleLoad = this.serviceSeed.updateAsset(form.get('seedId').value, this.asset)
     .toPromise()
@@ -428,7 +441,10 @@ export class SeedComponent implements OnInit {
         'to' : null,
         'certiComments' : null,
         'certImagesFormArr' : null,
-        'chemFormArr' : null
+        'chemFormArr' : null,
+        'parentProduct': null,
+        'divideStatus': null,
+        'activeStatus': null
       };
 
       if (result.seedId) {
@@ -536,7 +552,29 @@ export class SeedComponent implements OnInit {
         formObject.issuer = null;
       }
 
+      if (result.parentProduct) {
+        formObject.parentProduct = result.parentProduct;
+        this.parentProduct = result.parentProduct;
+      } else {
+        formObject.parentProduct = null;
+      }
+
+      if (result.divideStatus) {
+        formObject.divideStatus = result.divideStatus;
+        this.divideStatus = result.divideStatus;
+      } else {
+        formObject.divideStatus = null;
+      }
+
+      if (result.activeStatus) {
+        formObject.activeStatus = result.activeStatus;
+        this.activeStatus = result.activeStatus;
+      } else {
+        formObject.activeStatus = null;
+      }
+      
       this.myForm.setValue(formObject);
+
 
     })
     .catch((error) => {
@@ -591,19 +629,19 @@ export class SeedComponent implements OnInit {
       }
 
       if (result.manufactureDate) {
-        formObject.manufactureDate = result.manufactureDate.toString().split('T')[0];;
+        formObject.manufactureDate = result.manufactureDate.toString().split('T')[0];
       } else {
         formObject.manufactureDate = null;
       }
 
       if (result.expiryDate) {
-        formObject.expiryDate = result.expiryDate.toString().split('T')[0];;
+        formObject.expiryDate = result.expiryDate.toString().split('T')[0];
       } else {
         formObject.expiryDate = null;
       }
 
       if (result.dateOfSale) {
-        formObject.dateOfSale = result.dateOfSale.toString().split('T')[0];;
+        formObject.dateOfSale = result.dateOfSale.toString().split('T')[0];
       } else {
         formObject.dateOfSale = null;
       }

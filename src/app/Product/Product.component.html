@@ -12,705 +12,681 @@
  limitations under the License.
 -->
 <div class="modal fade" id="addAssetModal" tabindex="-1" role="dialog" aria-labelledby="addAssetModalLabel">
-  <div class="modal-dialog" role="document">
+  <div class="modal-dialog modal-lg">
     <div class="modal-content">
       <div class="modal-header">
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-        <h4 class="modal-title" id="addAssetModalLabel">Create asset</h4>
-          <p class="modal-intro">Enter the required values below.</p>
+          <h4 class="modal-title" id="addParticipantModalLabel">Add New Products</h4>
+        <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">×</span><span class="sr-only">Close</span></button>
+        
       </div>
+      <div class="modal-body">
+          <!-- Steps starts here -->
+      <div class="requestwizard">
+        <div class="requestwizard-row setup-panel">
+          <table id="tbl1" style="width: 100%">
+              <tr>
+                  <td>
+                      <div class="requestwizard-step">
+                          <a id="add1" href="#add-1" type="button" class="btn btn-default btn-circle" disabled="disabled">1</a>
+                          <p>Basic Information</p>
+                      </div>
+                  </td>
+
+                  <td>
+                      <div class="requestwizard-step">
+                          <a href="#add-2" type="button" class="btn btn-default btn-circle" disabled="disabled">2</a>
+                          <p>Certification Details</p>
+                      </div>
+                  </td>
+           
+        
+              </tr>
+          </table>
+          </div>
+      </div>
+      <hr>
+  
       <form [formGroup]="myForm">
-        <div class="modal-body">
-
-              <div class="form-group text-left">
-                <label for="productId">productId</label>
-                
-                  <input formControlName="productId" type="text" class="form-control">
-                
-              </div>
-            
+          <div class="row setup-content" id="add-1">
+              <div class="col-xs-12">
+                  <div class="col-md-12">
+                      <table id="detTbl">
+                          <tr>
+                            <td style="width: 150px">
+                                    <label ><b>Product ID</b></label>                        
+        
+                            </td>
+                            <td>
+                                <input formControlName="productId" class="form-control">  
+                              
+                            </td>
+                          </tr>
+        
+                          <tr>
+                              <td style="width: 150px">
+                                      <label><b>Plucked Date</b></label>                        
           
-
+                              </td>
+                              <td>
+                                  <input formControlName="pluckedDate" class="form-control" bsDatepicker [bsConfig]="{ dateInputFormat: 'YYYY-MM-DD' }">      
+                              </td>
+                            </tr>
+      
+                            <tr>
+                                  <td>
+                                          <label><b>Product Type</b></label>
+                                  </td>
+                                  <td>
+                                      <label *ngFor="let item of productTypes" >
+                                          <input                                        
+                                              formControlName="productType"                                        
+                                              name="productType"
+                                              value={{item}}
+                                              type="radio"                                        
+                                          />
+                                          {{item}}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                      </label> 
+                                      
+                                  </td>
+                              </tr>
+        
+                            <tr>
+                                <td style="width: 150px">
+                                        <label><b>Quantity</b></label>                        
             
-              <div class="form-group text-left">
-                <label for="pluckedDate">pluckedDate</label>
-                
-                  <input formControlName="pluckedDate" type="text" class="form-control">
-                
-              </div>
-            
+                                </td>
+                                <td>  
+                                  <div class="input-group mb-3">
+                                    <input formControlName="quantity" class="form-control">
+                                  </div>
+                                </td>
+                            </tr>
+      
+                            <tr>
+                              <td style="width: 150px">
+                                      <label><b>Unit</b></label>                        
           
-
-            
-              <div class="form-group text-left">
-                <label for="certification">certification</label>
-                
-                    <textarea formControlName="certification" class="form-control" rows="3"></textarea>
-                
+                              </td>
+                              <td>  
+                                <label *ngFor="let item of units" >
+                                  <input                                        
+                                      formControlName="unit"                                        
+                                      name="unit"
+                                      value={{item}}
+                                      type="radio"                                        
+                                  />
+                                  {{item}}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                              </label> 
+                              </td>
+                          </tr>
+      
+                          <tr>
+                            <td style="width: 150px">
+                                    <label><b>Plot</b></label>                        
+        
+                            </td>
+                            <td> 
+                              <select class="form-control input farmerSelect" formControlName="certificationBody">
+                                  <option value = "">- Select -</option>
+                                  <option *ngFor="let plot of availPlots" value = {{plot.plotId}}>{{ "#" + plot.plotId + " @ Farm #" + plot.farm.farmId + " - " + plot.farm.FarmLocation }}</option>
+                              </select>
+                          </td>
+                        </tr>
+        
+                        <tr>
+                            <td style="width: 150px">
+                                    <label><b>Owner</b></label>                        
+        
+                            </td>
+                            <td>  
+                                <select class="form-control input" formControlName="currentOwner">
+                                      <option value = "">- Select -</option>
+                                      <option *ngFor="let item of availParticipants" value = {{item.stakeholderId}}>{{ item.stakeholderId +" - "+item.name }}</option>
+                                  </select>
+                            </td>
+                        </tr>
+                          
+                        </table>                   
+    
+                    <button class="btn btn-primary nextBtn btn-lg pull-right" type="button" >Next</button>             
+                  </div>
               </div>
-            
+          </div>
           
-
-            
-              <label for="productType">productType</label>
-              <div class="checkbox">
-                
-                  <label>
-                    <input
-                      
-                        formControlName="productType"
-                      
-                      name="productType"
-                      value="CARROT"
-                      type="radio"
-                      
-                    />
-                    CARROT
-                  </label>
-                
-                  <label>
-                    <input
-                      
-                        formControlName="productType"
-                      
-                      name="productType"
-                      value="TOMATO"
-                      type="radio"
-                      
-                    />
-                    TOMATO
-                  </label>
-                
-                  <label>
-                    <input
-                      
-                        formControlName="productType"
-                      
-                      name="productType"
-                      value="PINEAPPLE"
-                      type="radio"
-                      
-                    />
-                    PINEAPPLE
-                  </label>
-                
-              </div>
-            
+          <div class="row setup-content" id="add-2">
+            <div class="col-xs-12">
+                <div class="col-md-12">
+                    <table id="detTbl">
+                        <tr>
+                          <td style="width: 150px">
+                                  <label for="certificationNo"><b>Certification No.</b></label>                        
+      
+                          </td>
+                          <td>
+                              <input formControlName="certificationNo" class="form-control">  
+                            
+                          </td>
+                        </tr>
+      
+                        <tr>
+                            <td style="width: 150px">
+                                    <label for="certificationBody"><b>Certification Body</b></label>                        
+        
+                            </td>
+                            <td> 
+                                <select class="form-control input farmerSelect" formControlName="certificationBody">
+                                    <option value = "">- Select -</option>
+                                    <option *ngFor="let cert of availCertification" value = {{cert.stakeholderId}}>{{ cert.stakeholderId +" - "+cert.name }}</option>
+                                </select>
+                            </td>
+                          </tr>
+      
+                          <tr>
+                              <td style="width: 150px">
+                                      <label for="from"><b>From</b></label>                        
           
-
-            
-              <div class="form-group text-left">
-                <label for="quantity">quantity</label>
-                
-                  <input formControlName="quantity" type="number" step='any' class="form-control">
-                
-              </div>
-            
+                              </td>
+                              <td>
+                                  <input formControlName="from" class="form-control" bsDatepicker [bsConfig]="{ dateInputFormat: 'YYYY-MM-DD' }">                                 
+                              </td>
+                          </tr>
+  
+                          <tr>
+                              <td style="width: 150px">
+                                      <label for="to"><b>To</b></label>                        
           
-
-            
-              <label for="unit">unit</label>
-              <div class="checkbox">
-                
-                  <label>
-                    <input
-                      
-                        formControlName="unit"
-                      
-                      name="unit"
-                      value="KG"
-                      type="radio"
-                      
-                    />
-                    KG
-                  </label>
-                
-                  <label>
-                    <input
-                      
-                        formControlName="unit"
-                      
-                      name="unit"
-                      value="G"
-                      type="radio"
-                      
-                    />
-                    G
-                  </label>
-                
-                  <label>
-                    <input
-                      
-                        formControlName="unit"
-                      
-                      name="unit"
-                      value="MT"
-                      type="radio"
-                      
-                    />
-                    MT
-                  </label>
-                
-                  <label>
-                    <input
-                      
-                        formControlName="unit"
-                      
-                      name="unit"
-                      value="L"
-                      type="radio"
-                      
-                    />
-                    L
-                  </label>
-                
-                  <label>
-                    <input
-                      
-                        formControlName="unit"
-                      
-                      name="unit"
-                      value="ML"
-                      type="radio"
-                      
-                    />
-                    ML
-                  </label>
-                
-                  <label>
-                    <input
-                      
-                        formControlName="unit"
-                      
-                      name="unit"
-                      value="ITEM"
-                      type="radio"
-                      
-                    />
-                    ITEM
-                  </label>
-                
-              </div>
-            
+                              </td>
+                              <td>
+                                  <input formControlName="to" class="form-control" bsDatepicker [bsConfig]="{ dateInputFormat: 'YYYY-MM-DD' }">  
+                                  
+                              </td>
+                          </tr>
+      
+                          <tr>
+                              <td style="width: 150px; border-top: 1px solid #bababc" colspan="2">
+                                      <label for="farmId"><b>Images</b></label> 
+                                      
+                                      <image-upload id="imageUpload" (removed)="onCertRemoved($event)" (change)="onCertChange($event)"></image-upload>
           
-
-            
-              <label for="divideStatus">divideStatus</label>
-              <div class="checkbox">
-                
-                  <label>
-                    <input
-                      
-                        formControlName="divideStatus"
-                      
-                      name="divideStatus"
-                      value="ORIGINAL"
-                      type="radio"
-                      
-                    />
-                    ORIGINAL
-                  </label>
-                
-                  <label>
-                    <input
-                      
-                        formControlName="divideStatus"
-                      
-                      name="divideStatus"
-                      value="DIVIDED"
-                      type="radio"
-                      
-                    />
-                    DIVIDED
-                  </label>
-                
-                  <label>
-                    <input
-                      
-                        formControlName="divideStatus"
-                      
-                      name="divideStatus"
-                      value="MERGED"
-                      type="radio"
-                      
-                    />
-                    MERGED
-                  </label>
-                
-              </div>
-            
-          
-
-            
-              <label for="activeStatus">activeStatus</label>
-              <div class="checkbox">
-                
-                  <label>
-                    <input
-                      
-                        formControlName="activeStatus"
-                      
-                      name="activeStatus"
-                      value="ACTIVE"
-                      type="radio"
-                      
-                    />
-                    ACTIVE
-                  </label>
-                
-                  <label>
-                    <input
-                      
-                        formControlName="activeStatus"
-                      
-                      name="activeStatus"
-                      value="CLOSED"
-                      type="radio"
-                      
-                    />
-                    CLOSED
-                  </label>
-                
-              </div>
-            
-          
-
-            
-              <div class="form-group text-left">
-                <label for="productpath">productpath</label>
-                
-                    <textarea formControlName="productpath" class="form-control" rows="3"></textarea>
-                
-              </div>
-            
-          
-
-            
-              <div class="form-group text-left">
-                <label for="plot">plot</label>
-                
-                    <textarea formControlName="plot" class="form-control" rows="3"></textarea>
-                
-              </div>
-            
-          
-
-            
-              <div class="form-group text-left">
-                <label for="parentProduct">parentProduct</label>
-                
-                    <textarea formControlName="parentProduct" class="form-control" rows="3"></textarea>
-                
-              </div>
-            
-          
-
-            
-              <div class="form-group text-left">
-                <label for="currentOwner">currentOwner</label>
-                
-                    <textarea formControlName="currentOwner" class="form-control" rows="3"></textarea>
-                
-              </div>
-            
-          
-
-            
-              <div class="form-group text-left">
-                <label for="issuer">issuer</label>
-                
-                    <textarea formControlName="issuer" class="form-control" rows="3"></textarea>
-                
-              </div>
-            
-          
-
-        </div>
-        <div class="modal-footer">
-            <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
-          <button (click)="addAsset(myForm);" type="submit" class="btn btn-success" data-dismiss="modal">Confirm</button>
-
-        </div>
+                              </td>
+                          </tr>
+                      </table>
+  
+                      <table style="float : right;">
+                        <tr>
+                          <td style="padding : 5px;">
+                            <button type="button" class="btn btn-default pull-right" data-dismiss="modal">Cancel</button>
+                          </td>
+                          <td style="padding : 5px;">
+                            <button [promiseBtn]="toggleLoad" (click)="addAsset(myForm)" type="submit" class="btn btn-success pull-right" ><div class="word">Submit</div><div class="loader" style="display:none"></div></button>
+                          </td>
+                        </tr>
+                      </table>
+                </div>
+            </div>
+        </div> 
+         
       </form>
+
+
+<!-- Form ends here -->
     </div>
   </div>
+</div>
 </div>
 
 
 
 
 <div class="modal fade" id="updateAssetModal" tabindex="-1" role="dialog" aria-labelledby="updateAssetModalLabel">
-  <div class="modal-dialog" role="document">
+  <div class="modal-dialog modal-lg">
     <div class="modal-content">
       <div class="modal-header">
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-        <h4 class="modal-title" id="updateAssetModalLabel">Update Asset</h4>
+          <h4 class="modal-title" id="addParticipantModalLabel">Update Product Details</h4>
+        <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">×</span><span class="sr-only">Close</span></button>
+        
       </div>
+      <div class="modal-body">
+          <!-- Steps starts here -->
+      <div class="requestwizard">
+        <div class="requestwizard-row setup-panel">
+          <table id="tbl1" style="width: 100%">
+              <tr>
+                  <td>
+                      <div class="requestwizard-step">
+                          <a id="update1" href="#update-1" type="button" class="btn btn-default btn-circle" disabled="disabled">1</a>
+                          <p>Basic Information</p>
+                      </div>
+                  </td>
+
+                  <td>
+                      <div class="requestwizard-step">
+                          <a href="#update-2" type="button" class="btn btn-default btn-circle" disabled="disabled">2</a>
+                          <p>Certification Details</p>
+                      </div>
+                  </td>
+           
+        
+              </tr>
+          </table>
+          </div>
+      </div>
+      <hr>
+  
       <form [formGroup]="myForm">
-        <div class="modal-body">
-
-
+          <div class="row setup-content" id="update-1">
+              <div class="col-xs-12">
+                  <div class="col-md-12">
+                      <table id="detTbl">
+                          <tr>
+                            <td style="width: 150px">
+                                    <label ><b>Product ID</b></label>                        
+        
+                            </td>
+                            <td>
+                                <input formControlName="productId" class="form-control" disabled>  
+                              
+                            </td>
+                          </tr>
+        
+                          <tr>
+                              <td style="width: 150px">
+                                      <label><b>Plucked Date</b></label>                        
           
-            <div class="form-group text-left">
-              <label for="productId">productId</label>
-              
-              
-                <input [ngModel]="productId" formControlName="productId" class="form-control" disabled="disabled">  
-              
-
-            </div>
+                              </td>
+                              <td>
+                                  <input formControlName="pluckedDate" class="form-control" bsDatepicker [bsConfig]="{ dateInputFormat: 'YYYY-MM-DD' }">      
+                              </td>
+                            </tr>
+      
+                            <tr>
+                                  <td>
+                                          <label><b>Product Type</b></label>
+                                  </td>
+                                  <td>
+                                      <label *ngFor="let item of productTypes" >
+                                          <input                                        
+                                              formControlName="productType"                                        
+                                              name="productType"
+                                              value={{item}}
+                                              type="radio"                                        
+                                          />
+                                          {{item}}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                      </label> 
+                                      
+                                  </td>
+                              </tr>
+        
+                            <tr>
+                                <td style="width: 150px">
+                                        <label><b>Quantity</b></label>                        
+            
+                                </td>
+                                <td>  
+                                  <div class="input-group mb-3">
+                                    <input formControlName="quantity" class="form-control">
+                                  </div>
+                                </td>
+                            </tr>
+      
+                            <tr>
+                              <td style="width: 150px">
+                                      <label><b>Unit</b></label>                        
           
-            <div class="form-group text-left">
-              <label for="pluckedDate">pluckedDate</label>
-              
-              
-                <input [ngModel]="pluckedDate"formControlName="pluckedDate" type="text" class="form-control">
-              
-
-            </div>
-          
-            <div class="form-group text-left">
-              <label for="certification">certification</label>
-              
-              
-                
-                  <textarea [ngModel]="certification" formControlName="certification" class="form-control" rows="3"></textarea>
-                
-              
-
-            </div>
-          
-            <div class="form-group text-left">
-              <label for="productType">productType</label>
-              
-              
-                
-                  <div class="row">
-                    <div class="col-xs-12 checkbox">
-                    
-                      <label>
-                        <input
+                              </td>
+                              <td>  
+                                <label *ngFor="let item of units" >
+                                  <input                                        
+                                      formControlName="unit"                                        
+                                      name="unit"
+                                      value={{item}}
+                                      type="radio"                                        
+                                  />
+                                  {{item}}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                              </label> 
+                              </td>
+                          </tr>
+      
+                          <tr>
+                            <td style="width: 150px">
+                                    <label><b>Plot</b></label>                        
+        
+                            </td>
+                            <td> 
+                              <select class="form-control input farmerSelect" formControlName="plot">
+                                  <option value = "">- Select -</option>
+                                  <option *ngFor="let plot of availPlots" value = {{plot.plotId}}>{{ "#" + plot.plotId + " @ Farm #" + plot.farm.farmId + " - " + plot.farm.FarmLocation }}</option>
+                              </select>
+                          </td>
+                        </tr>
+        
+                        <tr>
+                            <td style="width: 150px">
+                                    <label><b>Owner</b></label>                        
+        
+                            </td>
+                            <td>  
+                                <select class="form-control input" formControlName="currentOwner">
+                                      <option value = "">- Select -</option>
+                                      <option *ngFor="let item of availParticipants" value = {{item.stakeholderId}}>{{ item.stakeholderId +" - "+item.name }}</option>
+                                  </select>
+                            </td>
+                        </tr>
                           
-                            formControlName="productType"
-                            [ngModel]="productType"
-                          
-                          name="productType"
-                          value="CARROT"
-                          type="radio"
-                          
-                        />
-                        CARROT
-                      </label>
-                    
-                      <label>
-                        <input
-                          
-                            formControlName="productType"
-                            [ngModel]="productType"
-                          
-                          name="productType"
-                          value="TOMATO"
-                          type="radio"
-                          
-                        />
-                        TOMATO
-                      </label>
-                    
-                      <label>
-                        <input
-                          
-                            formControlName="productType"
-                            [ngModel]="productType"
-                          
-                          name="productType"
-                          value="PINEAPPLE"
-                          type="radio"
-                          
-                        />
-                        PINEAPPLE
-                      </label>
-                    
-                    </div>
+                        </table>                   
+    
+                    <button class="btn btn-primary nextBtn btn-lg pull-right" type="button" >Next</button>             
                   </div>
-                
-              
-
-            </div>
+              </div>
+          </div>
           
-            <div class="form-group text-left">
-              <label for="quantity">quantity</label>
-              
-              
-                <input [ngModel]="quantity" formControlName="quantity" type="number" step='any' class="form-control">
-              
-
-            </div>
+          <div class="row setup-content" id="update-2">
+            <div class="col-xs-12">
+                <div class="col-md-12">
+                    <table id="detTbl">
+                        <tr>
+                          <td style="width: 150px">
+                                  <label for="certificationNo"><b>Certification No.</b></label>                        
+      
+                          </td>
+                          <td>
+                              <input formControlName="certificationNo" class="form-control">  
+                            
+                          </td>
+                        </tr>
+      
+                        <tr>
+                            <td style="width: 150px">
+                                    <label for="certificationBody"><b>Certification Body</b></label>                        
+        
+                            </td>
+                            <td> 
+                                <select class="form-control input farmerSelect" formControlName="certificationBody">
+                                    <option value = "">- Select -</option>
+                                    <option *ngFor="let cert of availCertification" value = {{cert.stakeholderId}}>{{ cert.stakeholderId +" - "+cert.name }}</option>
+                                </select>
+                            </td>
+                          </tr>
+      
+                          <tr>
+                              <td style="width: 150px">
+                                      <label for="from"><b>From</b></label>                        
           
-            <div class="form-group text-left">
-              <label for="unit">unit</label>
-              
-              
-                
-                  <div class="row">
-                    <div class="col-xs-12 checkbox">
-                    
-                      <label>
-                        <input
-                          
-                            formControlName="unit"
-                            [ngModel]="unit"
-                          
-                          name="unit"
-                          value="KG"
-                          type="radio"
-                          
-                        />
-                        KG
-                      </label>
-                    
-                      <label>
-                        <input
-                          
-                            formControlName="unit"
-                            [ngModel]="unit"
-                          
-                          name="unit"
-                          value="G"
-                          type="radio"
-                          
-                        />
-                        G
-                      </label>
-                    
-                      <label>
-                        <input
-                          
-                            formControlName="unit"
-                            [ngModel]="unit"
-                          
-                          name="unit"
-                          value="MT"
-                          type="radio"
-                          
-                        />
-                        MT
-                      </label>
-                    
-                      <label>
-                        <input
-                          
-                            formControlName="unit"
-                            [ngModel]="unit"
-                          
-                          name="unit"
-                          value="L"
-                          type="radio"
-                          
-                        />
-                        L
-                      </label>
-                    
-                      <label>
-                        <input
-                          
-                            formControlName="unit"
-                            [ngModel]="unit"
-                          
-                          name="unit"
-                          value="ML"
-                          type="radio"
-                          
-                        />
-                        ML
-                      </label>
-                    
-                      <label>
-                        <input
-                          
-                            formControlName="unit"
-                            [ngModel]="unit"
-                          
-                          name="unit"
-                          value="ITEM"
-                          type="radio"
-                          
-                        />
-                        ITEM
-                      </label>
-                    
-                    </div>
-                  </div>
-                
-              
-
-            </div>
+                              </td>
+                              <td>
+                                  <input formControlName="from" class="form-control" bsDatepicker [bsConfig]="{ dateInputFormat: 'YYYY-MM-DD' }">                                 
+                              </td>
+                          </tr>
+  
+                          <tr>
+                              <td style="width: 150px">
+                                      <label for="to"><b>To</b></label>                        
           
-            <div class="form-group text-left">
-              <label for="divideStatus">divideStatus</label>
-              
-              
-                
-                  <div class="row">
-                    <div class="col-xs-12 checkbox">
-                    
-                      <label>
-                        <input
-                          
-                            formControlName="divideStatus"
-                            [ngModel]="divideStatus"
-                          
-                          name="divideStatus"
-                          value="ORIGINAL"
-                          type="radio"
-                          
-                        />
-                        ORIGINAL
-                      </label>
-                    
-                      <label>
-                        <input
-                          
-                            formControlName="divideStatus"
-                            [ngModel]="divideStatus"
-                          
-                          name="divideStatus"
-                          value="DIVIDED"
-                          type="radio"
-                          
-                        />
-                        DIVIDED
-                      </label>
-                    
-                      <label>
-                        <input
-                          
-                            formControlName="divideStatus"
-                            [ngModel]="divideStatus"
-                          
-                          name="divideStatus"
-                          value="MERGED"
-                          type="radio"
-                          
-                        />
-                        MERGED
-                      </label>
-                    
-                    </div>
-                  </div>
-                
-              
-
-            </div>
+                              </td>
+                              <td>
+                                  <input formControlName="to" class="form-control" bsDatepicker [bsConfig]="{ dateInputFormat: 'YYYY-MM-DD' }">  
+                                  
+                              </td>
+                          </tr>
+      
+                          <tr>
+                              <td style="width: 150px; border-top: 1px solid #bababc" colspan="2">
+                                      <label for="farmId"><b>Images</b></label> 
+                                      
+                                      <image-upload id="imageUpload" (removed)="onCertRemoved($event)" (change)="onCertChange($event)"></image-upload>
           
-            <div class="form-group text-left">
-              <label for="activeStatus">activeStatus</label>
-              
-              
-                
-                  <div class="row">
-                    <div class="col-xs-12 checkbox">
-                    
-                      <label>
-                        <input
-                          
-                            formControlName="activeStatus"
-                            [ngModel]="activeStatus"
-                          
-                          name="activeStatus"
-                          value="ACTIVE"
-                          type="radio"
-                          
-                        />
-                        ACTIVE
-                      </label>
-                    
-                      <label>
-                        <input
-                          
-                            formControlName="activeStatus"
-                            [ngModel]="activeStatus"
-                          
-                          name="activeStatus"
-                          value="CLOSED"
-                          type="radio"
-                          
-                        />
-                        CLOSED
-                      </label>
-                    
-                    </div>
-                  </div>
-                
-              
-
+                              </td>
+                          </tr>
+                      </table>
+  
+                      <table style="float : right;">
+                        <tr>
+                          <td style="padding : 5px;">
+                            <button type="button" class="btn btn-default pull-right" data-dismiss="modal">Cancel</button>
+                          </td>
+                          <td style="padding : 5px;">
+                            <button [promiseBtn]="toggleLoad" (click)="updateAsset(myForm)" type="submit" class="btn btn-success pull-right" ><div class="word">Submit</div><div class="loader" style="display:none"></div></button>
+                          </td>
+                        </tr>
+                      </table>
+                </div>
             </div>
-          
-            <div class="form-group text-left">
-              <label for="productpath">productpath</label>
-              
-              
-                
-                  <textarea [ngModel]="productpath" formControlName="productpath" class="form-control" rows="3"></textarea>
-                
-              
-
-            </div>
-          
-            <div class="form-group text-left">
-              <label for="plot">plot</label>
-              
-              
-                
-                  <textarea [ngModel]="plot" formControlName="plot" class="form-control" rows="3"></textarea>
-                
-              
-
-            </div>
-          
-            <div class="form-group text-left">
-              <label for="parentProduct">parentProduct</label>
-              
-              
-                
-                  <textarea [ngModel]="parentProduct" formControlName="parentProduct" class="form-control" rows="3"></textarea>
-                
-              
-
-            </div>
-          
-            <div class="form-group text-left">
-              <label for="currentOwner">currentOwner</label>
-              
-              
-                
-                  <textarea [ngModel]="currentOwner" formControlName="currentOwner" class="form-control" rows="3"></textarea>
-                
-              
-
-            </div>
-          
-            <div class="form-group text-left">
-              <label for="issuer">issuer</label>
-              
-              
-                
-                  <textarea [ngModel]="issuer" formControlName="issuer" class="form-control" rows="3"></textarea>
-                
-              
-
-            </div>
-          
-
-
-        </div>
-        <div class="modal-footer">
-          <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-          <button (click)="updateAsset(myForm)" type="submit" class="btn btn-success" data-dismiss="modal">Submit</button>
-        </div>
+        </div> 
+         
       </form>
+
+
+<!-- Form ends here -->
     </div>
   </div>
 </div>
+</div>
+
+<div class="modal fade" id="viewAssetModal" tabindex="-1" role="dialog" aria-labelledby="viewAssetModalLabel">
+    <div class="modal-dialog modal-lg">
+      <div class="modal-content">
+        <div class="modal-header">
+            <h4 class="modal-title" id="addParticipantModalLabel">Product Details</h4>
+          <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">×</span><span class="sr-only">Close</span></button>
+          
+        </div>
+        <div class="modal-body">
+            <!-- Steps starts here -->
+        <div class="requestwizard">
+          <div class="requestwizard-row setup-panel">
+            <table id="tbl1" style="width: 100%">
+              <tr>
+                  <td>
+                      <div class="requestwizard-step">
+                          <a id="view1" href="#view-1" type="button" class="btn btn-default btn-circle" disabled="disabled">1</a>
+                          <p>Basic Information</p>
+                      </div>
+                  </td>
+
+                  <td>
+                      <div class="requestwizard-step">
+                          <a href="#view-2" type="button" class="btn btn-default btn-circle" disabled="disabled">2</a>
+                          <p>Certification Details</p>
+                      </div>
+                  </td>
+  
+                <td>
+                    <div class="requestwizard-step">
+                        <a href="#view-4" type="button" class="btn btn-default btn-circle" disabled="disabled">4</a>
+                        <p>Historian Details</p>
+                    </div>
+                </td>                
+        
+              </tr>
+            </table>
+            </div>
+        </div>
+        <hr>
+    
+    <form [formGroup]="viewForm">
+        <div class="row setup-content" id="view-1">
+            <div class="col-xs-12">
+                <div class="col-md-12">
+                  <table id="detTbl">
+                    <tr>
+                      <td style="width: 150px">
+                              <label ><b>Product ID</b></label>                        
+  
+                      </td>
+                      <td>
+                          <input formControlName="productId" class="form-control" disabled>  
+                        
+                      </td>
+                    </tr>
+  
+                    <tr>
+                        <td style="width: 150px">
+                                <label><b>Plucked Date</b></label>                        
+    
+                        </td>
+                        <td>
+                            <input formControlName="pluckedDate" class="form-control" disabled>      
+                        </td>
+                      </tr>
+
+                      <tr>
+                            <td>
+                                    <label><b>Product Type</b></label>
+                            </td>
+                            <td>
+                                    <input formControlName="productType" class="form-control" disabled>
+                                
+                            </td>
+                        </tr>
+  
+                      <tr>
+                          <td style="width: 150px">
+                                  <label><b>Quantity</b></label>                        
+      
+                          </td>
+                          <td>  
+                            <div class="input-group mb-3">
+                              <input formControlName="quantity" class="form-control" disabled>
+                            </div>
+                          </td>
+                      </tr>
+
+                      <tr>
+                        <td style="width: 150px">
+                                <label><b>Unit</b></label>                        
+    
+                        </td>
+                        <td>  
+                            <input formControlName="unit" class="form-control"  disabled>
+                        </td>
+                    </tr>
+
+                    <tr>
+                      <td style="width: 150px">
+                              <label><b>Plot</b></label>                        
+  
+                      </td>
+                      <td>  
+                          <input formControlName="plot" class="form-control"  disabled>
+                      </td>
+                  </tr>
+  
+                     <tr>
+                        <td style="width: 150px;" >
+                                <label for="farmId"><b>Owner</b></label>                        
+    
+                        </td>
+                        <td>  
+                          <input formControlName="currentOwner" class="form-control"  disabled>
+                      </td>
+                    </tr>  
+                    
+                  </table>
+  
+                </div>
+            </div>
+        </div>
+        
+        <div class="row setup-content" id="view-2">
+          <div class="col-xs-12">
+              <div class="col-md-12">
+                  <table id="detTbl">
+                      <tr>
+                        <td style="width: 150px">
+                                <label for="certificationNo"><b>Certification No.</b></label>                        
+    
+                        </td>
+                        <td>
+                            <input formControlName="certificationNo" class="form-control" disabled="disabled">  
+                          
+                        </td>
+                      </tr>
+    
+                      <tr>
+                          <td style="width: 150px">
+                                  <label for="certificationBody"><b>Certification Body</b></label>                        
+      
+                          </td>
+                          <td>
+                              <input formControlName="certificationBody" class="form-control" disabled="disabled">  
+                            
+                          </td>
+                        </tr>
+    
+                        <tr>
+                            <td style="width: 150px">
+                                    <label for="from"><b>From</b></label>                        
+        
+                            </td>
+                            <td>
+                                <input formControlName="from" class="form-control" disabled="disabled">  
+                              
+                            </td>
+                        </tr>
+
+                        <tr>
+                            <td style="width: 150px">
+                                    <label for="to"><b>To</b></label>                        
+        
+                            </td>
+                            <td>
+                                <input formControlName="to" class="form-control" disabled="disabled">  
+                              
+                            </td>
+                        </tr>
+    
+                        <tr>
+                            <td style="width: 150px; border-top: 1px solid #bababc" colspan="2">
+                                    <label for="farmId"><b>Images</b></label> 
+                                    
+                                    <div *ngIf = "certificationImages.length != 0">
+                                        <carousel [interval]="false">
+                                            <slide *ngFor = "let image of certificationImages">
+                                                <img style="width: 150px !important" src="{{image}}" style="display: block; width: 100%;" />
+                                            </slide>
+                                        </carousel>
+                                    </div>
+
+                                    <div *ngIf = "certificationImages.length == 0" class="col-md-12">
+                                        <img src="../../assets/error.png" style="display: block; margin-left: auto; margin-right: auto; margin-top: 50px">
+                                        <div class="alert alert-warning" role="alert" style="text-align: center; margin-top: 30px; padding: 5px;"><h4>No images available!</h4></div>
+                                    </div>
+        
+                            </td>
+                        </tr>
+
+                        <tr>
+                            <td style="width: 150px; border-top: 1px solid #bababc" colspan="2">
+                                    <label for="farmId"><b>Comments</b></label>                                          
+                            </td>
+                        </tr>
+                        <tr>
+                          <td colspan="2">
+                              <ol>
+                                  <li *ngFor="let comment of certiicationComment" >{{comment}}</li>   
+                                </ol> 
+                          </td>
+                        </tr>
+                      </table>
+              </div>
+          </div>
+      </div> 
+
+      <div class="row setup-content" id="view-3">
+          <div class="col-xs-12">
+              <div class="col-md-12">
+                </div>
+          </div>
+      </div>
+    </form>
+  
+  
+  <!-- Form ends here -->
+      </div>
+    </div>
+  </div>
+  </div>
+
 
 
 
@@ -789,7 +765,7 @@
             
                 <td class="asset-properties">{{asset.productId}}</td>
             
-                <td class="asset-properties">{{asset.pluckedDate}}</td>
+                <td class="asset-properties">{{asset.pluckedDate.toString().split('T')[0]}}</td>
                         
                 <td class="asset-properties">{{asset.productType}}</td>
             
@@ -797,6 +773,10 @@
             
                        
             <td>
+                <button  type="button" title="view" (click)="getFormForView(asset.productId);" class="btn btn-update" data-toggle="modal" data-target="#viewAssetModal">
+                    <img src="../../assets/view.png">
+                  </button>
+
               <button (click)="getForm(asset.productId);" type="button" class="btn btn-update" data-toggle="modal" data-target="#updateAssetModal">
                   <svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
                   width="12.8px" height="12.8px" viewBox="0 0 30.7 30.7" style="enable-background:new 0 0 30.7 30.7;" xml:space="preserve">

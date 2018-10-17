@@ -1,3 +1,302 @@
-<p>
-  watering works!
-</p>
+<div class="modal fade" id="wateringModal" tabindex="-1" role="dialog" aria-labelledby="wateringModalLabel">
+    <div class="modal-dialog modal-lg">
+      <div class="modal-content">
+        <div class="modal-header">
+            <h4 class="modal-title" id="addParticipantModalLabel">Wartering</h4>
+          <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">×</span><span class="sr-only">Close</span></button>
+          
+        </div>
+        <div class="modal-body">
+            <!-- Steps starts here -->
+        <div class="requestwizard">
+          <div class="requestwizard-row setup-panel">
+            <table id="tbl1" style="width: 100%">
+              <tr>
+                  <td>
+                      <div class="requestwizard-step">
+                          <a id="water1" href="#water-1" type="button" class="btn btn-default btn-circle" disabled="disabled">1</a>
+                          <p>Watering</p>
+                      </div>
+                  </td>  
+                
+        
+              </tr>
+            </table>
+            </div>
+        </div>
+        <hr>
+    
+    <form [formGroup]="myForm">
+        <div class="row setup-content" id="water-1">
+            <div class="col-xs-12">
+              <div class="col-md-12">
+                  <table id="detTbl">
+                      <tr>
+                          <td style="width: 150px">
+                                  <label><b>Date</b></label>                        
+      
+                          </td>
+                          <td>
+                              <input formControlName="wateringDate" class="form-control" bsDatepicker [bsConfig]="{ dateInputFormat: 'YYYY-MM-DD' }">      
+                          </td>
+                        </tr>
+
+                        <tr>
+                            <td style="width: 150px">
+                                    <label><b>Time</b></label>                        
+        
+                            </td>
+                            <td>
+                                <timepicker formControlName="wateringTime"></timepicker>
+                            </td>
+                          </tr>
+                  </table>
+                  
+                  <table style="float : right;">
+                      <tr>
+                        <td style="padding : 5px;">
+                          <button type="button" class="btn btn-default pull-right" data-dismiss="modal">Cancel</button>
+                        </td>
+                        <td style="padding : 5px;">
+                          <button [promiseBtn]="toggleLoad" (click)="updateAsset(myForm)" type="submit" class="btn btn-success pull-right" ><div class="word">Log</div><div class="loader" style="display:none"></div></button>
+                        </td>
+                      </tr>
+                      
+                    </table>
+              </div>
+            </div>
+        </div>    
+        
+    </form>
+  
+  
+  <!-- Form ends here -->
+      </div>
+    </div>
+  </div>
+  </div>
+
+<div class="modal fade" id="viewAssetModal" tabindex="-1" role="dialog" aria-labelledby="viewAssetModalLabel">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+          <h4 class="modal-title" id="addParticipantModalLabel">View Plot Details</h4>
+        <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">×</span><span class="sr-only">Close</span></button>
+        
+      </div>
+      <div class="modal-body">
+          <!-- Steps starts here -->
+      <div class="requestwizard">
+        <div class="requestwizard-row setup-panel">
+          <table id="tbl1" style="width: 100%">
+            <tr>
+                <td>
+                    <div class="requestwizard-step">
+                        <a id="view1" href="#view-1" type="button" class="btn btn-default btn-circle" disabled="disabled">1</a>
+                        <p>Basic Information</p>
+                    </div>
+                </td>
+
+              <td>
+                  <div class="requestwizard-step">
+                      <a href="#view-2" type="button" class="btn btn-default btn-circle" disabled="disabled">2</a>
+                      <p>Historian Details</p>
+                  </div>
+              </td>   
+              
+              <td>
+                <div class="requestwizard-step">
+                    <a href="#view-3" type="button" class="btn btn-default btn-circle" disabled="disabled">3</a>
+                    <p>Seeding Details</p>
+                </div>
+            </td> 
+      
+            </tr>
+          </table>
+          </div>
+      </div>
+      <hr>
+  
+  <form [formGroup]="myForm">
+      <div class="row setup-content" id="view-1">
+          <div class="col-xs-12">
+              <div class="col-md-12">
+                <table id="detTbl">
+                  <tr>
+                    <td style="width: 150px">
+                            <label ><b>Plot ID</b></label>                        
+
+                    </td>
+                    <td>
+                        <input formControlName="plotId" class="form-control" disabled>  
+                      
+                    </td>
+                  </tr>
+
+                  <tr>
+                      <td style="width: 150px">
+                              <label><b>Cultivation Start Date</b></label>                        
+  
+                      </td>
+                      <td>
+                          <input formControlName="cultivationStartDate" class="form-control" disabled>      
+                      </td>
+                    </tr>                    
+
+                    <tr>
+                        <td style="width: 150px">
+                                <label><b>Extent</b></label>                        
+    
+                        </td>
+                        <td>  
+                          <div class="input-group mb-3">
+                            <input style="width: 94%" formControlName="extent" type="text" class="form-control" aria-label="Recipient's username" aria-describedby="basic-addon2" disabled>
+                            <div class="input-group-append" style="height: 43px !important;">
+                              <span class="input-group-text" id="basic-addon2"><h5>m<sup style="color : #000 !important">2</sup></h5></span>
+                            </div>
+                          </div>
+                        </td>
+                    </tr>
+
+                    <tr>
+                      <td style="width: 150px">
+                              <label><b>Farm</b></label>                        
+  
+                      </td>
+                      <td>  
+                          <input formControlName="farm" class="form-control"  disabled>
+                      </td>
+                  </tr>
+
+                    <tr>
+                        <td style="width: 150px; border-top: 1px solid #bababc" colspan="2">
+                                <label for="farmId"><b>Closer Plots</b></label>                        
+    
+                        </td>
+                    </tr>       
+
+                    <tr>
+                      <td colspan="2">
+                          <div class="col-md-12">  
+                              <table>
+                                  <tr>
+                                      <td><label>North</label></td>
+                                      <td><input formControlName="closerPlotsN" class="form-control" disabled>
+                                      </td>
+                                  </tr>
+                                  <tr>
+                                      <td><label>South</label></td>
+                                      <td><input formControlName="closerPlotsS" class="form-control" disabled></td>
+                                  </tr>
+                                  <tr>
+                                      <td><label>East</label></td>
+                                      <td><input formControlName="closerPlotsE" class="form-control" disabled></td>
+        
+  
+                                  </tr>
+                                  <tr>
+  
+                                      <td><label>West</label></td>
+                                      <td><input formControlName="closerPlotsW" class="form-control" disabled></td>
+                                  </tr>
+
+                                  
+                              
+                                </table>
+                          </div>
+
+                      </td>
+                    </tr>
+
+                    <tr>
+                        <td style="width: 150px; border-top: 1px solid #bababc" colspan="2">
+                                <label for="farmId"><b>Comments</b></label>                                          
+                        </td>
+                    </tr>
+                    <tr>
+                      <td colspan="2">
+                          <ol>
+                              <li *ngFor="let comment of certiicationComment" >{{comment}}</li>   
+                            </ol> 
+                      </td>
+                    </tr>
+                </table>
+
+                <button class="btn btn-primary nextBtn btn-lg pull-right" type="button" >Next</button>             
+              </div>
+          </div>
+      </div>
+
+      <div class="row setup-content" id="view-2">
+          <div class="col-xs-12">
+            <div class="col-md-12">
+            </div>
+          </div>
+      </div> 
+      
+      <div class="row setup-content" id="view-3">
+          <div class="col-xs-12">
+            <div class="col-md-12">
+                <table id="detTbl">
+                    <tr>
+                        <td style="width: 150px">
+                                <label><b>Seeded Date</b></label>                        
+    
+                        </td>
+                        <td>
+                            <input formControlName="seededDate" class="form-control" disabled>      
+                        </td>
+                    </tr>
+
+                  <tr>
+                    <td style="width: 150px">
+                            <label ><b>Cultivated Type</b></label>                        
+
+                    </td>
+                    <td>
+                        <input formControlName="cultivatedType" class="form-control" disabled>  
+                      
+                    </td>
+                  </tr>
+                </table>
+            </div>
+          </div>
+      </div> 
+  </form>
+
+
+<!-- Form ends here -->
+    </div>
+  </div>
+</div>
+</div>
+
+<div class="container">
+  <div class="jumbotron">
+    <h2 class="display-5">Seeded Plots</h2>
+    
+    <div *ngFor="let farm of farms">
+        <h4>Farm #{{farm}}</h4>
+        <div class="loop" style="margin-left:-12px !important">
+          <ng-container *ngIf="seededPlots[farm]?.length>0">
+          <div *ngFor="let plot of seededPlots[farm]" class="card" style="width: 18rem;">
+            <img src="../../assets/seeds.png">
+            <div class="card-body">
+              <h4 class="card-title">Plot #{{plot.plotId}}</h4>
+              <h5>Type : {{plot.cultivatedType}}</h5>
+              <h5>Cultivated Date : {{plot.cultivationStartDate.toString().split('T')[0]}}</h5>
+              <h5>Seeded Date : {{plot.seededDate.toString().split('T')[0]}}</h5>
+              <a (click)="getFormForView(plot, 'view');" class="btn btn-primary" data-toggle="modal" data-target="#viewAssetModal" style="color: #fff;">View Details</a>
+              <br><a (click)="getFormForView(plot, 'water');" class="btn btn-primary" data-toggle="modal" data-target="#wateringModal" style="color: #fff;">Water</a>
+            </div>
+          </div> 
+          </ng-container>
+
+          <div *ngIf="seededPlots[farm]?seededPlots[farm].length == 0 : true" class="col-md-12">
+              <div class="alert alert-warning" role="alert" style="text-align: center; margin-top: 30px; padding: 5px; width: 300px"><h4>No plots available for farm #{{farm}}!</h4></div>
+          </div>
+        </div>       
+    </div> 
+
+  </div>
+</div>  

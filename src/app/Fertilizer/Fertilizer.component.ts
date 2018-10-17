@@ -66,6 +66,10 @@ export class FertilizerComponent implements OnInit {
   certiImages = new FormControl('');
   certiComments = new FormControl('');
 
+  parentProduct;
+  divideStatus;
+  activeStatus;
+
   constructor(public serviceFertilizer: FertilizerService, private fb: FormBuilder, public serviceStakeholder : StakeholderService) {
     this.myForm = fb.group({
       fertilizerId: this.fertilizerId,
@@ -190,7 +194,7 @@ export class FertilizerComponent implements OnInit {
           this.availCertification.push(asset);
         }  
         
-        if(String(asset.type) == "PESTICIDE"){
+        if(String(asset.type) == "FERTILIZER"){
           this.availFertilizerProviders.push(asset);
         }  
 
@@ -274,7 +278,9 @@ export class FertilizerComponent implements OnInit {
       'activeChemicals': chemicals,
       'certification': certi,
       'currentOwner': "resource:org.ucsc.agriblockchain.Stakeholder#" + this.currentOwner.value,
-      'issuer': "resource:org.ucsc.agriblockchain.Stakeholder#" + this.issuer.value
+      'issuer': "resource:org.ucsc.agriblockchain.Stakeholder#" + this.issuer.value,
+      'divideStatus': 'ORIGINAL',
+      'activeStatus': 'ACTIVE'
     };
 
     return this.toggleLoad = this.serviceFertilizer.addAsset(this.asset)
@@ -341,8 +347,15 @@ export class FertilizerComponent implements OnInit {
       'activeChemicals': chemicals,
       'certification': certi,
       'currentOwner': "resource:org.ucsc.agriblockchain.Stakeholder#" + this.currentOwner.value,
-      'issuer': "resource:org.ucsc.agriblockchain.Stakeholder#" + this.issuer.value
+      'issuer': "resource:org.ucsc.agriblockchain.Stakeholder#" + this.issuer.value,
+      'divideStatus': this.divideStatus,
+      'activeStatus': this.activeStatus,
     };
+
+    if(this.parentProduct != "") {                        
+      this.asset.parentProduct = this.parentProduct;   
+    }
+
 
     return this.toggleLoad = this.serviceFertilizer.updateAsset(form.get('fertilizerId').value, this.asset)
     .toPromise()
@@ -419,7 +432,10 @@ export class FertilizerComponent implements OnInit {
         'to' : null,
         'certiComments' : null,
         'certImagesFormArr' : null,
-        'chemFormArr' : null
+        'chemFormArr' : null,
+        'parentProduct': null,
+        'divideStatus': null,
+        'activeStatus': null
       };
 
       if (result.fertilizerId) {
@@ -519,6 +535,27 @@ export class FertilizerComponent implements OnInit {
         formObject.issuer = result.issuer.stakeholderId;
       } else {
         formObject.issuer = null;
+      }
+
+      if (result.parentProduct) {
+        formObject.parentProduct = result.parentProduct;
+        this.parentProduct = result.parentProduct;
+      } else {
+        formObject.parentProduct = null;
+      }
+
+      if (result.divideStatus) {
+        formObject.divideStatus = result.divideStatus;
+        this.divideStatus = result.divideStatus;
+      } else {
+        formObject.divideStatus = null;
+      }
+
+      if (result.activeStatus) {
+        formObject.activeStatus = result.activeStatus;
+        this.activeStatus = result.activeStatus;
+      } else {
+        formObject.activeStatus = null;
       }
 
       this.myForm.setValue(formObject);

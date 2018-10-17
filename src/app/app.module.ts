@@ -43,11 +43,10 @@ import { AdminComponent } from './admin/admin.component';
 import { FarmerDashboardComponent } from './farmer-dashboard/farmer-dashboard.component';
 import { RegisterstakeholderComponent } from './registerstakeholder/registerstakeholder.component';
 import { ScanComponent } from './scan/scan.component';
-import { CarouselModule } from 'ngx-bootstrap';
+import { CarouselModule, BsDatepickerModule, TimepickerModule } from 'ngx-bootstrap';
 import { CertificationhomeComponent } from './certificationhome/certificationhome.component';
 import { ImageUploadModule } from "angular2-image-upload";
 import { Ng4FilesModule } from 'angular4-files-upload';
-import { BsDatepickerModule } from 'ngx-bootstrap';
 import {Angular2PromiseButtonModule} from 'angular2-promise-buttons/dist';
 import { NgDatepickerModule } from 'ng2-datepicker';
 import Swal from 'sweetalert2';
@@ -100,7 +99,8 @@ import { ManuringComponent } from './manuring/manuring.component';
       btnLoadingClass: 'is-loading',
       handleCurrentBtnOnly: false,
     }),
-    NgDatepickerModule
+    NgDatepickerModule,
+    TimepickerModule.forRoot()
   ],
   providers: [
     DataService,

@@ -65,6 +65,10 @@ export class PesticideComponent implements OnInit {
   to = new FormControl('');
   certiImages = new FormControl('');
   certiComments = new FormControl('');
+  
+  parentProduct;
+  divideStatus;
+  activeStatus;
 
   constructor(public servicePesticide: PesticideService, private fb: FormBuilder, public serviceStakeholder : StakeholderService) {
     this.myForm = fb.group({
@@ -274,7 +278,9 @@ export class PesticideComponent implements OnInit {
       'activeChemicals': chemicals,
       'certification': certi,
       'currentOwner': "resource:org.ucsc.agriblockchain.Stakeholder#" + this.currentOwner.value,
-      'issuer': "resource:org.ucsc.agriblockchain.Stakeholder#" + this.issuer.value
+      'issuer': "resource:org.ucsc.agriblockchain.Stakeholder#" + this.issuer.value,
+      'divideStatus': 'ORIGINAL',
+      'activeStatus': 'ACTIVE'
     };
 
     return this.toggleLoad = this.servicePesticide.addAsset(this.asset)
@@ -342,8 +348,15 @@ export class PesticideComponent implements OnInit {
       'activeChemicals': chemicals,
       'certification': certi,
       'currentOwner': "resource:org.ucsc.agriblockchain.Stakeholder#" + this.currentOwner.value,
-      'issuer': "resource:org.ucsc.agriblockchain.Stakeholder#" + this.issuer.value
+      'issuer': "resource:org.ucsc.agriblockchain.Stakeholder#" + this.issuer.value,
+      'divideStatus': this.divideStatus,
+      'activeStatus': this.activeStatus,
     };
+
+    if(this.parentProduct != "") {                        
+      this.asset.parentProduct = this.parentProduct;   
+    }
+
 
     return this.toggleLoad = this.servicePesticide.updateAsset(form.get('pesticideId').value, this.asset)
     .toPromise()
@@ -420,7 +433,10 @@ export class PesticideComponent implements OnInit {
         'to' : null,
         'certiComments' : null,
         'certImagesFormArr' : null,
-        'chemFormArr' : null
+        'chemFormArr' : null,
+        'parentProduct': null,
+        'divideStatus': null,
+        'activeStatus': null
       };
 
       if (result.pesticideId) {
@@ -522,6 +538,27 @@ export class PesticideComponent implements OnInit {
         formObject.issuer = null;
       }
 
+      if (result.parentProduct) {
+        formObject.parentProduct = result.parentProduct;
+        this.parentProduct = result.parentProduct;
+      } else {
+        formObject.parentProduct = null;
+      }
+
+      if (result.divideStatus) {
+        formObject.divideStatus = result.divideStatus;
+        this.divideStatus = result.divideStatus;
+      } else {
+        formObject.divideStatus = null;
+      }
+
+      if (result.activeStatus) {
+        formObject.activeStatus = result.activeStatus;
+        this.activeStatus = result.activeStatus;
+      } else {
+        formObject.activeStatus = null;
+      }
+      
       this.myForm.setValue(formObject);
 
     })

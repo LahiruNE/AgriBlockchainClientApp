@@ -13,40 +13,65 @@
  */
 
 import { Component, OnInit, Input } from '@angular/core';
-import { FormGroup, FormControl, Validators, FormBuilder } from '@angular/forms';
 import { ProductService } from './Product.service';
 import 'rxjs/add/operator/toPromise';
+import { FormGroup, FormControl, Validators, FormBuilder, FormArray } from '@angular/forms';
+import 'rxjs/add/operator/toPromise';
+import $ from 'jquery';
+import { StakeholderService } from '../Stakeholder/Stakeholder.service';
+import { FileHolder } from 'angular2-image-upload';
+import swal from 'sweetalert2';
+import { PlotService } from '../Plot/Plot.service';
 
 @Component({
   selector: 'app-product',
   templateUrl: './Product.component.html',
   styleUrls: ['./Product.component.css'],
-  providers: [ProductService]
+  providers: [ProductService, StakeholderService, PlotService]
 })
 export class ProductComponent implements OnInit {
 
   myForm: FormGroup;
+  viewForm: FormGroup;
+  certImagesFormArr: FormArray;
 
   private allAssets;
   private asset;
   private currentId;
   private errorMessage;
+  private certificationImages = [];
+  private availParticipants = [];
+  private availCertification = [];
+  private availPlots = [];
+  private uploadCertImages = [];
+  private toggleLoad;
+  private certiicationComment = [];
+  private productTypes = ['CARROT', 'TOMATO', 'PINEAPPLE']; 
+  private units = ['KG', 'G', 'MT', 'L', 'ML', 'ITEM'];
 
   productId = new FormControl('', Validators.required);
   pluckedDate = new FormControl('', Validators.required);
   certification = new FormControl('', Validators.required);
   productType = new FormControl('', Validators.required);
   quantity = new FormControl('', Validators.required);
-  unit = new FormControl('', Validators.required);
-  divideStatus = new FormControl('', Validators.required);
-  activeStatus = new FormControl('', Validators.required);
-  productpath = new FormControl('', Validators.required);
+  unit = new FormControl('', Validators.required);  
   plot = new FormControl('', Validators.required);
-  parentProduct = new FormControl('', Validators.required);
   currentOwner = new FormControl('', Validators.required);
   issuer = new FormControl('', Validators.required);
 
-  constructor(public serviceProduct: ProductService, fb: FormBuilder) {
+  certificationNo = new FormControl('');
+  certificationBody = new FormControl('');
+  from = new FormControl('');
+  to = new FormControl('');
+  certiImages = new FormControl('');
+  certiComments = new FormControl('');
+
+  parentProduct;
+  divideStatus;
+  activeStatus;
+  productpath;
+
+  constructor(public servicePlot: PlotService, public serviceProduct: ProductService, private fb: FormBuilder,public serviceStakeholder : StakeholderService) {
     this.myForm = fb.group({
       productId: this.productId,
       pluckedDate: this.pluckedDate,
@@ -60,12 +85,83 @@ export class ProductComponent implements OnInit {
       plot: this.plot,
       parentProduct: this.parentProduct,
       currentOwner: this.currentOwner,
-      issuer: this.issuer
+      issuer: this.issuer,
+      certificationNo : this.certificationNo,
+      certificationBody : this.certificationBody,
+      from : this.from,
+      to : this.to,
+      certImagesFormArr : fb.array([]),
+      certiComments : this.certiComments,
+    });
+
+    this.viewForm = fb.group({
+      productId: this.productId,
+      pluckedDate: this.pluckedDate,
+      certification: this.certification,
+      productType: this.productType,
+      quantity: this.quantity,
+      unit: this.unit,
+      divideStatus: this.divideStatus,
+      activeStatus: this.activeStatus,
+      productpath: this.productpath,
+      plot: this.plot,
+      parentProduct: this.parentProduct,
+      currentOwner: this.currentOwner,
+      issuer: this.issuer,
+      certificationNo : this.certificationNo,
+      certificationBody : this.certificationBody,
+      from : this.from,
+      to : this.to,
+      certiImages : this.certiImages,
+      certiComments : this.certiComments,
     });
   };
 
   ngOnInit(): void {
     this.loadAll();
+    this.loadParticipants();
+    this.loadPlots();
+
+    //setup wizard   
+    var navListItems = $('div.setup-panel div a'),
+            allWells = $('.setup-content'),
+            allNextBtn = $('.nextBtn');
+
+    allWells.hide();
+
+    navListItems.click(function (e) {
+        e.preventDefault();
+        var $target = $($(this).attr('href')),
+                $item = $(this);
+
+        if (!$item.hasClass('disabled')) {
+            navListItems.removeClass('btn-primary').addClass('btn-default');
+            $item.addClass('btn-primary');
+            allWells.hide();
+            $target.show();
+            $target.find('input:eq(0)').focus();
+        }
+    });
+
+    allNextBtn.click(function(){
+        var curStep = $(this).closest(".setup-content"),
+            curStepBtn = curStep.attr("id"),
+            nextStepWizard = $('div.setup-panel div a[href="#' + curStepBtn + '"]').parent().parent().next().children("div").children("a"),
+            curInputs = curStep.find("input[type='text'],input[type='url']"),
+            isValid = true;
+
+        $(".form-group").removeClass("has-error");
+        for(var i=0; i<curInputs.length; i++){
+          console.log(curInputs[i]);
+            if (!curInputs[i].validity.valid){
+                isValid = false;
+                $(curInputs[i]).closest(".form-group").addClass("has-error");
+            }
+        }
+
+        if (isValid)
+            nextStepWizard.trigger('click');
+    });
   }
 
   loadAll(): Promise<any> {
@@ -89,6 +185,57 @@ export class ProductComponent implements OnInit {
       }
     });
   }
+
+  loadParticipants(): Promise<any>{
+    const tempList = [];
+    return this.serviceStakeholder.getAll()
+    .toPromise()
+    .then((result) => {
+      this.errorMessage = null;
+      result.forEach(asset => {
+        this.availParticipants.push(asset);
+
+        if(String(asset.type) == "CERTIFICATION"){
+          this.availCertification.push(asset);
+        }  
+        
+
+      });
+
+    })
+    .catch((error) => {
+      if (error === 'Server error') {
+        this.errorMessage = 'Could not connect to REST server. Please check your configuration details';
+      } else if (error === '404 - Not Found') {
+        this.errorMessage = '404 - Could not find API route. Please check your available APIs.';
+      } else {
+        this.errorMessage = error;
+      }
+    });
+  }
+
+  loadPlots(): Promise<any>{
+    const tempList = [];
+    return this.servicePlot.getAll()
+    .toPromise()
+    .then((result) => {
+      this.errorMessage = null;
+      result.forEach(asset => {
+        this.availPlots.push(asset);
+      });
+
+    })
+    .catch((error) => {
+      if (error === 'Server error') {
+        this.errorMessage = 'Could not connect to REST server. Please check your configuration details';
+      } else if (error === '404 - Not Found') {
+        this.errorMessage = '404 - Could not find API route. Please check your available APIs.';
+      } else {
+        this.errorMessage = error;
+      }
+    });
+  }
+
 
 	/**
    * Event handler for changing the checked state of a checkbox (handles array enumeration values)
@@ -116,59 +263,55 @@ export class ProductComponent implements OnInit {
   }
 
   addAsset(form: any): Promise<any> {
+    $('.loader').show();
+    $('.word').hide();
+    
+    let certImageArr = this.myForm.value['certImagesFormArr'];
+    let certImages = [];
+
+    certImageArr.forEach((image)=>{
+      let item = image.image;
+      certImages.push(item);
+    });
+
+    let certi = {
+      $class: "org.ucsc.agriblockchain.Certification",
+      "certificationNo": this.certificationNo.value,
+      "certificationBody": "resource:org.ucsc.agriblockchain.Stakeholder#" + this.certificationBody.value,
+      "from": this.from.value,
+      "to": this.to.value,
+      "images": certImages,
+    }
+
     this.asset = {
       $class: 'org.ucsc.agriblockchain.Product',
       'productId': this.productId.value,
       'pluckedDate': this.pluckedDate.value,
-      'certification': this.certification.value,
+      'certification': certi,
       'productType': this.productType.value,
       'quantity': this.quantity.value,
       'unit': this.unit.value,
-      'divideStatus': this.divideStatus.value,
-      'activeStatus': this.activeStatus.value,
-      'productpath': this.productpath.value,
-      'plot': this.plot.value,
-      'parentProduct': this.parentProduct.value,
-      'currentOwner': this.currentOwner.value,
-      'issuer': this.issuer.value
-    };
+      'divideStatus': 'ORIGINAL',
+      'activeStatus': 'ACTIVE',
+      'plot': "resource:org.ucsc.agriblockchain.Plot#" + this.plot.value,
+      'currentOwner': "resource:org.ucsc.agriblockchain.Stakeholder#" + this.currentOwner.value,
+      'issuer': "resource:org.ucsc.agriblockchain.Stakeholder#" + this.issuer.value,
+    }; 
 
-    this.myForm.setValue({
-      'productId': null,
-      'pluckedDate': null,
-      'certification': null,
-      'productType': null,
-      'quantity': null,
-      'unit': null,
-      'divideStatus': null,
-      'activeStatus': null,
-      'productpath': null,
-      'plot': null,
-      'parentProduct': null,
-      'currentOwner': null,
-      'issuer': null
-    });
-
-    return this.serviceProduct.addAsset(this.asset)
+    return this.toggleLoad = this.serviceProduct.addAsset(this.asset)
     .toPromise()
     .then(() => {
-      this.errorMessage = null;
-      this.myForm.setValue({
-        'productId': null,
-        'pluckedDate': null,
-        'certification': null,
-        'productType': null,
-        'quantity': null,
-        'unit': null,
-        'divideStatus': null,
-        'activeStatus': null,
-        'productpath': null,
-        'plot': null,
-        'parentProduct': null,
-        'currentOwner': null,
-        'issuer': null
-      });
+      this.errorMessage = null;   
+
       this.loadAll();
+      swal(
+        'Success!',
+        'Product added successfully!',
+        'success'
+      )
+      $('#addAssetModal .close').trigger('click');
+      $('.loader').hide();
+      $('.word').show();
     })
     .catch((error) => {
       if (error === 'Server error') {
@@ -181,27 +324,63 @@ export class ProductComponent implements OnInit {
 
 
   updateAsset(form: any): Promise<any> {
+    $('.loader').show();
+    $('.word').hide();
+
+    let parent = "";
+    let certImageArr = this.myForm.value['certImagesFormArr'];
+    let certImages = [];
+
+    certImageArr.forEach((image)=>{
+      let item = image.image;
+      certImages.push(item);
+    });
+
+    let certi = {
+      $class: "org.ucsc.agriblockchain.Certification",
+      "certificationNo": this.certificationNo.value,
+      "certificationBody": "resource:org.ucsc.agriblockchain.Stakeholder#" + this.certificationBody.value,
+      "from": this.from.value,
+      "to": this.to.value,
+      "images": certImages,
+    }
+
     this.asset = {
       $class: 'org.ucsc.agriblockchain.Product',
       'pluckedDate': this.pluckedDate.value,
-      'certification': this.certification.value,
+      'certification': certi,
       'productType': this.productType.value,
       'quantity': this.quantity.value,
       'unit': this.unit.value,
-      'divideStatus': this.divideStatus.value,
-      'activeStatus': this.activeStatus.value,
-      'productpath': this.productpath.value,
-      'plot': this.plot.value,
-      'parentProduct': this.parentProduct.value,
-      'currentOwner': this.currentOwner.value,
-      'issuer': this.issuer.value
+      'divideStatus': this.divideStatus,
+      'activeStatus': this.activeStatus,
+      'plot': "resource:org.ucsc.agriblockchain.Plot#" + this.plot.value,
+      'currentOwner': "resource:org.ucsc.agriblockchain.Stakeholder#" + this.currentOwner.value,
+      'issuer': "resource:org.ucsc.agriblockchain.Stakeholder#" + this.issuer.value,
     };
 
-    return this.serviceProduct.updateAsset(form.get('productId').value, this.asset)
+    if(this.parentProduct != "") {                        
+      this.asset.parentProduct = this.parentProduct;   
+    }
+
+    if(this.productpath != "") {                        
+      this.asset.productpath = this.productpath;   
+    }
+
+    return this.toggleLoad = this.serviceProduct.updateAsset(form.get('productId').value, this.asset)
     .toPromise()
     .then(() => {
       this.errorMessage = null;
       this.loadAll();
+
+      $('#updateAssetModal .close').trigger('click');
+      swal(
+        'Success!',
+        'Seeds updated successfully!',
+        'success'
+      )
+      $('.loader').hide();
+      $('.word').show();
     })
     .catch((error) => {
       if (error === 'Server error') {
@@ -239,6 +418,7 @@ export class ProductComponent implements OnInit {
   }
 
   getForm(id: any): Promise<any> {
+    $('#update1').trigger('click');
 
     return this.serviceProduct.getAsset(id)
     .toPromise()
@@ -257,7 +437,13 @@ export class ProductComponent implements OnInit {
         'plot': null,
         'parentProduct': null,
         'currentOwner': null,
-        'issuer': null
+        'issuer': null,
+        'certificationNo' : null,
+        'certificationBody' : null,
+        'from' : null,
+        'to' : null,
+        'certiComments' : null,
+        'certImagesFormArr' : null
       };
 
       if (result.productId) {
@@ -274,6 +460,160 @@ export class ProductComponent implements OnInit {
 
       if (result.certification) {
         formObject.certification = result.certification;
+        formObject.certificationNo = result.certification.certificationNo;
+        formObject.certificationBody = result.certification.certificationBody.stakeholderId;
+        formObject.from = result.certification.from;
+        formObject.to = result.certification.to;        
+        formObject.certiComments = result.certification.comment;
+
+        this.certiicationComment = result.certification.comment;
+
+        this.myForm.setControl('certImagesFormArr', this.fb.array([]));
+        formObject.certImagesFormArr = this.myForm.get('certImagesFormArr') as FormArray;   
+        
+        this.uploadCertImages = result.certification.images;
+
+        this.uploadCertImages.forEach(image=>{    
+          formObject.certImagesFormArr.push(
+            this.fb.group({
+              image: image 
+            })
+          ); 
+        });
+      } else {
+        formObject.certification = null;
+      }
+
+      if (result.productType) {
+        formObject.productType = result.productType;
+      } else {
+        formObject.productType = null;
+      }
+
+      if (result.quantity) {
+        formObject.quantity = result.quantity;
+      } else {
+        formObject.quantity = null;
+      }
+
+      if (result.unit) {
+        formObject.unit = result.unit;
+      } else {
+        formObject.unit = null;
+      }
+
+      if (result.divideStatus) {
+        formObject.divideStatus = result.divideStatus;
+
+        this.divideStatus = result.divideStatus;
+      } else {
+        formObject.divideStatus = null;
+      }
+
+      if (result.activeStatus) {
+        formObject.activeStatus = result.activeStatus;
+
+        this.activeStatus = result.activeStatus;
+      } else {
+        formObject.activeStatus = null;
+      }
+
+      if (result.productpath) {
+        formObject.productpath = result.productpath;
+      } else {
+        formObject.productpath = null;
+      }
+
+      if (result.plot) {
+        formObject.plot = result.plot.plotId;
+      } else {
+        formObject.plot = null;
+      }
+
+      if (result.parentProduct) {
+        formObject.parentProduct = result.parentProduct;
+      } else {
+        formObject.parentProduct = null;
+      }
+
+      if (result.currentOwner) {
+        formObject.currentOwner = result.currentOwner.stakeholderId;
+      } else {
+        formObject.currentOwner = null;
+      }
+
+      if (result.issuer) {
+        formObject.issuer = result.issuer.stakeholderId;
+      } else {
+        formObject.issuer = null;
+      }
+
+      this.myForm.setValue(formObject);
+
+    })
+    .catch((error) => {
+      if (error === 'Server error') {
+        this.errorMessage = 'Could not connect to REST server. Please check your configuration details';
+      } else if (error === '404 - Not Found') {
+        this.errorMessage = '404 - Could not find API route. Please check your available APIs.';
+      } else {
+        this.errorMessage = error;
+      }
+    });
+  }
+
+  getFormForView(id: any): Promise<any> {
+    $('#view1').trigger('click');
+
+    return this.serviceProduct.getAsset(id)
+    .toPromise()
+    .then((result) => {
+      this.errorMessage = null;
+      const formObject = {
+        'productId': null,
+        'pluckedDate': null,
+        'certification': null,
+        'productType': null,
+        'quantity': null,
+        'unit': null,
+        'divideStatus': null,
+        'activeStatus': null,
+        'productpath': null,
+        'plot': null,
+        'parentProduct': null,
+        'currentOwner': null,
+        'issuer': null,
+        'certificationNo' : null,
+        'certificationBody' : null,
+        'from' : null,
+        'to' : null,
+        'certiComments' : null,
+        'certiImages' : null
+      };
+
+      if (result.productId) {
+        formObject.productId = result.productId;
+      } else {
+        formObject.productId = null;
+      }
+
+      if (result.pluckedDate) {
+        formObject.pluckedDate = result.pluckedDate.toString().split('T')[0];;
+      } else {
+        formObject.pluckedDate = null;
+      }
+
+      if (result.certification) {
+        formObject.certification = result.certification;
+        formObject.certificationNo = result.certification.certificationNo;
+        formObject.certificationBody = result.certification.certificationBody.name;
+        formObject.from = result.certification.from.toString().split('T')[0];
+        formObject.to = result.certification.to.toString().split('T')[0];     
+        formObject.certiComments = result.certification.comment;
+        formObject.certiImages = result.certification.images;
+
+        this.certiicationComment = result.certification.comment;
+        this.certificationImages = result.certification.images;
       } else {
         formObject.certification = null;
       }
@@ -315,7 +655,7 @@ export class ProductComponent implements OnInit {
       }
 
       if (result.plot) {
-        formObject.plot = result.plot;
+        formObject.plot = result.plot.plotId;
       } else {
         formObject.plot = null;
       }
@@ -327,18 +667,18 @@ export class ProductComponent implements OnInit {
       }
 
       if (result.currentOwner) {
-        formObject.currentOwner = result.currentOwner;
+        formObject.currentOwner = result.currentOwner.name;
       } else {
         formObject.currentOwner = null;
       }
 
       if (result.issuer) {
-        formObject.issuer = result.issuer;
+        formObject.issuer = result.issuer.name;
       } else {
         formObject.issuer = null;
       }
 
-      this.myForm.setValue(formObject);
+      this.viewForm.setValue(formObject);
 
     })
     .catch((error) => {
@@ -353,6 +693,8 @@ export class ProductComponent implements OnInit {
   }
 
   resetForm(): void {
+    $('#add1').trigger('click');
+
     this.myForm.setValue({
       'productId': null,
       'pluckedDate': null,
@@ -366,7 +708,13 @@ export class ProductComponent implements OnInit {
       'plot': null,
       'parentProduct': null,
       'currentOwner': null,
-      'issuer': null
+      'issuer': null,
+      'certificationNo' : null,
+      'certificationBody' : null,
+      'from' : null,
+      'to' : null,
+      'certiComments' : null,
+      'certImagesFormArr' : null
       });
   }
 

@@ -234,7 +234,6 @@ export class PlotComponent implements OnInit {
 
     this.asset = {
       $class: 'org.ucsc.agriblockchain.Plot',
-      'plotId': this.plotId.value,
       'cultivationStartDate': this.cultivationStartDate.value,
       'extent': this.extent.value,
       'closerplots' : plots,

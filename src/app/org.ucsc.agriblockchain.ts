@@ -21,13 +21,14 @@ import {Event} from './org.hyperledger.composer.system';
    export class Plot extends Asset {
       plotId: string;
       cultivationStartDate: Date;
+      seededDate: Date;
       extent: number;
       closerplots: Directions;
       activities: Activity[];
       phReadings: PHReading[];
       certificationBodyComments: string[];
       status : PlotStatus;
-      ProductType : ProductType;
+      cultivatedType : ProductType;
       farm: Farm;
    }
    export class Farm extends Asset {
@@ -54,6 +55,9 @@ import {Event} from './org.hyperledger.composer.system';
       certification: Certification;
       currentOwner: Stakeholder;
       issuer: Stakeholder;
+      parentProduct: Seed;
+      divideStatus: DivideStatus; 
+      activeStatus: ActiveStatus; 
    }
    export class Fertilizer extends Asset {
       fertilizerId: string;
@@ -67,6 +71,9 @@ import {Event} from './org.hyperledger.composer.system';
       certification: Certification;
       currentOwner: Stakeholder;
       issuer: Stakeholder;
+      parentProduct: Fertilizer;
+      divideStatus: DivideStatus; 
+      activeStatus: ActiveStatus;
    }
    export class Pesticide extends Asset {
       pesticideId: string;
@@ -80,6 +87,9 @@ import {Event} from './org.hyperledger.composer.system';
       certification: Certification;
       currentOwner: Stakeholder;
       issuer: Stakeholder;
+      parentProduct: Pesticide;
+      divideStatus: DivideStatus; 
+      activeStatus: ActiveStatus;
    }
    export class Directions {
       North: string;
@@ -148,6 +158,7 @@ import {Event} from './org.hyperledger.composer.system';
    export enum ActivityType {
       LANDSCAPING,
       WATERING,
+      MANURING
    }
    export enum StakeholderType {
       ADMIN,
@@ -200,6 +211,7 @@ import {Event} from './org.hyperledger.composer.system';
    export class Activity extends Transaction {
       plot: Plot;
       activitytype: ActivityType;
+      amount: number;
       time: Date;
    }
    export class PHThresholdEvent extends Event {
