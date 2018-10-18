@@ -23,11 +23,11 @@
     <!--ADMIN NAVBAR-->
     <ul *ngIf="userType == 'ADMIN'" class="navbar-nav mr-auto">
       <li class="nav-item ">
-        <a class="nav-link active" [routerLink]="['/Admin']">Home <span class="sr-only">(current)</span></a>
+        <a class="nav-link active" [routerLink]="['/Admin']"><i class="fa fa-home"></i>Home</a>
       </li>
       <li class="nav-item dropdown">
         <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-          Assets
+            <i class="fas fa-gem"></i>Assets
         </a>
         <div class="dropdown-menu" aria-labelledby="navbarDropdown">
           <a class="dropdown-item" [routerLink]="['/Product']">Product</a>            
@@ -41,16 +41,24 @@
 
       <li class="nav-item dropdown">
         <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-          Participants
+          <i class="fas fa-user-friends"></i>Participants
         </a>
         <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-          <a class="dropdown-item" [routerLink]="['/Stakeholder']">Stakeholder</a>
+            <a class="dropdown-item" [routerLink]="['/Stakeholder', 'SEED']">Seed Providers</a>          
+            <a class="dropdown-item" [routerLink]="['/Stakeholder', 'FERTILIZER']">Fertilizer Providers</a>
+            <a class="dropdown-item" [routerLink]="['/Stakeholder', 'PESTICIDE']">Pesticide Providers</a>
+            <a class="dropdown-item" [routerLink]="['/Stakeholder', 'FARMER']">Farmers</a>        
+            <a class="dropdown-item" [routerLink]="['/Stakeholder', 'PACKAGING']">Packaging Facilities</a>             
+            <a class="dropdown-item" [routerLink]="['/Stakeholder', 'DISTRIBUTION']">Distributors</a>           
+            <a class="dropdown-item" [routerLink]="['/Stakeholder', 'CERTIFICATION']">Certification Bodies</a>          
+            <a class="dropdown-item" [routerLink]="['/Stakeholder', 'WAREHOUSE']">Warehouses</a>          
+            <a class="dropdown-item" [routerLink]="['/Stakeholder', 'RETAIL']">Retailors</a>              
         </div>
       </li>
 
       <li class="nav-item dropdown">
         <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-          Operations
+            <i class="fas fa-cogs"></i>Operations
         </a>
         <div class="dropdown-menu" aria-labelledby="navbarDropdown">
           <a class="dropdown-item" [routerLink]="['/TransferPackage']">Trasnfer a Product</a>            
@@ -63,12 +71,12 @@
     <!--FARMER NAVBAR-->
     <ul *ngIf="userType == 'FARMER'" class="navbar-nav mr-auto">
         <li class="nav-item ">
-          <a class="nav-link active" [routerLink]="['/FarmerHome']">Home <span class="sr-only">(current)</span></a>
+          <a class="nav-link active" [routerLink]="['/FarmerHome']"><i class="fa fa-home"></i>Home</a>
         </li>
         
         <li class="nav-item dropdown">
           <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-            Resources
+              <i class="fas fa-boxes"></i>Resources
           </a>
           <div class="dropdown-menu" aria-labelledby="navbarDropdown">          
             <a class="dropdown-item" [routerLink]="['/Plot']">Plots</a>          
@@ -78,7 +86,7 @@
 
         <li class="nav-item dropdown">
           <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-            Assets
+              <i class="fas fa-gem"></i>Assets
           </a>
           <div class="dropdown-menu" aria-labelledby="navbarDropdown">
             <a class="dropdown-item" [routerLink]="['/Product']">Products</a>        
@@ -90,7 +98,7 @@
     
         <li class="nav-item dropdown">
           <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-            Activities
+              <i class="fas fa-dolly"></i>Activities
           </a>
           <div class="dropdown-menu" aria-labelledby="navbarDropdown">
             <a class="dropdown-item" [routerLink]="['/Seeding']">Seeding</a>            
@@ -102,7 +110,7 @@
 
         <li class="nav-item dropdown">
             <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-              Operations
+                <i class="fas fa-cogs"></i>Operations
             </a>
             <div class="dropdown-menu" aria-labelledby="navbarDropdown">
               <a class="dropdown-item" [routerLink]="['/TransferPackage']">Trasnfer a Product</a>            
