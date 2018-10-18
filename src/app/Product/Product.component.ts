@@ -277,6 +277,8 @@ export class ProductComponent implements OnInit {
   addAsset(form: any): Promise<any> {
     $('.loader').show();
     $('.word').hide();
+
+    alert(this.plot.value);
     
     let certImageArr = this.myForm.value['certImagesFormArr'];
     let certImages = [];
@@ -307,7 +309,7 @@ export class ProductComponent implements OnInit {
       'activeStatus': 'ACTIVE',
       'plot': "resource:org.ucsc.agriblockchain.Plot#" + this.plot.value,
       'currentOwner': "resource:org.ucsc.agriblockchain.Stakeholder#" + this.currentOwner.value,
-      'issuer': "resource:org.ucsc.agriblockchain.Stakeholder#" + this.issuer.value,
+      'issuer': "resource:org.ucsc.agriblockchain.Stakeholder#" + this.currentOwner.value,
     }; 
 
     return this.toggleLoad = this.serviceProduct.addAsset(this.asset)
@@ -728,6 +730,35 @@ export class ProductComponent implements OnInit {
       'certiComments' : null,
       'certImagesFormArr' : null
       });
+  }
+
+  onCertChange(event) {
+    const reader = new FileReader();    
+ 
+    if(event.target.files && event.target.files.length) {
+      const [file] = event.target.files;
+      let form = this.myForm.get('certImagesFormArr') as FormArray;
+      
+      reader.readAsDataURL(file);
+  
+      reader.onload = () => {
+        this.uploadCertImages.push(reader.result);
+        form.push(
+          this.fb.group({
+            image: reader.result 
+          })
+        );  
+      };          
+    } 
+    
+  }
+
+  onCertRemoved(file: FileHolder) {
+    var index = this.uploadCertImages.indexOf(file.src);
+    this.uploadCertImages.splice(index,1); 
+
+    let fArray = <FormArray>this.myForm.controls['certImagesFormArr'];
+    fArray.removeAt(index);  
   }
 
 }

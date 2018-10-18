@@ -1,6 +1,19 @@
-<nav class="navbar navbar-expand-lg navbar-light bg-light">
-  <a class="navbar-brand" [routerLink]="['']">AgriBlock</a>
-  <a [routerLink]="['/ScanProduct']">scan a product</a>
+<nav class="navbar navbar-expand-lg navbar-light bg-light">  
+  
+    <div *ngIf="userType == 'ADMIN'" >
+        <a class="navbar-brand" [routerLink]="['/Admin']">
+        <div class="row">            
+              <img src="../../assets/scarecrow.png" style="height:40px; margin-top: -10px"><span>AgriBlock</span>
+        </div></a>        
+    </div>
+
+    <div *ngIf="userType == 'FARMER'" >
+        <a class="navbar-brand" [routerLink]="['/FarmerHome']">
+        <div class="row">            
+              <img src="../../assets/scarecrow.png" style="height:40px; margin-top: -10px"><span>AgriBlock</span>
+        </div></a>        
+    </div>
+  
   <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
     <span class="navbar-toggler-icon"></span>
   </button>
@@ -37,16 +50,14 @@
 
       <li class="nav-item dropdown">
         <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-          Transactions
+          Operations
         </a>
         <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-          <a class="dropdown-item" [routerLink]="['/TransferPackage']">TransferPackage</a>            
-          <a class="dropdown-item" [routerLink]="['/DivideAsset']">DivideAsset</a>          
-          <a class="dropdown-item" [routerLink]="['/MergeAsset']">MergeAsset</a>         
-          <a class="dropdown-item" [routerLink]="['/PHReading']">PHReading</a>          
-          <a class="dropdown-item" [routerLink]="['/Activity']">Activity</a>
+          <a class="dropdown-item" [routerLink]="['/TransferPackage']">Trasnfer a Product</a>            
+          <a class="dropdown-item" [routerLink]="['/ScanProduct']">Scan a Product</a>  
         </div>
       </li>
+
     </ul>
 
     <!--FARMER NAVBAR-->
@@ -82,15 +93,35 @@
             Activities
           </a>
           <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-            <a class="dropdown-item" [routerLink]="['/TransferPackage']">TransferPackage</a>            
-            <a class="dropdown-item" [routerLink]="['/DivideAsset']">DivideAsset</a>          
-            <a class="dropdown-item" [routerLink]="['/MergeAsset']">MergeAsset</a>       
-            <a class="dropdown-item" [routerLink]="['/PHReading']">PHReading</a>          
-            <a class="dropdown-item" [routerLink]="['/Activity']">Activity</a>
+            <a class="dropdown-item" [routerLink]="['/Seeding']">Seeding</a>            
+            <a class="dropdown-item" [routerLink]="['/Watering']">Watering</a>          
+            <a class="dropdown-item" [routerLink]="['/Manuring']">Manuring</a>       
+            <a class="dropdown-item" [routerLink]="['/Harvesting']">Harvesting</a>   
           </div>
         </li>
+
+        <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+              Operations
+            </a>
+            <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+              <a class="dropdown-item" [routerLink]="['/TransferPackage']">Trasnfer a Product</a>            
+              <a class="dropdown-item" [routerLink]="['/ScanProduct']">Scan a Product</a>  
+            </div>
+          </li>
       </ul>
   </div>
+
+  <div class="icon-bar">
+    <a class="active" href="#"><i class="fa fa-home"></i></a> 
+    <a href="#"><i class="fa fa-search"></i></a> 
+    <a href="#"><i class="fa fa-envelope"></i></a> 
+    <a href="#"><i class="fa fa-globe"></i></a>
+    <a href="#"><i class="fa fa-trash"></i></a> 
+  </div>
+    
+  
+
   <span class="navbar-text">
     
     Welcome <span class="badge badge-secondary">{{user}}</span>

@@ -126,7 +126,7 @@
         
                             </td>
                             <td> 
-                              <select class="form-control input farmerSelect" formControlName="certificationBody">
+                              <select class="form-control input farmerSelect" formControlName="plot">
                                   <option value = "">- Select -</option>
                                   <option *ngFor="let plot of availPlots" value = {{plot.plotId}}>{{ "#" + plot.plotId + " @ Farm #" + plot.farm.farmId + " - " + plot.farm.FarmLocation }}</option>
                               </select>
@@ -744,7 +744,7 @@
   <br>
   <div class="row">
     <div *ngIf = "allAssets != ''" class="col-md-12">
-      <table class="table table-responsive"  style="margin: auto; width: 950px;">
+      <table class="table table-responsive"  style="margin: auto; width: 1000px;">
         <thead class="thead">
           <tr class="thead-cols">
             
