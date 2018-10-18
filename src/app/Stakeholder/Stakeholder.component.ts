@@ -50,6 +50,7 @@ export class StakeholderComponent implements OnInit {
   private userHistorians;
   private onlyaddasset;
   private onlyactivities;
+  private onlyupdates;
   private onlytransfers;
   private transactionHistorians;
   private Participants;
@@ -236,6 +237,7 @@ $('#stage1').trigger('click');
     const addasset = [];
     const onlyactivity = [];
     const onlytransfer = [];
+    const onlyupdate = [];
     return this.dataService.getHistorianstakeholder()
     .toPromise()
     .then((stake) => {
@@ -254,8 +256,13 @@ $('#stage1').trigger('click');
             
             onlytransfer.push(userhis)
           }
+          if(txType == 'UpdateAsset'){
+            
+            onlyupdate.push(userhis)
+          }
           
       })
+      this.onlyupdates = onlyupdate;
       this.onlyaddasset = addasset;
       console.log(this.onlyaddasset)
       this.onlyactivities = onlyactivity;

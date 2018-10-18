@@ -36,6 +36,7 @@ export class PesticideComponent implements OnInit {
 
   private allAssets;
   private asset;
+  private pesticidepath;
   private currentId;
   private errorMessage;
   private certificationImages = [];
@@ -180,7 +181,17 @@ export class PesticideComponent implements OnInit {
       }
     });
   }
-
+  getPesticidedata(pesticideid): Promise<any>{
+    return this.servicePesticide.getAsset(pesticideid)
+    .toPromise()
+    .then((result) => {
+      this.pesticidepath = result.productpath;
+     console.log(this.pesticidepath)
+     console.log(result)
+     
+    })
+    
+  }
   loadParticipants(): Promise<any>{
     const tempList = [];
     return this.serviceStakeholder.getAll()

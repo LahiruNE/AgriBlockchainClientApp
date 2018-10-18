@@ -1179,7 +1179,9 @@
                 <button  type="button" title="view" (click)="getFormForView(asset.pesticideId);" class="btn btn-update" data-toggle="modal" data-target="#viewAssetModal">
                     <img src="../../assets/view.png">
                   </button>
-
+                  <button (click)="getPesticidedata(asset.pesticideId)"  type="button" title="view" class="log btn btn-update">
+                        <img src="../../assets/book.png" style="width: 20px;">
+                      </button>
               <button (click)="getForm(asset.pesticideId);" type="button" class="btn btn-update" data-toggle="modal" data-target="#updateAssetModal">
                   <svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
                   width="12.8px" height="12.8px" viewBox="0 0 30.7 30.7" style="enable-background:new 0 0 30.7 30.7;" xml:space="preserve">
@@ -1207,11 +1209,127 @@
           </tr>
         </tbody>
       </table>
+      <br><br>
     </div>
 
     <div *ngIf = "allAssets == ''" class="col-md-12">
         <img src="../../assets/004-seeds-1.png" style="display: block; margin-left: auto; margin-right: auto; margin-top: 50px">
         <div class="alert alert-warning" role="alert" style="text-align: center; margin-top: 30px; padding: 5px;"><h4>No Pesticide available!</h4></div>
     </div>
+    <div class="modal fade" id="viewHistoryModal" tabindex="-1" role="dialog" aria-labelledby="modalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+              <div class="modal-header">
+                <h4 class="modal-title" id="addParticipantModalLabel">Historian Details</h4>
+                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">×</span><span class="sr-only">Close</span></button>
+              </div>
+              <div class="modal-body">
+                    <table class="table table-striped">
+                            <!--  <thead>
+                               <th><img src="../../assets/clock.png" width="20px" height="20px">  Timestamp</th>
+                               <th><img src="../../assets/tran.png" width="26px" height="28px">   Transaction Type</th>
+                             </thead> -->
+                             <tbody *ngFor="let element of pesticidepath" >
+                               <tr>
+                                    <td>stakeholderId</td>
+                                   <td>{{element.authperson.stakeholderId}}</td>
+                               </tr>
+                               <tr>
+                                    <td>country</td>
+                                   <td>{{element.authperson.company.name}}</td>
+                               </tr>
+                               <tr>
+                                    <td>city</td>
+                                   <td>{{element.authperson.address.city}}</td>
+                               </tr>
+                               <tr>
+                                    <td>country</td>
+                                   <td>{{element.authperson.address.country}}</td>
+                               </tr>
+                               <tr>
+                                    <td>certification Body</td>
+                                   <td>{{element.authperson.certification.certificationBody.name}}</td>
+                               </tr>
+                               
+                                   
+                                      
+                             </tbody>
+                             </table>
+              </div>
+              </div>
+              </div>
+              </div>
+    <div class="col-md-12" style="box-shadow: 0px 0px 6px 2px #ddd;">
+            <br>
+              <div class="col-md-9 row">
+                  <img src="../../assets/search.png" style="width: 45px; height: 45px">&nbsp;&nbsp;&nbsp;
+                  <h1 class="asset-title" id='assetName'> Pesticide Historian</h1>
+              </div>
+                    
+                    <!--our-quality-shadow-->
+                    <div class="clearfix"></div>
+                    <!-- <h1 class="heading1">Plot Historian</h1> -->
+                    <div class="tabbable-panel margin-tops4 ">
+                      <div class="tabbable-line">
+                        <ul class="nav nav-tabs tabtop  tabsetting">
+                          <li class="active"> <a href="#tab_default_1" data-toggle="tab"> Pesticide Path </a> </li>
+                          <!-- <li> <a href="#tab_default_2" data-toggle="tab"> PH Readings</a> </li>
+                          <li> <a href="#tab_default_3" data-toggle="tab"> Other Details</a> </li> -->
+                         
+                        </ul>
+                        <div class="tab-content margin-tops">
+                          <div class="tab-pane active fade in" id="tab_default_1">
+                            <div class="col-md-12">
+                                    <div *ngIf ="seedpath ==''" class="alert alert-warning" role="alert" style="text-align: center; margin-top: 10px; padding: 5px;"><h4>No Pesticide Path Details available!</h4></div>
+                                    <table class="table table-striped" id="detTbl2">
+                                            <!--  <thead>
+                                               <th><img src="../../assets/clock.png" width="20px" height="20px">  Timestamp</th>
+                                               <th><img src="../../assets/tran.png" width="26px" height="28px">   Transaction Type</th>
+                                             </thead> -->
+                                             <tbody *ngFor="let element of pesticidepath" >
+                                               
+                                                   <tr style="box-shadow: 0px 0px 1px 1px #ddd;">
+                                                       <td><img src="../../assets/clock.png" width="20px" height="20px"> 
+                                                        {{element.timestamp.split('T')[0]}}
+                                                       </td>
+                                                       <td><!-- <img src="../../assets/tran.png" width="26px" height="28px"> -->
+                                                        <b>Current Owner :</b> {{element.authperson.name}}
+                                                       </td>
+                                                       <td>
+                                                         <a style="cursor: pointer" data-toggle="modal" data-target="#viewHistoryModal">View More</a>
+                                                       </td><br>
+                                                       
+                                                     </tr>
+                                                     <tr >
+                             
+                                                     <img src="../../assets/arrow.png" width="30px" height="25px" style="margin-left: 130%">
+                             
+                                                     </tr> 
+                                             </tbody>
+                                             <div>
+                                                    <img src="../../assets/3-dots.png" width="30px" height="25px" style="margin-left: 130%">
+                                                </div> 
+                                             </table>
+                            </div>
+                          </div>
+                          <div class="tab-pane fade" id="tab_default_2">
+                            <div class="col-md-12">
+                             </div>
+                          </div>
+                          <div class="tab-pane fade" id="tab_default_3">
+                            <div class="col-md-12">
+                              <h4 class="heading4">Shopify Product Upload </h4>
+                              <p>Are you looking for someone who could upload products on your Magento based website? At webenlance India, we can effectively help you with our top quality Magento product upload services. With the pool of well experienced and talented experts, we ensure that your customers have an enriching experience every time they visit your website. Our comprehensive range of services is available all over the globe at extremely low cost. </p>
+                              <h4 class="heading4">Shopify Product Upload </h4>
+                              <p>Also a data entry company from India, we provide time-bound and high-quality data entry services and encourage our clients to outsource end-to-end data entry projects to us. </p>
+                              <a href="#">
+                              <div class="btns">View More <i class="fa fa-angle-right"></i></div>
+                              </a> </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                 
+          </div>
   </div>
 </div>

@@ -131,7 +131,7 @@ export class DataService<Type> {
 
     public getHistorianstakeholder(){
         let ns = 'queries/getFromHistorian';
-        /* let user='resource%3Aorg.ucsc.agriblockchain.Stakeholder%23'+id; */
+      /*   let user='resource%3Aorg.ucsc.agriblockchain.Stakeholder%23'+6465; */
         /* console.log(user) */
         let user ='resource%3Aorg.hyperledger.composer.system.NetworkAdmin%23admin';
         console.log(this.actionUrl + ns + '?' + 'Stakeholder='+ user);

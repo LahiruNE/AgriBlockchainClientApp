@@ -1062,7 +1062,8 @@
                         <div class="tab-content margin-tops">
                           <div class="tab-pane active fade in" id="tab_default_1">
                             <div class="col-md-12">
-                                    <table class="table table-striped" id="detTbl">
+                                    <div *ngIf ="seedpath ==''" class="alert alert-warning" role="alert" style="text-align: center; margin-top: 10px; padding: 5px;"><h4>No Seed Path Details available!</h4></div>
+                                    <table class="table table-striped" id="detTbl2">
                                             <!--  <thead>
                                                <th><img src="../../assets/clock.png" width="20px" height="20px">  Timestamp</th>
                                                <th><img src="../../assets/tran.png" width="26px" height="28px">   Transaction Type</th>

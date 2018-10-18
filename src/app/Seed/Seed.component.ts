@@ -193,6 +193,7 @@ export class SeedComponent implements OnInit {
     .then((result) => {
       this.seedpath = result.productpath;
      console.log(this.seedpath)
+     console.log(result)
      
     })
     

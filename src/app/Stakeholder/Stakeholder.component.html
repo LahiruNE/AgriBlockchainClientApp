@@ -1736,7 +1736,7 @@
                 </tr>
                 <tr>
                     <td>Name</td>
-                    <td>{{dataelements.name}}</td>
+                    <td>{{dataelements.productType}}</td>
                   </tr>
               </table>
               
@@ -2039,13 +2039,13 @@
     <br>
     <div class="row">
       <div class="col-md-12">
-        <table id="table1" class="table-bordered table" style="margin: auto">
+        <table id="table1" class="table table-responsive" style="margin: auto; width: 950px;">
           <thead class="thead">
             <tr class="thead-cols">
               
-                  <th class="info">Stakeholder Id</th>
+                  <th class="info" style="min-width: 130px">Stakeholder Id</th>
               
-                  <th class="info">Name</th>
+                  <th class="info" style="min-width: 100px">Name</th>
               
                  <!--  <th class="info">city</th>
 
@@ -2057,7 +2057,7 @@
               
                   <th class="info">certificationNo</th> -->
 
-                  <th *ngIf = "loggingType !== 'CERTIFICATION'" class="info">Certification Body</th>
+                  <th *ngIf = "loggingType !== 'CERTIFICATION'" class="info" style="min-width: 120px">Certification Body</th>
 
                   <!-- <th class="info">startDate</th>
 
@@ -2075,7 +2075,7 @@
               
                   <th class="info">description</th> -->
               
-                  <th class="info">authorized Person</th>
+                  <th class="info" style="min-width: 120px">authorized Person</th>
               
                  <!--  <th class="info">vehicleNo</th>
               
@@ -2083,11 +2083,11 @@
               
                   <th class="info">branchNo</th> -->
 
-                  <th  class="info">Comments</th>
+                  <th  class="info" style="min-width: 100px">Comments</th>
 
-                  <th  class="info">Status</th>
+                  <th  class="info" style="min-width: 120px">Status</th>
               
-                <th class="info-actions">Actions</th>
+                <th class="info-actions" style="min-width: 200px">Actions</th>
             </tr>
           </thead>
           <tbody>
@@ -2199,7 +2199,8 @@
                     <div class="tabbable-line">
                       <ul class="nav nav-tabs tabtop  tabsetting">
                         <li class="active"> <a href="#tab_default_1" data-toggle="tab"> All Activities </a> </li>
-                        <li> <a href="#tab_default_2" data-toggle="tab"> Add Assets</a> </li>
+                        <li> <a href="#tab_default_2" data-toggle="tab"> Added Assets</a> </li>
+                        <li> <a href="#tab_default_5" data-toggle="tab"> Updated Assets</a> </li>
                         <li> <a href="#tab_default_3" data-toggle="tab"> Farm Activities</a> </li>
                         <li> <a href="#tab_default_4" data-toggle="tab"> Transfer Package</a> </li>
                        
@@ -2344,6 +2345,40 @@
                                      </table>
                                      </div>
                           </div>
+                          <div class="tab-pane fade" id="tab_default_5">
+                              <div class="col-md-12">
+                                  <div *ngIf ="onlyupdates==''" class="alert alert-warning" role="alert" style="text-align: center; margin-top: 10px; padding: 5px;"><h4>No Update assets available!</h4></div>
+                                  <table class="table table-striped" id="detTbl">
+                                      <!--  <thead>
+                                         <th><img src="../../assets/clock.png" width="20px" height="20px">  Timestamp</th>
+                                         <th><img src="../../assets/tran.png" width="26px" height="28px">   Transaction Type</th>
+                                       </thead> -->
+                                       <tbody *ngFor="let elitem of onlyupdates" >
+                                         
+                                             <tr style="box-shadow: 0px 0px 1px 1px #ddd;">
+                                                 <td><img src="../../assets/clock.png" width="20px" height="20px"> 
+                                                     {{elitem.transactionTimestamp.split('T')[0]}}
+                                                 </td>
+                                                 <td><!-- <img src="../../assets/tran.png" width="26px" height="28px"> -->
+                                                     {{elitem.transactionType.split('.')[4]}}
+                                                 </td>
+                                                 <td>
+                                                   <a style="cursor: pointer" (click) = "userHis(elitem.transactionInvoked)" data-toggle="modal" data-target="#viewHistoryModal">View More</a>
+                                                 </td><br>
+                                                 
+                                               </tr>
+                                               <tr >
+                       
+                                               <img src="../../assets/arrow.png" width="30px" height="25px" style="margin-left: 120%">
+                       
+                                               </tr> 
+                                       </tbody>
+                                       <div>
+                                          <img src="../../assets/3-dots.png" width="30px" height="25px" style="margin-left: 120%">
+                                      </div> 
+                                       </table>
+                                       </div>
+                            </div>
                       </div>
                     </div>
                   </div>

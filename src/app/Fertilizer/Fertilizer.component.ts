@@ -36,6 +36,7 @@ export class FertilizerComponent implements OnInit {
 
   private allAssets;
   private asset;
+  private fertilizerpath;
   private currentId;
   private errorMessage;
   private certificationImages = [];
@@ -180,7 +181,17 @@ export class FertilizerComponent implements OnInit {
       }
     });
   }
-
+  getFertilizerdata(fertilizerid): Promise<any>{
+    return this.serviceFertilizer.getAsset(fertilizerid)
+    .toPromise()
+    .then((result) => {
+      this.fertilizerpath = result.productpath;
+     console.log(this.fertilizerpath)
+     console.log(result)
+     
+    })
+    
+  }
   loadParticipants(): Promise<any>{
     const tempList = [];
     return this.serviceStakeholder.getAll()
