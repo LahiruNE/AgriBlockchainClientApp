@@ -340,14 +340,15 @@ export class ManuringComponent implements OnInit {
     let date = new Date(this.manuringDate.value);
     let time = new Date(this.manuringTime.value);
     
-    let dateTime = new Date(date.getFullYear(), date.getMonth(), date.getDate(), time.getHours(), time.getMinutes(), time.getSeconds());
-
+    let d = date.getFullYear().toString() +"-"+ ("0" + (date.getMonth()+1).toString()).slice(-2) +"-"+ ("0" + date.getDate().toString()).slice(-2);
+    let t = ("0" + time.getHours().toString()).slice(-2) + ":" + ("0" + time.getMinutes().toString()).slice(-2);
+    
     this.asset = {
       $class: 'org.ucsc.agriblockchain.Activity',
       'plot': "resource:org.ucsc.agriblockchain.Plot#" + this.plotId.value,
       'activitytype': 'MANURING',
       'amount': this.amount.value,
-      'time': dateTime,
+      'time': d + "T" + t + ":00.000Z",
     };
 
     if($('#fertilizer').val() != ""){
@@ -406,13 +407,13 @@ export class ManuringComponent implements OnInit {
 
       if($('#fertilizer').val() != ""){
         this.asset.$class = 'org.ucsc.agriblockchain.Fertilizer';
-        return this.serviceFertilizer.updateAsset(manure.fertilizerId, this.asset)
+        this.serviceFertilizer.updateAsset(manure.fertilizerId, this.asset)
         .toPromise()
       }
       
       if($('#pesticide').val() != ""){
         this.asset.$class = 'org.ucsc.agriblockchain.Pesticide';
-        return this.servicePesticide.updateAsset(manure.pesticideId, this.asset)
+        this.servicePesticide.updateAsset(manure.pesticideId, this.asset)
         .toPromise()
       }      
 

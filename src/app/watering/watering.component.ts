@@ -264,13 +264,14 @@ export class WateringComponent implements OnInit {
     let date = new Date(this.wateringDate.value);
     let time = new Date(this.wateringTime.value);
     
-    let dateTime = new Date(date.getFullYear(), date.getMonth(), date.getDate(), time.getHours(), time.getMinutes(), time.getSeconds());
-
+    let d = date.getFullYear().toString() +"-"+ ("0" + (date.getMonth()+1).toString()).slice(-2) +"-"+ ("0" + date.getDate().toString()).slice(-2);
+    let t = ("0" + time.getHours().toString()).slice(-2) + ":" + ("0" + time.getMinutes().toString()).slice(-2);
+    
     this.asset = {
       $class: 'org.ucsc.agriblockchain.Activity',
       'plot': "resource:org.ucsc.agriblockchain.Plot#" + this.plotId.value,
       'activitytype': 'WATERING',
-      'time': dateTime,
+      'time': d + "T" + t + ":00.000Z",
     };
 
     return this.toggleLoad = this.serviceActivity.addTransaction(this.asset)
