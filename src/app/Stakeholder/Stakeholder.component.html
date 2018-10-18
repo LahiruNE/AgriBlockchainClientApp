@@ -427,7 +427,7 @@
                     <div class="col-md-6">
                         
                         <div class="form-group text-left">
-                            <label for="stakeholderId">StakeholderId<sup>*</sup></label>
+                           <label for="stakeholderId"> <b>StakeholderId</b><sup>*</sup></label>
                             
                               <input formControlName="stakeholderId" type="text" class="form-control">
                             
@@ -435,20 +435,20 @@
                         
 
                           <div class="form-group text-left">
-                            <label for="name">Name<sup>*</sup></label>
+                           <label for="name"> <b>Name</b><sup>*</sup></label>
                             
                               <input formControlName="name" type="text" class="form-control">
                             
                           </div>
 
                           <div class="form-group text-left">
-                            <label for="city">City<sup>*</sup></label>
+                            <label for="city"><b>City</b><sup>*</sup></label>
                             
                                 <input formControlName="city" type="text" class="form-control">
                             
                           </div>
                           <div class="form-group text-left">
-                            <label for="country">Country<sup>*</sup></label>
+                            <label for="country"><b>Country</b><sup>*</sup></label>
                             
                                 <input formControlName="country" type="text" class="form-control">
                             
@@ -460,21 +460,21 @@
                       <div class="col-md-6">
 
                           <div class="form-group text-left">
-                              <label for="email">Email</label>
+                              <label for="email"><b>Email</b></label>
                               
                                 <input formControlName="email" type="text" class="form-control">
                               
                             </div>
                         
                           <div class="form-group text-left">
-                            <label for="telephone">Telephone</label>
+                            <label for="telephone"><b>Telephone</b></label>
                             
                               <input formControlName="telephone" type="text" class="form-control">
                             
                           </div>
                         
                           <div class="form-group text-left">
-                              <label for="username">Username<sup>*</sup></label>
+                              <label for="username"><b>Username</b><sup>*</sup></label>
                               
                                 <input formControlName="username" type="text" class="form-control">
                               
@@ -484,7 +484,7 @@
               
                           
                             <div class="form-group text-left">
-                              <label for="password">Password<sup>*</sup></label>
+                              <label for="password"><b>Password</b><sup>*</sup></label>
                               
                                 <input formControlName="password" type="password" class="form-control">
                               
@@ -504,34 +504,34 @@
                 <div class="col-md-12">
                     <div class="col-md-6">
                         <div *ngIf = "StakeholderType == 'CERTIFICATION'" class="form-group text-left">
-                            <label for="certificationNo">Registration No<sup>*</sup></label>
+                            <label for="certificationNo"><b>Registration No</b><sup>*</sup></label>
                             
                                 <input formControlName="certificationNo" type="text" class="form-control">
                             
                           </div>
 
                         <div class="form-group text-left">
-                            <label for="companyname">Company Name<sup>*</sup></label>
+                            <label for="companyname"><b>Company Name</b><sup>*</sup></label>
                             
                                 <input formControlName="companyname" type="text" class="form-control">
                             
                           </div>
           
                           <div class="form-group text-left">
-                            <label for="companycity">Company City<sup>*</sup></label>
+                            <label for="companycity"><b>Company City</b><sup>*</sup></label>
                             
                                 <input formControlName="companycity" type="text" class="form-control">
                             
                           </div>
           
                           <div class="form-group text-left">
-                            <label for="companycountry">Company Country<sup>*</sup></label>
+                            <label for="companycountry"><b>Company Country</b><sup>*</sup></label>
                             
                                 <input formControlName="companycountry" type="text" class="form-control">
                             
                           </div>
 
-                        <label for="distributionType">Distribution Type</label>
+                       <label for="distributionType"> <b>Distribution Type</b></label>
                         <div class="checkbox checkdiv" >
                           
                             <label>
@@ -581,14 +581,14 @@
                           <div class="col-md-6">
 
                               <div class="form-group text-left">
-                                  <label for="authPerson">Auth Person<sup>*</sup></label>
+                                  <label for="authPerson"><b>Auth Person</b><sup>*</sup></label>
                                   
                                     <input formControlName="authPerson" type="text" class="form-control">
                                   
                                 </div>
       
                                 <div class="form-group text-left">
-                                    <label for="description">Description</label>
+                                    <label for="description"><b>Description</b></label>
                                     
                                       <input formControlName="description" type="text" class="form-control">
                                     
@@ -596,7 +596,7 @@
 
 
                                 <div class="form-group text-left">
-                                    <label for="vehicleNo">Vehicle No</label>
+                                   <label for="vehicleNo"> <b>Vehicle No</b></label>
                                     
                                       <input formControlName="vehicleNo" type="text" class="form-control">
                                     
@@ -605,7 +605,7 @@
                           
 
                           <div class="form-group text-left">
-                            <label for="branchNo">Branch No</label>
+                            <label for="branchNo"><b>Branch No</b></label>
                             
                               <input formControlName="branchNo" type="text" class="form-control">
                             
@@ -626,14 +626,14 @@
                     <div class="col-md-6">
 
                         <div class="form-group text-left">
-                            <label for="certificationNo">CertificationNo<sup>*</sup></label>
+                            <label for="certificationNo"><b>CertificationNo</b><sup>*</sup></label>
                             
                                 <input formControlName="certificationNo" type="text" class="form-control">
                             
                           </div>
 
                           <div class="form-group text-left">
-                            <label for="certificationBody">certificationBody<sup>*</sup></label>
+                            <label for="certificationBody"><b>certificationBody</b><sup>*</sup></label>
                             <select class="form-control"  formControlName="certificationBody"  >
                               <option value=""></option>
                              <option *ngFor="let option of Participants" [value]="option.stakeholderId">{{ option.name}}</option> 
@@ -643,7 +643,7 @@
                           
 
                               <div class="form-group text-left">
-                                  <label for="images">Images</label>
+                                 <label for="images"> <b>Images</b></label>
                                   
                                     <input formControlName="images" type="file" class="form-control">
                                   
@@ -778,13 +778,13 @@
                           </div>
                           <div class="col-md-6">
                               <div class="form-group text-left">
-                                  <label for="from">Start Date</label>
+                                  <label for="from"><b>Start Date</b></label>
                                          <input formControlName="from" class="form-control" [minDate]="minDate" bsDatepicker [bsConfig]="bsConfig">
                                   
                                 </div>
     
                                 <div class="form-group text-left">
-                                    <label for="to">End Date</label>
+                                    <label for="to"><b>End Date</b></label>
 
                                         <input formControlName="to" class="form-control" [minDate]="minDate" bsDatepicker [bsConfig]="bsConfig">
                                     
@@ -1692,7 +1692,7 @@
                       </tr>
                       <tr>
                           <td>CertificationBody</td>
-                          <td>{{dataelements.certification.certificationBody}}</td>
+                          <td>{{dataelements.certification.certificationBody.split('#')[1]}}</td>
                         </tr>
                         <tr>
                             <td>From</td>
@@ -1704,7 +1704,7 @@
                             </tr>
                             <tr>
                                 <td>CurrentOwner</td>
-                                <td>{{dataelements.currentOwner}}</td>
+                                <td>{{dataelements.currentOwner.split('#')[1]}}</td>
                         </tr>
               </table>
               
@@ -2039,7 +2039,7 @@
     <br>
     <div class="row">
       <div class="col-md-12">
-        <table id="table1" class="table table-responsive" style="margin: auto; width: 950px;">
+        <table id="table1" class="table table-responsive" style="margin: auto; width: 980px;">
           <thead class="thead">
             <tr class="thead-cols">
               
@@ -2057,7 +2057,7 @@
               
                   <th class="info">certificationNo</th> -->
 
-                  <th *ngIf = "loggingType !== 'CERTIFICATION'" class="info" style="min-width: 120px">Certification Body</th>
+                  <th *ngIf = "loggingType !== 'CERTIFICATION'" class="info" style="min-width: 155px">Certification Body</th>
 
                   <!-- <th class="info">startDate</th>
 
@@ -2075,7 +2075,7 @@
               
                   <th class="info">description</th> -->
               
-                  <th class="info" style="min-width: 120px">authorized Person</th>
+                  <th class="info" style="min-width: 170px">authorized Person</th>
               
                  <!--  <th class="info">vehicleNo</th>
               
