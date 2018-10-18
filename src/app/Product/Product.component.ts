@@ -36,6 +36,8 @@ export class ProductComponent implements OnInit {
   certImagesFormArr: FormArray;
 
   private allAssets;
+  private productspath; 
+  private stakename; 
   private asset;
   private currentId;
   private errorMessage;
@@ -185,7 +187,17 @@ export class ProductComponent implements OnInit {
       }
     });
   }
-
+  getProductdata(productid): Promise<any>{ 
+    return this.serviceProduct.getAsset(productid) 
+    .toPromise() 
+    .then((result) => { 
+      this.productspath = result.productpath; 
+      console.log(this.productspath) 
+     console.log(result) 
+      
+    }) 
+     
+  } 
   loadParticipants(): Promise<any>{
     const tempList = [];
     return this.serviceStakeholder.getAll()
