@@ -1,6 +1,8 @@
 <section *ngIf='!isLoggedIn'>
   <div class="loginmodal-container">
-    <h1>Login to Your Account</h1><br>
+    <img src="../../assets/scarecrow.png" style="display: block; margin: auto !important">
+    <h1>AgriBlock</h1>
+    <h4 style="text-align:center">Login to your account</h4><br>
 
     <div *ngIf='isError' class="alert alert-danger" role="alert">
       {{error}}

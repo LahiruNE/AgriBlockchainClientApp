@@ -22,12 +22,15 @@ import { StakeholderService } from '../Stakeholder/Stakeholder.service';
 import { FileHolder } from 'angular2-image-upload';
 import swal from 'sweetalert2';
 import { PlotService } from '../Plot/Plot.service';
+import { DataService } from '../data.service';
+import { Product } from '../org.ucsc.agriblockchain';
+import { LocalStorageService } from '../services/local-storage.service';
 
 @Component({
   selector: 'app-product',
   templateUrl: './Product.component.html',
   styleUrls: ['./Product.component.css'],
-  providers: [ProductService, StakeholderService, PlotService]
+  providers: [ProductService, StakeholderService, PlotService, DataService]
 })
 export class ProductComponent implements OnInit {
 
@@ -73,7 +76,7 @@ export class ProductComponent implements OnInit {
   activeStatus;
   productpath;
 
-  constructor(public servicePlot: PlotService, public serviceProduct: ProductService, private fb: FormBuilder,public serviceStakeholder : StakeholderService) {
+  constructor(private localStorageService : LocalStorageService, public serviceData: DataService<Product>, public servicePlot: PlotService, public serviceProduct: ProductService, private fb: FormBuilder,public serviceStakeholder : StakeholderService) {
     this.myForm = fb.group({
       productId: this.productId,
       pluckedDate: this.pluckedDate,
@@ -120,7 +123,8 @@ export class ProductComponent implements OnInit {
   };
 
   ngOnInit(): void {
-    this.loadAll();
+    //this.loadAll();
+    this.loadOwnedProducts();
     this.loadParticipants();
     this.loadPlots();
 
@@ -166,6 +170,30 @@ export class ProductComponent implements OnInit {
     });
   }
 
+  loadOwnedProducts(): Promise<any> {
+    const tempList = [];
+    let user = "resource%3Aorg.ucsc.agriblockchain.Stakeholder%23" + this.localStorageService.getFromLocal('currentUser').stakeholderId;
+
+    return this.serviceData.getOwnedProducts(user)
+    .toPromise()
+    .then((result) => {
+      this.errorMessage = null;
+      result.forEach(asset => {
+        tempList.push(asset);
+      });
+      this.allAssets = tempList;
+    })
+    .catch((error) => {
+      if (error === 'Server error') {
+        this.errorMessage = 'Could not connect to REST server. Please check your configuration details';
+      } else if (error === '404 - Not Found') {
+        this.errorMessage = '404 - Could not find API route. Please check your available APIs.';
+      } else {
+        this.errorMessage = error;
+      }
+    });
+  }
+
   loadAll(): Promise<any> {
     const tempList = [];
     return this.serviceProduct.getAll()
@@ -187,6 +215,7 @@ export class ProductComponent implements OnInit {
       }
     });
   }
+
   getProductdata(productid): Promise<any>{ 
     return this.serviceProduct.getAsset(productid) 
     .toPromise() 
@@ -198,6 +227,7 @@ export class ProductComponent implements OnInit {
     }) 
      
   } 
+  
   loadParticipants(): Promise<any>{
     const tempList = [];
     return this.serviceStakeholder.getAll()
@@ -317,7 +347,8 @@ export class ProductComponent implements OnInit {
     .then(() => {
       this.errorMessage = null;   
 
-      this.loadAll();
+      //this.loadAll();
+      this.loadOwnedProducts();
       swal(
         'Success!',
         'Product added successfully!',
@@ -385,7 +416,8 @@ export class ProductComponent implements OnInit {
     .toPromise()
     .then(() => {
       this.errorMessage = null;
-      this.loadAll();
+      //this.loadAll();
+      this.loadOwnedProducts();
 
       $('#updateAssetModal .close').trigger('click');
       swal(
@@ -414,7 +446,8 @@ export class ProductComponent implements OnInit {
     .toPromise()
     .then(() => {
       this.errorMessage = null;
-      this.loadAll();
+      //this.loadAll();
+      this.loadOwnedProducts();
     })
     .catch((error) => {
       if (error === 'Server error') {

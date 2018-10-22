@@ -17,6 +17,7 @@ import {Event} from './org.hyperledger.composer.system';
       parentProduct: Product;
       currentOwner: Stakeholder;
       issuer: Stakeholder;
+      transferDetails: TransferDetails; 
    }
    export class Plot extends Asset {
       plotId: string;
@@ -94,6 +95,13 @@ import {Event} from './org.hyperledger.composer.system';
       divideStatus: DivideStatus; 
       activeStatus: ActiveStatus;
    }
+
+   export class TransferDetails {
+      status: TransferStatus;
+      comment: string; 
+      invokedBy: Stakeholder;
+  }
+
    export class Directions {
       North: string;
       East: string;
@@ -124,6 +132,13 @@ import {Event} from './org.hyperledger.composer.system';
       images: string[];
       comment: string[];
    }
+
+   export enum TransferStatus {
+      PENDING,
+      APPROVED,
+      REJECTED,
+    }
+    
    export enum ProductType {
       CARROT,
       TOMATO,

@@ -231,5 +231,32 @@ export class DataService<Type> {
         .catch(this.handleError);
 
     }
+
+    public getSubmittedRequests(user){
+        let ns = 'queries/getSubmittedRequests';
+        console.log(this.actionUrl+ns +'?' + 'user='+ user);
+        return this.http.get(this.actionUrl +ns +'?' + 'user='+ user)
+        .map(this.extractData)
+        .catch(this.handleError);
+
+    }
+
+    public getPendingRequests(user){
+        let ns = 'queries/getPendingRequests';
+        console.log(this.actionUrl+ns +'?' + 'user='+ user);
+        return this.http.get(this.actionUrl +ns +'?' + 'user='+ user)
+        .map(this.extractData)
+        .catch(this.handleError);
+
+    }
+
+    public getOwnedProducts(user){
+        let ns = 'queries/getOwnedProducts';
+        console.log(this.actionUrl+ns +'?' + 'user='+ user);
+        return this.http.get(this.actionUrl +ns +'?' + 'user='+ user)
+        .map(this.extractData)
+        .catch(this.handleError);
+
+    }
  
 }

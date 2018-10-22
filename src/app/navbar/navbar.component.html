@@ -58,6 +58,18 @@
 
       <li class="nav-item dropdown">
         <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            <i class="fas fa-dolly"></i>Activities
+        </a>
+        <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+          <a class="dropdown-item" [routerLink]="['/Seeding']">Seeding</a>            
+          <a class="dropdown-item" [routerLink]="['/Watering']">Watering</a>          
+          <a class="dropdown-item" [routerLink]="['/Manuring']">Manuring</a>       
+          <a class="dropdown-item" [routerLink]="['/Harvesting']">Harvesting</a>   
+        </div>
+      </li>
+
+      <li class="nav-item dropdown">
+        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
             <i class="fas fa-cogs"></i>Operations
         </a>
         <div class="dropdown-menu" aria-labelledby="navbarDropdown">
@@ -120,12 +132,10 @@
       </ul>
   </div>
 
-  <div class="icon-bar">
-    <a class="active" href="#"><i class="fa fa-home"></i></a> 
-    <a href="#"><i class="fa fa-search"></i></a> 
-    <a href="#"><i class="fa fa-envelope"></i></a> 
-    <a href="#"><i class="fa fa-globe"></i></a>
-    <a href="#"><i class="fa fa-trash"></i></a> 
+  <div class="icon-bar row" style="margin-right: 50px">
+    <a [routerLink]="['/ScanProduct']" style="vertical-align:top;" title="Get information of a product via scanning the QR"><div style="text-align: center"><i class="fa fa-qrcode fa-2x" ></i></div><div><span>Scan a Product</span></div></a>
+    &nbsp;&nbsp;&nbsp;&nbsp;
+    <a [routerLink]="['/TransferPackage']" href="#" style="vertical-align:top;" title="Invoke product transfer transactions"><div style="text-align: center"><i class="fas fa-exchange-alt fa-2x"></i></div><div><span>Transfer a Product</span></div></a> 
   </div>
     
   
