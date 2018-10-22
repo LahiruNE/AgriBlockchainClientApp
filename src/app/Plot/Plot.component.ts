@@ -82,7 +82,7 @@ export class PlotComponent implements OnInit {
     this.loadAll();
     this.loadFarms();
 
-
+    $('.history').hide();
     //setup wizard   
     var navListItems = $('div.setup-panel div a'),
             allWells = $('.setup-content'),
@@ -139,7 +139,10 @@ export class PlotComponent implements OnInit {
     })
     
   }
-
+  cls(){
+    $('.history').show();
+    document.getElementById('historyview').scrollIntoView(true);
+  }
   loadAll(): Promise<any> {
     const tempList = [];
     return this.servicePlot.getAll()

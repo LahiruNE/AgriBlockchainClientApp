@@ -1179,7 +1179,7 @@
                 <button  type="button" title="view" (click)="getFormForView(asset.pesticideId);" class="btn btn-update" data-toggle="modal" data-target="#viewAssetModal">
                     <img src="../../assets/view.png">
                   </button>
-                  <button (click)="getPesticidedata(asset.pesticideId)"  type="button" title="view" class="log btn btn-update">
+                  <button (click)="getPesticidedata(asset.pesticideId);cls();"  type="button" title="view" class="log btn btn-update">
                         <img src="../../assets/book.png" style="width: 20px;">
                       </button>
               <button (click)="getForm(asset.pesticideId);" type="button" class="btn btn-update" data-toggle="modal" data-target="#updateAssetModal">
@@ -1259,7 +1259,7 @@
               </div>
               </div>
               </div>
-    <div class="col-md-12" style="box-shadow: 0px 0px 6px 2px #ddd;">
+    <div id="historyview" class="history col-md-12" style="box-shadow: 0px 0px 6px 2px #ddd;">
             <br>
               <div class="col-md-9 row">
                   <img src="../../assets/search.png" style="width: 45px; height: 45px">&nbsp;&nbsp;&nbsp;

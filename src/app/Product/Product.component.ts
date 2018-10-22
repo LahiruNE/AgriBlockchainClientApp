@@ -42,10 +42,13 @@ export class ProductComponent implements OnInit {
   private productspath; 
   private stakename; 
   private asset;
+  private remainingqty;
+  private newQty;
   private currentId;
   private errorMessage;
   private certificationImages = [];
   private availParticipants = [];
+  private newquantyties;
   private availCertification = [];
   private availPlots = [];
   private uploadCertImages = [];
@@ -128,6 +131,8 @@ export class ProductComponent implements OnInit {
     this.loadParticipants();
     this.loadPlots();
 
+    $('.history').hide();
+
     //setup wizard   
     var navListItems = $('div.setup-panel div a'),
             allWells = $('.setup-content'),
@@ -168,6 +173,10 @@ export class ProductComponent implements OnInit {
         if (isValid)
             nextStepWizard.trigger('click');
     });
+  }
+  cls(){
+    $('.history').show();
+    document.getElementById('historyview').scrollIntoView(true);
   }
 
   loadOwnedProducts(): Promise<any> {
@@ -217,12 +226,22 @@ export class ProductComponent implements OnInit {
   }
 
   getProductdata(productid): Promise<any>{ 
+    this.remainingqty = 0;
+    const path =[];
     return this.serviceProduct.getAsset(productid) 
     .toPromise() 
     .then((result) => { 
-      this.productspath = result.productpath; 
+      this.newQty = result.quantity;
+      for(let i of result.productpath){
+        this.remainingqty = this.newQty - i.Qty
+        this.newQty = this.remainingqty;
+        path.push({path:i,new:this.remainingqty});
+        
+      }
+    
+      this.productspath = path;
       console.log(this.productspath) 
-     console.log(result) 
+      console.log(result) 
       
     }) 
      

@@ -123,7 +123,7 @@ export class SeedComponent implements OnInit {
   ngOnInit(): void {
     this.loadAll();
     this.loadParticipants();
-
+    $('.history').hide();
     //setup wizard   
     var navListItems = $('div.setup-panel div a'),
             allWells = $('.setup-content'),
@@ -197,6 +197,10 @@ export class SeedComponent implements OnInit {
      
     })
     
+  }
+  cls(){
+    $('.history').show();
+    document.getElementById('historyview').scrollIntoView(true);
   }
   loadParticipants(): Promise<any>{
     const tempList = [];

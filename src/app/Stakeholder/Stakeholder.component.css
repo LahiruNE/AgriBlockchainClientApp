@@ -262,7 +262,7 @@ sup{
 }
 #detTbl{
     width: 42%;
-    font-size: 13px;
+    font-size: 14px;
 }
 
 @import url(https://fonts.googleapis.com/css?family=Lato:400,900,700,300);
@@ -286,3 +286,16 @@ section p{font-family:'Lato', sans-serif;}
 .services a:hover{color:#000;}
 .services h1{margin-top:0px !important;}
 .heading-container p{font-family:'Lato', sans-serif;text-align:center;font-size:16px !important;text-transform:uppercase;}
+
+.plus-svg{
+    color: #fff;
+    fill: currentColor;
+}
+.modal-title{
+    font-family: inherit;
+    font-size: 24px;
+    color: #4E4E4E;
+    letter-spacing: 0.28px;
+    line-height: 28px;
+    padding-top: 15px;
+}

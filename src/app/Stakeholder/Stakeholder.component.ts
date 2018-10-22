@@ -116,6 +116,8 @@ export class StakeholderComponent implements OnInit {
   };
 
   ngOnInit(): void {
+  
+  /* $('.history').hide(); */
 
   this.loggingUser = this.localStorageService.getFromLocal('currentUser').name;
   console.log('logname'+this.loggingUser)
@@ -245,7 +247,7 @@ $('#stage1').trigger('click');
           let arr = userhis.transactionType.split(".");
           let txType = arr[arr.length-1];
           tranHistorian.push(txType)
-          userHistorian.push(userhis)
+          userHistorian.push({all:userhis,type:txType})
           if(txType == 'AddAsset'){
             addasset.push(userhis)
           }
@@ -268,7 +270,7 @@ $('#stage1').trigger('click');
       this.onlyactivities = onlyactivity;
       console.log( this.onlyactivities)
       this.onlytransfers = onlytransfer;
-      console.log( 'tranfers='+this.onlytransfers)
+      console.log(this.onlytransfers);
       this.transactionHistorians = tranHistorian;
       this.userHistorians = userHistorian;
       console.log(this.userHistorians)
@@ -278,7 +280,10 @@ $('#stage1').trigger('click');
     })
     
   }
-
+  cls(){
+    $('.history').show();
+    document.getElementById('historyview').scrollIntoView(true);
+  }
 
   loadAll(): Promise<any> {
     const tempList = [];
@@ -437,8 +442,20 @@ $('#stage1').trigger('click');
       .toPromise()
       .then((iden) => {
         iden.forEach(datalist => {
-            data.push(datalist);
-            this.clas = datalist.$class 
+          if(datalist.hasOwnProperty('product')){
+            data.push({data:datalist,type:'product'});
+          }
+          if(datalist.hasOwnProperty('seed')){
+            data.push({data:datalist,type:'seed'});
+          }
+          if(datalist.hasOwnProperty('pesticide')){
+            data.push({data:datalist,type:'pesticide'});
+          }
+          if(datalist.hasOwnProperty('fertilizer')){
+            data.push({data:datalist,type:'fertilizer'});
+          }
+           
+          this.clas = datalist.$class 
         });
         this.alldata = data;
         console.log(this.alldata)

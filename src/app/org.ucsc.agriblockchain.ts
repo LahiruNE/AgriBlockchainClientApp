@@ -110,6 +110,8 @@ import {Event} from './org.hyperledger.composer.system';
    }
    export class Trace {
       timestamp: Date;
+      Qty:number;
+      curQty:number;
       authperson: Stakeholder;
    }
    export class Address {
@@ -212,6 +214,7 @@ import {Event} from './org.hyperledger.composer.system';
    }
    export class TransferPackage extends Transaction {
       product: Product;
+      transferQty:number;
       newOwner: Stakeholder;
    }
    export class DivideAsset extends Transaction {

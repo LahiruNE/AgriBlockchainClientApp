@@ -396,7 +396,7 @@
       <div class="modal-dialog modal-lg">
       <div class="modal-content">
         <div class="modal-header">
-            <h4 class="modal-title" id="addParticipantModalLabel">Create {{StakeholderType}}</h4>
+            <h4 class="modal-title" id="addParticipantModalLabel">Create Stakeholder</h4>
           <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">×</span><span class="sr-only">Close</span></button>
           
         </div>
@@ -645,7 +645,7 @@
                               <div class="form-group text-left">
                                  <label for="images"> <b>Images</b></label>
                                   
-                                    <input formControlName="images" type="file" class="form-control">
+                                 <image-upload id="imageUpload"></image-upload>
                                   
                                 </div>
 
@@ -1240,9 +1240,7 @@
       </div>
     </div>
   </div>
-  
-  
-  
+
   <div class="modal fade" id="deleteParticipantModal" tabindex="-1" role="dialog" aria-labelledby="deleteParticipantModalLabel">
     <div class="modal-dialog" role="document">
       <div class="modal-content">
@@ -1296,14 +1294,14 @@
                     <table id="detTbl" style="width: 100%">
                        
                         <tr>
-                            <td style="width: 150px"><label for="stakeholderId"><b>stakeholderId</b></label></td>
+                            <td style="width: 150px"><label for="stakeholderId"><b>StakeholderId</b></label></td>
 
                             <td><input [ngModel]="stakeholderId" formControlName="stakeholderId" class="form-control" readonly>     </td>
 
                         </tr>
 
                         <tr>
-                            <td style="width: 150px"><label for="name"><b>name</b></label></td>
+                            <td style="width: 150px"><label for="name"><b>Name</b></label></td>
                             <td><input [ngModel]="name"formControlName="name" type="text" class="form-control" readonly></td>
 
                           </tr>
@@ -1987,13 +1985,26 @@
        <div *ngIf = "(clas == 'org.ucsc.agriblockchain.TransferPackage') && (TypeofTransaction == 'TransferPackage')" class="col-md-12">
           <div *ngFor = "let dataelements of alldata" class="col-md-12">
               <table  class="table table-striped">
-                <tr>
+                <tr *ngIf = "dataelements.type == 'product'">
                   <td>productId</td>
-                  <td>{{dataelements.product.split('#')[1]}}</td>
+                  <td>{{dataelements.data.product.split('#')[1]}}</td>
                 </tr>
+                <tr *ngIf = "dataelements.type == 'seed'">
+                    <td>seedId</td>
+                    <td>{{dataelements.data.seed.split('#')[1]}}</td>
+                  </tr>
+                  <tr *ngIf = "dataelements.type == 'pesticide'">
+                      <td>pesticideId</td>
+                      <td>{{dataelements.data.pesticide.split('#')[1]}}</td>
+                    </tr>
+                    <tr *ngIf = "dataelements.type == 'fertilizer'">
+                        <td>fertilierId</td>
+                        <td>{{dataelements.data.fertilizer.split('#')[1]}}</td>
+                      </tr>
+
                 <tr>
                     <td>newOwner</td>
-                    <td>{{dataelements.newOwner.split('#')[1]}}</td>
+                    <td>{{dataelements.data.newOwner.split('#')[1]}}</td>
                   </tr>
               </table>
               
@@ -2143,7 +2154,7 @@
                       <img src="../../assets/view.png" >
                     </button>
 
-                   <!--  <button (click)="getForm(participant.stakeholderId);showDiv()"  type="button" title="view" class="log btn btn-update">
+                   <!--  <button (click)="getForm(participant.stakeholderId);cls();"  type="button" title="view" class="log btn btn-update">
                         <img src="../../assets/book.png" style="width: 20px;">
                       </button> -->
                     <button *ngIf = "loggingType == 'CERTIFICATION'" (click)="getForm(participant.stakeholderId);" type="button" title="view" class="btn btn-update" data-toggle="modal" data-target="#addcomment">
@@ -2185,7 +2196,7 @@
       </div>
       <br><br>
 
-      <div class="col-md-12" style="box-shadow: 0px 0px 6px 2px #ddd;">
+      <div id="historyview" class="history col-md-12" style="box-shadow: 0px 0px 6px 2px #ddd;">
           <br>
           <div class="col-md-9 row">
               <img *ngIf = "alldata != ''" src="../../assets/search.png" style="width: 45px; height: 45px">&nbsp;&nbsp;&nbsp;
@@ -2218,13 +2229,13 @@
                                      
                                          <tr style="box-shadow: 0px 0px 1px 1px #ddd;">
                                              <td><img src="../../assets/clock.png" width="20px" height="20px"> 
-                                                 {{participant.transactionTimestamp.split('T')[0]}}
+                                                 {{participant.all.transactionTimestamp.split('T')[0]}}
                                              </td>
                                              <td><!-- <img src="../../assets/tran.png" width="26px" height="28px"> -->
-                                                 {{participant.transactionType.split('.')[4]}}
+                                                 {{participant.type}}
                                              </td>
                                              <td>
-                                               <a style="cursor: pointer" (click) = "userHis(participant.transactionInvoked)" data-toggle="modal" data-target="#viewHistoryModal">View More</a>
+                                               <a style="cursor: pointer" (click) = "userHis(participant.all.transactionInvoked)" data-toggle="modal" data-target="#viewHistoryModal">View More</a>
                                              </td><br>
                                              
                                            </tr>

@@ -358,3 +358,7 @@ sup{
   .services{background-color:#d4d4d4;min-height:710px;padding:65px 0 27px 0;} 
   .services a:hover{color:#000;} 
   .services h1{margin-top:0px !important;} 
+
+  .color {
+    background-color: #ffdddd;
+  }

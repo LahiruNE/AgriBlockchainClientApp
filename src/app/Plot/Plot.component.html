@@ -768,7 +768,7 @@
                 <button  type="button" title="view" (click)="getFormForView(asset.plotId);" class="btn btn-update" data-toggle="modal" data-target="#viewAssetModal">
                     <img src="../../assets/view.png">
                   </button>
-                  <button (click)="getPlotdata(asset.plotId)"  type="button" title="view" class="log btn btn-update">
+                  <button (click)="getPlotdata(asset.plotId);cls();"  type="button" title="view" class="log btn btn-update">
                       <img src="../../assets/book.png" style="width: 20px;">
                     </button>
 
@@ -807,7 +807,7 @@
         <div class="alert alert-warning" role="alert" style="text-align: center; margin-top: 30px; padding: 5px;"><h4>No plots available!</h4></div>
     </div>
 
-<div class="col-md-12" style="box-shadow: 0px 0px 6px 2px #ddd;">
+<div id="historyview" class="history col-md-12" style="box-shadow: 0px 0px 6px 2px #ddd;">
   <br>
     <div class="col-md-9 row">
         <img src="../../assets/search.png" style="width: 45px; height: 45px">&nbsp;&nbsp;&nbsp;
@@ -863,23 +863,23 @@
                    </div>
                 </div>
                 <div class="tab-pane fade" id="tab_default_3">
-                  <div class="col-md-12">
+                  <div class="col-md-6">
                       <table class="table">
                           <tbody>
                               <tr>
-                                  <td>FarmLocation</td>
+                                  <td><b>Farm Location</b></td>
                                   <td>{{plotinfo.farm.FarmLocation}}</td>
                                 </tr>
                                 <tr>
-                                    <td>Owner Name</td>
+                                    <td><b>Owner Name</b></td>
                                     <td>{{plotinfo.farm.owner.name}}</td>
                                   </tr>
                                   <tr>
-                                      <td>Certification Body</td>
+                                      <td><b>Certification Body</b></td>
                                       <td>{{plotinfo.farm.certification.certificationBody.name}}</td>
                                     </tr>
                                     <tr>
-                                        <td>Company</td>
+                                        <td><b>Company</b></td>
                                         <td>{{plotinfo.farm.owner.company.name}}</td>
                                       </tr>
                           </tbody>
