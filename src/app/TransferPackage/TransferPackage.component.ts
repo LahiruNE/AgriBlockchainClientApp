@@ -960,7 +960,7 @@ export class TransferPackageComponent implements OnInit {
               swal({
                 type: 'error',
                 title: 'Oops...',
-                text: 'The invoked product is owne by you already!'
+                text: 'The invoked product is owned by you already!'
               });
 
               return error = 1;
@@ -1013,6 +1013,7 @@ export class TransferPackageComponent implements OnInit {
           else if(type == 2){
             $('#loader2').hide();
             $('.word2').show();
+            $('#invokeAssetModal .close').trigger('click');
           }
         })
         .catch((error) => {
