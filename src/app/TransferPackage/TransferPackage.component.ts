@@ -43,7 +43,7 @@ export class TransferPackageComponent implements OnInit {
   private allAssets;
   private allPendingRequests;
   private allSubmittedRequests;
-  private allTransactions;
+  private allProductIds;
   private Transaction;
   private currentId;
   private errorMessage;
@@ -84,16 +84,11 @@ export class TransferPackageComponent implements OnInit {
 
   product = new FormControl('', Validators.required);
   newOwner = new FormControl('', Validators.required);
-  transactionId = new FormControl('', Validators.required);
-  timestamp = new FormControl('', Validators.required);
-
 
   constructor(private localStorageService : LocalStorageService, private serviceTransferPackage: TransferPackageService, public servicePlot: PlotService, public serviceData: DataService<Product>, public serviceProduct: ProductService, private fb: FormBuilder,public serviceStakeholder : StakeholderService) {
     this.transferForm = fb.group({
       product: this.product,
-      newOwner: this.newOwner,
-      transactionId: this.transactionId,
-      timestamp: this.timestamp
+      newOwner: this.newOwner
     });
 
     this.myForm = fb.group({
@@ -142,7 +137,7 @@ export class TransferPackageComponent implements OnInit {
   };
 
   ngOnInit(): void {
-    //this.loadAll();
+    this.loadAll();
     this.loadOwnedProducts();
     this.loadPendingRequests();
     this.loadSubmittedRequests();
@@ -318,14 +313,14 @@ export class TransferPackageComponent implements OnInit {
 
   loadAll(): Promise<any> {
     const tempList = [];
-    return this.serviceTransferPackage.getAll()
+    return this.serviceProduct.getAll()
     .toPromise()
     .then((result) => {
       this.errorMessage = null;
-      result.forEach(transaction => {
-        tempList.push(transaction);
+      result.forEach(product => {
+        tempList.push(product.productId);
       });
-      this.allTransactions = tempList;
+      this.allProductIds = tempList;
     })
     .catch((error) => {
       if (error === 'Server error') {
@@ -367,16 +362,12 @@ export class TransferPackageComponent implements OnInit {
     this.Transaction = {
       $class: 'org.ucsc.agriblockchain.TransferPackage',
       'product': this.product.value,
-      'newOwner': this.newOwner.value,
-      'transactionId': this.transactionId.value,
-      'timestamp': this.timestamp.value
+      'newOwner': this.newOwner.value
     };
 
-    this.myForm.setValue({
+    this.transferForm.setValue({
       'product': null,
-      'newOwner': null,
-      'transactionId': null,
-      'timestamp': null
+      'newOwner': null
     });
 
     return this.serviceTransferPackage.addTransaction(this.Transaction)
@@ -404,7 +395,6 @@ export class TransferPackageComponent implements OnInit {
       $class: 'org.ucsc.agriblockchain.TransferPackage',
       'product': this.product.value,
       'newOwner': this.newOwner.value,
-      'timestamp': this.timestamp.value
     };
 
     return this.serviceTransferPackage.updateTransaction(form.get('transactionId').value, this.Transaction)
@@ -491,6 +481,7 @@ export class TransferPackageComponent implements OnInit {
       this.errorMessage = null;
       this.loadOwnedProducts();
       this.loadPendingRequests();
+      this.loadAll();
 
       $('#updateAssetModal .close').trigger('click');
       swal(
@@ -521,6 +512,7 @@ export class TransferPackageComponent implements OnInit {
       this.errorMessage = null;
       this.loadOwnedProducts();
       this.loadPendingRequests();
+      this.loadAll();
 
       swal(
         'Success!',
@@ -887,6 +879,9 @@ export class TransferPackageComponent implements OnInit {
         return this.toggleLoad = this.serviceProduct.getAsset(id)
         .toPromise()
         .then((result)=>{
+          let error = 0;
+          let userId = this.localStorageService.getFromLocal('currentUser').stakeholderId;
+
           let certi = {
             $class: "org.ucsc.agriblockchain.Certification",
             "certificationNo": result.certification.certificationNo,
@@ -932,9 +927,9 @@ export class TransferPackageComponent implements OnInit {
 
             this.asset.transferDetails = trans;
           }
-          else{
-            $('#loader2').show();
-            $('.word2').hide();
+          else if(type == 0){
+            $('#loader0').show();
+            $('.word0').hide();
 
             let trans = {
               $class: "org.ucsc.agriblockchain.TransferDetails",
@@ -948,26 +943,74 @@ export class TransferPackageComponent implements OnInit {
 
             this.asset.transferDetails = trans;
           }
+          else if(type == 2){
+            $('#loader2').show();
+            $('.word2').hide();
 
-          return this.serviceProduct.updateAsset(id, this.asset)
-          .toPromise()
+            if(result.transferDetails.status.toString() == "PENDING"){
+              swal({
+                type: 'error',
+                title: 'Oops...',
+                text: 'The requested product is already in a tranfer process!'
+              });
+
+              return error = 1;
+            }
+            else if(result.currentOwner.stakeholderId == userId){
+              swal({
+                type: 'error',
+                title: 'Oops...',
+                text: 'The invoked product is owne by you already!'
+              });
+
+              return error = 1;
+            }
+            else{             
+
+              let trans = {
+                $class: "org.ucsc.agriblockchain.TransferDetails",
+                "status": "PENDING",
+                "comment": "",
+                "invokedBy": "resource:org.ucsc.agriblockchain.Stakeholder#" + userId
+              }
+
+              this.asset.currentOwner = "resource:org.ucsc.agriblockchain.Stakeholder#" + result.currentOwner.stakeholderId;
+              this.asset.issuer = "resource:org.ucsc.agriblockchain.Stakeholder#" + result.issuer.stakeholderId;
+              
+              this.asset.transferDetails = trans;
+            }           
+          }
+
+          if(error == 0){
+            return this.serviceProduct.updateAsset(id, this.asset)
+            .toPromise()
+            .then(()=>{
+              return error;
+            })
+          }
         })   
-        .then(() => {
+        .then((err) => {
           this.errorMessage = null;
           this.loadOwnedProducts();
           this.loadPendingRequests();
 
-          swal(
-            'Success!',
-            'Product updated successfully!',
-            'success'
-          )
+          if(err != 1){
+            swal(
+              'Success!',
+              'Product updated successfully!',
+              'success'
+            )
+          }
 
           if(type == 1){
             $('#loader1').hide();
             $('.word1').show();
           }
-          else{
+          else if(type == 0){
+            $('#loader0').hide();
+            $('.word0').show();
+          }
+          else if(type == 2){
             $('#loader2').hide();
             $('.word2').show();
           }
@@ -982,9 +1025,22 @@ export class TransferPackageComponent implements OnInit {
           }
         });
       }
-    }) 
+    })    
     
-    
+  }
+
+  getTransferDetails(id) {
+    if(this.allProductIds.includes(id)){
+      this.getFormForView(id);
+      $("#setModal").trigger('click');
+    }
+    else{
+      swal({
+        type: 'error',
+        title: 'Oops...',
+        text: 'Product ID is not available!'
+      })
+    }    
   }
 
 }

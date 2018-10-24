@@ -222,216 +222,309 @@
   </div>
   </div>
   
-  <div class="modal fade" id="viewAssetModal" tabindex="-1" role="dialog" aria-labelledby="viewAssetModalLabel">
-      <div class="modal-dialog modal-lg">
-        <div class="modal-content">
-          <div class="modal-header">
-              <h4 class="modal-title" id="addParticipantModalLabel">Product Details</h4>
-            <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">×</span><span class="sr-only">Close</span></button>
-            
-          </div>
-          <div class="modal-body">
-              <!-- Steps starts here -->
-          <div class="requestwizard">
-            <div class="requestwizard-row setup-panel">
-              <table id="tbl1" style="width: 100%">
-                <tr>
-                    <td>
-                        <div class="requestwizard-step">
-                            <a id="view1" href="#view-1" type="button" class="btn btn-default btn-circle" disabled="disabled">1</a>
-                            <p>Basic Information</p>
-                        </div>
-                    </td>
-  
-                    <td>
-                        <div class="requestwizard-step">
-                            <a href="#view-2" type="button" class="btn btn-default btn-circle" disabled="disabled">2</a>
-                            <p>Certification Details</p>
-                        </div>
-                    </td>            
+  <div class="modal fade" id="invokeAssetModal" tabindex="-1" role="dialog" aria-labelledby="invokeAssetModalLabel">
+    <div class="modal-dialog modal-lg">
+      <div class="modal-content">
+        <div class="modal-header">
+            <h4 class="modal-title" id="addParticipantModalLabel">You are trying to transfer Product #{{product.value}}!</h4>
+          <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">×</span><span class="sr-only">Close</span></button>
           
-                </tr>
-              </table>
-              </div>
-          </div>
-          <hr>
-      
-      <form [formGroup]="viewForm">
-          <div class="row setup-content" id="view-1">
-              <div class="col-xs-12">
-                  <div class="col-md-12">
-                    <table id="detTbl">
-                      <tr>
-                        <td style="width: 150px">
-                                <label ><b>Product ID</b></label>                        
+        </div>
+        <div class="modal-body">
+
+        <hr>
     
+    <form [formGroup]="viewForm">
+        
+        <div class="col-xs-12">
+            <div class="col-md-12">
+                <table id="detTbl">
+                <tr>
+                    <td style="width: 150px">
+                            <label><b>Plucked Date</b></label>                        
+
+                    </td>
+                    <td>
+                        <input formControlName="pluckedDate" class="form-control" disabled>      
+                    </td>
+                    </tr>
+
+                    <tr>
+                        <td>
+                                <label><b>Product Type</b></label>
                         </td>
                         <td>
-                            <input formControlName="productId" class="form-control" disabled>  
-                          
+                                <input formControlName="productType" class="form-control" disabled>
+                            
                         </td>
-                      </tr>
-    
-                      <tr>
-                          <td style="width: 150px">
-                                  <label><b>Plucked Date</b></label>                        
-      
-                          </td>
-                          <td>
-                              <input formControlName="pluckedDate" class="form-control" disabled>      
-                          </td>
-                        </tr>
-  
-                        <tr>
-                              <td>
-                                      <label><b>Product Type</b></label>
-                              </td>
-                              <td>
-                                      <input formControlName="productType" class="form-control" disabled>
-                                  
-                              </td>
-                          </tr>
-    
-                        <tr>
-                            <td style="width: 150px">
-                                    <label><b>Quantity</b></label>                        
-        
-                            </td>
-                            <td>  
-                              <div class="input-group mb-3">
-                                <input formControlName="quantity" class="form-control" disabled>
-                              </div>
-                            </td>
-                        </tr>
-  
-                        <tr>
-                          <td style="width: 150px">
-                                  <label><b>Unit</b></label>                        
-      
-                          </td>
-                          <td>  
-                              <input formControlName="unit" class="form-control"  disabled>
-                          </td>
-                      </tr>
-  
-                      <tr>
+                    </tr>
+
+                    <tr>
                         <td style="width: 150px">
-                                <label><b>Plot</b></label>                        
+                                <label><b>Quantity</b></label>                        
     
                         </td>
                         <td>  
-                            <input formControlName="plot" class="form-control"  disabled>
+                        <div class="input-group mb-3">
+                            <input formControlName="quantity" class="form-control" disabled>
+                        </div>
                         </td>
                     </tr>
-    
-                       <tr>
-                          <td style="width: 150px;" >
-                                  <label for="farmId"><b>Owner</b></label>                        
-      
-                          </td>
-                          <td>  
-                            <input formControlName="currentOwner" class="form-control"  disabled>
+
+                    <tr>
+                    <td style="width: 150px">
+                            <label><b>Unit</b></label>                        
+
+                    </td>
+                    <td>  
+                        <input formControlName="unit" class="form-control"  disabled>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td style="width: 150px;" >
+                            <label for="farmId"><b>Owner</b></label>                        
+
+                    </td>
+                    <td>  
+                        <input formControlName="currentOwner" class="form-control"  disabled>
+                    </td>
+                </tr>  
+                
+                </table>
+
+                <table style="float : right;">
+                    <tr>
+                        <td style="padding : 5px;">
+                        <button type="button" class="btn btn-default pull-right" data-dismiss="modal">Cancel</button>
                         </td>
-                      </tr>  
-                      
-                    </table>
+                        <td style="padding : 5px;">
+                            <button [promiseBtn]="toggleLoad" (click)="updateTransferDetails(2, product.value);" type="submit" class="btn btn-success pull-right" style="width:100px !important" ><div class="word2">Yes. Invoke.</div><div class="loader" style="display:none" id="loader2"></div></button>
+                        </td>
+                    </tr>
+                </table>
+
+            </div>
+        </div> 
+        
+    </form>
+  <!-- Form ends here -->
+      </div>
+    </div>
+  </div>
+  </div>  
+
+
+    <div class="modal fade" id="viewAssetModal" tabindex="-1" role="dialog" aria-labelledby="viewAssetModalLabel">
+        <div class="modal-dialog modal-lg">
+          <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" id="addParticipantModalLabel">Product Details</h4>
+              <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">×</span><span class="sr-only">Close</span></button>
+              
+            </div>
+            <div class="modal-body">
+                <!-- Steps starts here -->
+            <div class="requestwizard">
+              <div class="requestwizard-row setup-panel">
+                <table id="tbl1" style="width: 100%">
+                  <tr>
+                      <td>
+                          <div class="requestwizard-step">
+                              <a id="view1" href="#view-1" type="button" class="btn btn-default btn-circle" disabled="disabled">1</a>
+                              <p>Basic Information</p>
+                          </div>
+                      </td>
     
-                  </div>
-              </div>
-          </div>
-          
-          <div class="row setup-content" id="view-2">
-            <div class="col-xs-12">
-                <div class="col-md-12">
-                    <table id="detTbl">
+                      <td>
+                          <div class="requestwizard-step">
+                              <a href="#view-2" type="button" class="btn btn-default btn-circle" disabled="disabled">2</a>
+                              <p>Certification Details</p>
+                          </div>
+                      </td>            
+            
+                  </tr>
+                </table>
+                </div>
+            </div>
+            <hr>
+        
+        <form [formGroup]="viewForm">
+            <div class="row setup-content" id="view-1">
+                <div class="col-xs-12">
+                    <div class="col-md-12">
+                      <table id="detTbl">
                         <tr>
                           <td style="width: 150px">
-                                  <label for="certificationNo"><b>Certification No.</b></label>                        
+                                  <label ><b>Product ID</b></label>                        
       
                           </td>
                           <td>
-                              <input formControlName="certificationNo" class="form-control" disabled="disabled">  
+                              <input formControlName="productId" class="form-control" disabled>  
                             
                           </td>
                         </tr>
       
                         <tr>
                             <td style="width: 150px">
-                                    <label for="certificationBody"><b>Certification Body</b></label>                        
+                                    <label><b>Plucked Date</b></label>                        
         
                             </td>
                             <td>
-                                <input formControlName="certificationBody" class="form-control" disabled="disabled">  
+                                <input formControlName="pluckedDate" class="form-control" disabled>      
+                            </td>
+                          </tr>
+    
+                          <tr>
+                                <td>
+                                        <label><b>Product Type</b></label>
+                                </td>
+                                <td>
+                                        <input formControlName="productType" class="form-control" disabled>
+                                    
+                                </td>
+                            </tr>
+      
+                          <tr>
+                              <td style="width: 150px">
+                                      <label><b>Quantity</b></label>                        
+          
+                              </td>
+                              <td>  
+                                <div class="input-group mb-3">
+                                  <input formControlName="quantity" class="form-control" disabled>
+                                </div>
+                              </td>
+                          </tr>
+    
+                          <tr>
+                            <td style="width: 150px">
+                                    <label><b>Unit</b></label>                        
+        
+                            </td>
+                            <td>  
+                                <input formControlName="unit" class="form-control"  disabled>
+                            </td>
+                        </tr>
+    
+                        <tr>
+                          <td style="width: 150px">
+                                  <label><b>Plot</b></label>                        
+      
+                          </td>
+                          <td>  
+                              <input formControlName="plot" class="form-control"  disabled>
+                          </td>
+                      </tr>
+      
+                         <tr>
+                            <td style="width: 150px;" >
+                                    <label for="farmId"><b>Owner</b></label>                        
+        
+                            </td>
+                            <td>  
+                              <input formControlName="currentOwner" class="form-control"  disabled>
+                          </td>
+                        </tr>  
+                        
+                      </table>
+      
+                    </div>
+                </div>
+            </div>
+            
+            <div class="row setup-content" id="view-2">
+              <div class="col-xs-12">
+                  <div class="col-md-12">
+                      <table id="detTbl">
+                          <tr>
+                            <td style="width: 150px">
+                                    <label for="certificationNo"><b>Certification No.</b></label>                        
+        
+                            </td>
+                            <td>
+                                <input formControlName="certificationNo" class="form-control" disabled="disabled">  
                               
                             </td>
                           </tr>
-      
+        
                           <tr>
                               <td style="width: 150px">
-                                      <label for="from"><b>From</b></label>                        
+                                      <label for="certificationBody"><b>Certification Body</b></label>                        
           
                               </td>
                               <td>
-                                  <input formControlName="from" class="form-control" disabled="disabled">  
+                                  <input formControlName="certificationBody" class="form-control" disabled="disabled">  
                                 
                               </td>
-                          </tr>
-  
-                          <tr>
-                              <td style="width: 150px">
-                                      <label for="to"><b>To</b></label>                        
-          
+                            </tr>
+        
+                            <tr>
+                                <td style="width: 150px">
+                                        <label for="from"><b>From</b></label>                        
+            
+                                </td>
+                                <td>
+                                    <input formControlName="from" class="form-control" disabled="disabled">  
+                                  
+                                </td>
+                            </tr>
+    
+                            <tr>
+                                <td style="width: 150px">
+                                        <label for="to"><b>To</b></label>                        
+            
+                                </td>
+                                <td>
+                                    <input formControlName="to" class="form-control" disabled="disabled">  
+                                  
+                                </td>
+                            </tr>
+        
+                            <tr>
+                                <td style="width: 150px; border-top: 1px solid #bababc" colspan="2">
+                                        <label for="farmId"><b>Images</b></label> 
+                                        
+                                        <div *ngIf = "certificationImages.length != 0">
+                                            <carousel [interval]="false">
+                                                <slide *ngFor = "let image of certificationImages">
+                                                    <img style="width: 150px !important" src="{{image}}" style="display: block; width: 100%;" />
+                                                </slide>
+                                            </carousel>
+                                        </div>
+    
+                                        <div *ngIf = "certificationImages.length == 0" class="col-md-12">
+                                            <img src="../../assets/error.png" style="display: block; margin-left: auto; margin-right: auto; margin-top: 50px">
+                                            <div class="alert alert-warning" role="alert" style="text-align: center; margin-top: 30px; padding: 5px;"><h4>No images available!</h4></div>
+                                        </div>
+            
+                                </td>
+                            </tr>
+    
+                            <tr>
+                                <td style="width: 150px; border-top: 1px solid #bababc" colspan="2">
+                                        <label for="farmId"><b>Comments</b></label>                                          
+                                </td>
+                            </tr>
+                            <tr>
+                              <td colspan="2">
+                                  <ol>
+                                      <li *ngFor="let comment of certiicationComment" >{{comment}}</li>   
+                                    </ol> 
                               </td>
-                              <td>
-                                  <input formControlName="to" class="form-control" disabled="disabled">  
-                                
-                              </td>
-                          </tr>
+                            </tr>
+                          </table>
+                  </div>
+              </div>
+          </div> 
+        </form>
       
-                          <tr>
-                              <td style="width: 150px; border-top: 1px solid #bababc" colspan="2">
-                                      <label for="farmId"><b>Images</b></label> 
-                                      
-                                      <div *ngIf = "certificationImages.length != 0">
-                                          <carousel [interval]="false">
-                                              <slide *ngFor = "let image of certificationImages">
-                                                  <img style="width: 150px !important" src="{{image}}" style="display: block; width: 100%;" />
-                                              </slide>
-                                          </carousel>
-                                      </div>
-  
-                                      <div *ngIf = "certificationImages.length == 0" class="col-md-12">
-                                          <img src="../../assets/error.png" style="display: block; margin-left: auto; margin-right: auto; margin-top: 50px">
-                                          <div class="alert alert-warning" role="alert" style="text-align: center; margin-top: 30px; padding: 5px;"><h4>No images available!</h4></div>
-                                      </div>
-          
-                              </td>
-                          </tr>
-  
-                          <tr>
-                              <td style="width: 150px; border-top: 1px solid #bababc" colspan="2">
-                                      <label for="farmId"><b>Comments</b></label>                                          
-                              </td>
-                          </tr>
-                          <tr>
-                            <td colspan="2">
-                                <ol>
-                                    <li *ngFor="let comment of certiicationComment" >{{comment}}</li>   
-                                  </ol> 
-                            </td>
-                          </tr>
-                        </table>
-                </div>
-            </div>
-        </div> 
-      </form>
-    
-    
-    <!-- Form ends here -->
+      
+      <!-- Form ends here -->
+          </div>
         </div>
       </div>
-    </div>
-    </div>
+      </div>
   
   
   
@@ -458,6 +551,32 @@
 
 
 <div class="container">
+        <div class="jumbotron">
+            <h1 class="asset-title" id='assetName'>Invoke Product Transfer</h1>
+        
+            <div class="row">
+                <form [formGroup]="transferForm">
+                    <table id="detTbl">
+                        <tr>
+                            <td style="width: 150px">
+                                <label ><b>Product ID</b></label>                        
+        
+                            </td>
+                            <td>
+                                <input formControlName="product" class="form-control">                             
+                            </td>
+                            <td>
+                                <button (click)="getTransferDetails(product.value)" type="submit" class="btn btn-success pull-right" style="height:40px !important">Invoke</button>
+                                <button id="setModal" data-toggle="modal" data-target="#invokeAssetModal" style="display:none">Invoke</button>
+                            
+                            </td>
+                        </tr>
+                    </table>
+                </form>          
+            </div>   
+        </div>
+
+
     <div class="col-md-12" style="box-shadow: 0px 0px 6px 2px #ddd;">
         <br>
         <div class="col-md-9 row">
@@ -582,8 +701,8 @@
                                                     
                                         <td>
                                             <button  type="button" title="view" (click)="getFormForView(asset.productId);" class="btn btn-update" data-toggle="modal" data-target="#viewAssetModal">
-                                                    <img src="../../assets/view.png" style="margin-left:-4px">
-                                                </button>                                       
+                                                <img src="../../assets/view.png" style="margin-left:-4px">
+                                            </button>                                       
                                         
                                         </td>
                                     </tr>
@@ -643,7 +762,7 @@
                                                 </button>
 
                                                 <button [promiseBtn]="toggleLoad" (click)="updateTransferDetails(0, asset.productId);" type="submit" class="btn btn-update" >
-                                                    <div class="word2"><i class="fas fa-times"  style="color: #ff0000"></i></div><div class="loader" style="display:none" id="loader2"></div>
+                                                    <div class="word0"><i class="fas fa-times"  style="color: #ff0000"></i></div><div class="loader" style="display:none" id="loader0"></div>
                                                 </button>                           
                                             </td>
                                         </tr>
@@ -663,4 +782,8 @@
                 </div>
              
       </div>
+
+      
 </div>
+
+<br><br>
