@@ -492,8 +492,8 @@
   
                 <td>
                     <div class="requestwizard-step">
-                        <a href="#view-4" type="button" class="btn btn-default btn-circle" disabled="disabled">4</a>
-                        <p>Historian Details</p>
+                        <a href="#view-3" type="button" class="btn btn-default btn-circle" disabled="disabled">4</a>
+                        <p>QR Code</p>
                     </div>
                 </td>                
         
@@ -674,8 +674,16 @@
 
       <div class="row setup-content" id="view-3">
           <div class="col-xs-12">
-              <div class="col-md-12">
+            <div class="col-md-12">
+                <h5>The generated QR code for the selected product. Click 'Download' to download!</h5>
+                <div style="text-align: center">
+                    <ngx-qrcode [qrc-element-type]="elementType" [qrc-value] = "value" qrc-class = "aclass">
+                    </ngx-qrcode><br>
+
+                    <a style="width:110px" class="btn btn-success"  [attr.href]="downHref" download="smile.jpg" (click)="setHrefForDownload()"><i class="fas fa-download"></i> &nbsp;Download</a>
+  
                 </div>
+            </div>
           </div>
       </div>
     </form>

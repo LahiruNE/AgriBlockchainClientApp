@@ -38,6 +38,10 @@ export class ProductComponent implements OnInit {
   viewForm: FormGroup;
   certImagesFormArr: FormArray;
 
+  elementType : 'url' | 'canvas' | 'img' = 'url';
+  value : string;
+  downHref = "#";
+
   private allAssets;
   private productspath; 
   private stakename; 
@@ -131,7 +135,7 @@ export class ProductComponent implements OnInit {
     this.loadParticipants();
     this.loadPlots();
 
-    $('.history').hide();
+    $('.history').hide();    
 
     //setup wizard   
     var navListItems = $('div.setup-panel div a'),
@@ -174,6 +178,7 @@ export class ProductComponent implements OnInit {
             nextStepWizard.trigger('click');
     });
   }
+  
   cls(){
     $('.history').show();
     document.getElementById('historyview').scrollIntoView(true);
@@ -629,7 +634,7 @@ export class ProductComponent implements OnInit {
   }
 
   getFormForView(id: any): Promise<any> {
-    $('#view1').trigger('click');
+    $('#view1').trigger('click');    
 
     return this.serviceProduct.getAsset(id)
     .toPromise()
@@ -659,6 +664,8 @@ export class ProductComponent implements OnInit {
 
       if (result.productId) {
         formObject.productId = result.productId;
+
+        this.value = result.productId;
       } else {
         formObject.productId = null;
       }
@@ -811,6 +818,10 @@ export class ProductComponent implements OnInit {
 
     let fArray = <FormArray>this.myForm.controls['certImagesFormArr'];
     fArray.removeAt(index);  
+  }
+
+  setHrefForDownload() {
+    this.downHref = $('.aclass img').attr('src');    
   }
 
 }

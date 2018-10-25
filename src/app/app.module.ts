@@ -55,6 +55,8 @@ import { HarvestingComponent } from './harvesting/harvesting.component';
 import { WateringComponent } from './watering/watering.component';
 import { ManuringComponent } from './manuring/manuring.component';
 
+import { NgxQRCodeModule } from 'ngx-qrcode2';
+
   @NgModule({
   declarations: [
     AppComponent,
@@ -100,7 +102,8 @@ import { ManuringComponent } from './manuring/manuring.component';
       handleCurrentBtnOnly: false,
     }),
     NgDatepickerModule,
-    TimepickerModule.forRoot()
+    TimepickerModule.forRoot(),
+    NgxQRCodeModule
   ],
   providers: [
     DataService,

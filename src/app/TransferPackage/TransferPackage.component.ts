@@ -40,6 +40,10 @@ export class TransferPackageComponent implements OnInit {
   viewForm: FormGroup;
   certImagesFormArr: FormArray;
 
+  elementType : 'url' | 'canvas' | 'img' = 'url';
+  value : string;
+  downHref = "#";
+
   private allAssets;
   private allPendingRequests;
   private allSubmittedRequests;
@@ -711,6 +715,8 @@ export class TransferPackageComponent implements OnInit {
 
       if (result.productId) {
         formObject.productId = result.productId;
+
+        this.value = result.productId;
       } else {
         formObject.productId = null;
       }
@@ -947,16 +953,7 @@ export class TransferPackageComponent implements OnInit {
             $('#loader2').show();
             $('.word2').hide();
 
-            if(result.transferDetails.status.toString() == "PENDING"){
-              swal({
-                type: 'error',
-                title: 'Oops...',
-                text: 'The requested product is already in a tranfer process!'
-              });
-
-              return error = 1;
-            }
-            else if(result.currentOwner.stakeholderId == userId){
+            if(result.currentOwner.stakeholderId == userId){
               swal({
                 type: 'error',
                 title: 'Oops...',
@@ -964,7 +961,16 @@ export class TransferPackageComponent implements OnInit {
               });
 
               return error = 1;
-            }
+            }            
+            else if(result.transferDetails.status.toString() == "PENDING"){
+              swal({
+                type: 'error',
+                title: 'Oops...',
+                text: 'The requested product is already in a tranfer process!'
+              });
+
+              return error = 1;
+            }            
             else{             
 
               let trans = {
@@ -1042,6 +1048,10 @@ export class TransferPackageComponent implements OnInit {
         text: 'Product ID is not available!'
       })
     }    
+  }
+
+  setHrefForDownload() {
+    this.downHref = $('.aclass img').attr('src');    
   }
 
 }
