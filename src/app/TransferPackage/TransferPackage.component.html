@@ -532,7 +532,7 @@
                           <ngx-qrcode [qrc-element-type]="elementType" [qrc-value] = "value" qrc-class = "aclass">
                           </ngx-qrcode><br>
       
-                          <a style="width:110px" class="btn btn-success"  [attr.href]="downHref" download="smile.jpg" (click)="setHrefForDownload()"><i class="fas fa-download"></i> &nbsp; Download</a>
+                          <a style="width:110px" class="btn btn-success"  [attr.href]="downHref" [attr.download]="'barcode_'+productId.value+'.jpg'" (click)="setHrefForDownload()"><i class="fas fa-download"></i> &nbsp; Download</a>
         
                       </div>
                   </div>
