@@ -56,6 +56,7 @@ import { WateringComponent } from './watering/watering.component';
 import { ManuringComponent } from './manuring/manuring.component';
 
 import { NgxQRCodeModule } from 'ngx-qrcode2';
+import { DivideDashboardComponent } from './divide-dashboard/divide-dashboard.component';
 
   @NgModule({
   declarations: [
@@ -82,7 +83,8 @@ import { NgxQRCodeModule } from 'ngx-qrcode2';
     SeedingComponent,
     HarvestingComponent,
     WateringComponent,
-    ManuringComponent
+    ManuringComponent,
+    DivideDashboardComponent
   ],
   imports: [
     BrowserModule,

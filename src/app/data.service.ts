@@ -258,5 +258,21 @@ export class DataService<Type> {
         .catch(this.handleError);
 
     }
+
+    public divideAsset(asset){
+        let ns = '/org.ucsc.agriblockchain.DivideAsset';
+        return this.http.post(this.actionUrl + ns, asset)
+          .map(this.extractData)
+          .catch(this.handleError);
+
+    }  
+    
+    public transferAsset(asset){
+        let ns = '/org.ucsc.agriblockchain.TransferPackage';
+        return this.http.post(this.actionUrl + ns, asset)
+          .map(this.extractData)
+          .catch(this.handleError);
+
+    }  
  
 }

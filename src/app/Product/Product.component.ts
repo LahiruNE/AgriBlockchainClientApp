@@ -36,11 +36,15 @@ export class ProductComponent implements OnInit {
 
   myForm: FormGroup;
   viewForm: FormGroup;
+  divideForm: FormGroup;
   certImagesFormArr: FormArray;
+  productsFormArr: FormArray;
 
   elementType : 'url' | 'canvas' | 'img' = 'url';
   value : string;
   downHref = "#";
+
+  private userType = this.localStorageService.getFromLocal('currentUser').type;
 
   private allAssets;
   private productspath; 
@@ -60,6 +64,8 @@ export class ProductComponent implements OnInit {
   private certiicationComment = [];
   private productTypes = ['CARROT', 'TOMATO', 'PINEAPPLE']; 
   private units = ['KG', 'G', 'MT', 'L', 'ML', 'ITEM'];
+  private productsArr = [];
+  private divideViewQty;  
 
   productId = new FormControl('', Validators.required);
   pluckedDate = new FormControl('', Validators.required);
@@ -77,6 +83,8 @@ export class ProductComponent implements OnInit {
   to = new FormControl('');
   certiImages = new FormControl('');
   certiComments = new FormControl('');
+  products = new FormControl('');
+  divideProduct = new FormControl('');
 
   parentProduct;
   divideStatus;
@@ -127,11 +135,21 @@ export class ProductComponent implements OnInit {
       certiImages : this.certiImages,
       certiComments : this.certiComments,
     });
+
+    this.divideForm = fb.group({
+      divideProduct: this.divideProduct,
+      productsFormArr: fb.array([])
+    });
   };
 
   ngOnInit(): void {
-    //this.loadAll();
-    this.loadOwnedProducts();
+    if(this.userType == "ADMIN"){
+      this.loadAll();
+    }
+    else{
+      this.loadOwnedProducts();
+    }    
+    
     this.loadParticipants();
     this.loadPlots();
 
@@ -215,7 +233,10 @@ export class ProductComponent implements OnInit {
     .then((result) => {
       this.errorMessage = null;
       result.forEach(asset => {
-        tempList.push(asset);
+        if(asset.activeStatus.toString() != "CLOSED"){
+          tempList.push(asset);
+        }
+        
       });
       this.allAssets = tempList;
     })
@@ -331,8 +352,6 @@ export class ProductComponent implements OnInit {
   addAsset(form: any): Promise<any> {
     $('.loader').show();
     $('.word').hide();
-
-    alert(this.plot.value);
     
     let certImageArr = this.myForm.value['certImagesFormArr'];
     let certImages = [];
@@ -371,8 +390,13 @@ export class ProductComponent implements OnInit {
     .then(() => {
       this.errorMessage = null;   
 
-      //this.loadAll();
-      this.loadOwnedProducts();
+      if(this.userType == "ADMIN"){
+        this.loadAll();
+      }
+      else{
+        this.loadOwnedProducts();
+      }  
+
       swal(
         'Success!',
         'Product added successfully!',
@@ -387,6 +411,84 @@ export class ProductComponent implements OnInit {
           this.errorMessage = 'Could not connect to REST server. Please check your configuration details';
       } else {
           this.errorMessage = error;
+      }
+    });
+  }
+
+  divideAsset(form: any) {
+    $('.loader').show();
+    $('.word').hide();
+
+    let qty = this.divideForm.value['productsFormArr'];
+    let productQty = [];
+
+    qty.forEach((prod)=>{
+      let item = prod.product;
+      productQty.push(item);
+    });
+    
+    let sum = productQty.reduce((a, b) => a + b, 0)
+
+    swal({
+      title: 'Are you sure?',
+      text: "You won't be able to revert this!",
+      type: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'Yes, Proceed!'
+    }).then((result) => {
+      if (result.value) {
+        if(sum > this.divideViewQty){
+          $('.loader').hide();
+          $('.word').show();
+
+          swal({
+            type: 'error',
+            title: 'Oops...',
+            text: "Can't divide. Exceeding quantities!"
+          });
+        }
+        else{
+          let asset = {
+            "$class": "org.ucsc.agriblockchain.DivideAsset",
+            "product": "resource:org.ucsc.agriblockchain.Product#" + this.divideProduct.value,
+            "divideQty": productQty,
+          };
+          
+          return this.toggleLoad = this.serviceData.divideAsset(asset)
+          .toPromise()
+          .then(() => {
+            this.errorMessage = null;   
+
+            if(this.userType == "ADMIN"){
+              this.loadAll();
+            }
+            else{
+              this.loadOwnedProducts();
+            }  
+
+            swal(
+              'Success!',
+              'Product divided successfully!',
+              'success'
+            )
+            $('#divideAssetModal .close').trigger('click');
+            $('.loader').hide();
+            $('.word').show();
+          })
+          .catch((error) => {
+            $('.loader').hide();
+            $('.word').show();
+
+            if (error === 'Server error') {
+                this.errorMessage = 'Could not connect to REST server. Please check your configuration details';
+            } else {
+                this.errorMessage = error;
+            }
+          });  
+
+        }
       }
     });
   }
@@ -440,8 +542,12 @@ export class ProductComponent implements OnInit {
     .toPromise()
     .then(() => {
       this.errorMessage = null;
-      //this.loadAll();
-      this.loadOwnedProducts();
+      if(this.userType == "ADMIN"){
+        this.loadAll();
+      }
+      else{
+        this.loadOwnedProducts();
+      }  
 
       $('#updateAssetModal .close').trigger('click');
       swal(
@@ -470,8 +576,12 @@ export class ProductComponent implements OnInit {
     .toPromise()
     .then(() => {
       this.errorMessage = null;
-      //this.loadAll();
-      this.loadOwnedProducts();
+      if(this.userType == "ADMIN"){
+        this.loadAll();
+      }
+      else{
+        this.loadOwnedProducts();
+      }  
     })
     .catch((error) => {
       if (error === 'Server error') {
@@ -791,6 +901,18 @@ export class ProductComponent implements OnInit {
       });
   }
 
+  resetDivideForm(): void {
+    $('#divide1').trigger('click');
+
+    this.divideForm.setControl('productsFormArr', this.fb.array([]));
+
+    this.divideForm.setValue({
+      'divideProduct': null,
+      'productsFormArr': null,
+      'quantity': null
+      });
+  }
+
   onCertChange(event) {
     const reader = new FileReader();    
  
@@ -822,6 +944,50 @@ export class ProductComponent implements OnInit {
 
   setHrefForDownload() {
     this.downHref = $('.aclass img').attr('src');    
+  }
+
+  addField(){
+    this.productsFormArr = this.divideForm.get('productsFormArr') as FormArray;
+    this.productsFormArr.push(this.addProduct());      
+  }
+
+  addProduct() : FormGroup{
+    return this.fb.group({
+      product: ''
+    });
+  }
+
+  removeField(index){
+    let fArray = <FormArray>this.divideForm.controls['productsFormArr'];
+    fArray.removeAt(index);
+  }
+
+  setQty(id){
+    if(id != ""){
+      return this.serviceProduct.getAsset(id)
+      .toPromise()
+      .then((result) => {  
+
+        if (result.quantity) {
+          this.divideViewQty = result.quantity;
+
+          $("#availQtyTr").show();
+        }
+      })
+      .catch((error) => {
+        if (error === 'Server error') {
+          this.errorMessage = 'Could not connect to REST server. Please check your configuration details';
+        } else if (error === '404 - Not Found') {
+          this.errorMessage = '404 - Could not find API route. Please check your available APIs.';
+        } else {
+          this.errorMessage = error;
+        }
+      });
+    }
+    else{
+      $("#availQtyTr").hide();
+    }
+
   }
 
 }

@@ -909,11 +909,11 @@ export class TransferPackageComponent implements OnInit {
             'plot': "resource:org.ucsc.agriblockchain.Plot#" + result.plot.plotId,
           };
       
-          if(this.parentProduct != "") {                        
+          if(result.hasOwnProperty('parentProduct')) {                        
             this.asset.parentProduct = result.parentProduct;   
           }
       
-          if(this.productpath != "") {                        
+          if(result.hasOwnProperty('productpath')) {                        
             this.asset.productpath = result.productpath;   
           }
 
@@ -928,10 +928,11 @@ export class TransferPackageComponent implements OnInit {
               "invokedBy": "resource:org.ucsc.agriblockchain.Stakeholder#" + result.transferDetails.invokedBy.stakeholderId
             }
 
-            this.asset.currentOwner = "resource:org.ucsc.agriblockchain.Stakeholder#" + result.transferDetails.invokedBy.stakeholderId;
-            this.asset.issuer = "resource:org.ucsc.agriblockchain.Stakeholder#" + result.currentOwner.stakeholderId;
+            this.asset.currentOwner = "resource:org.ucsc.agriblockchain.Stakeholder#" + result.currentOwner.stakeholderId;
+            this.asset.issuer = "resource:org.ucsc.agriblockchain.Stakeholder#" + result.issuer.stakeholderId;
 
-            this.asset.transferDetails = trans;
+            this.asset.transferDetails = trans;            
+            
           }
           else if(type == 0){
             $('#loader0').show();
@@ -960,7 +961,8 @@ export class TransferPackageComponent implements OnInit {
                 text: 'The invoked product is owned by you already!'
               });
 
-              return error = 1;
+              error = 1;
+              return {'error':error, 'id':id, 'stakeholder': result.transferDetails.invokedBy.stakeholderId};
             }            
             else if(result.transferDetails.status.toString() == "PENDING"){
               swal({
@@ -969,7 +971,8 @@ export class TransferPackageComponent implements OnInit {
                 text: 'The requested product is already in a tranfer process!'
               });
 
-              return error = 1;
+              error = 1;
+              return {'error':error, 'id':id, 'stakeholder': result.transferDetails.invokedBy.stakeholderId};
             }            
             else{             
 
@@ -991,9 +994,39 @@ export class TransferPackageComponent implements OnInit {
             return this.serviceProduct.updateAsset(id, this.asset)
             .toPromise()
             .then(()=>{
-              return error;
+              return {'error':error, 'id':id, 'stakeholder': result.transferDetails.invokedBy.stakeholderId};
             })
           }
+        })
+        .then((prod) => {
+          if(type == 1){
+            let asset = {
+              "$class": "org.ucsc.agriblockchain.TransferPackage",
+              "product": "resource:org.ucsc.agriblockchain.Product#" + prod.id,
+              "newOwner": "resource:org.ucsc.agriblockchain.Stakeholder#" + prod.stakeholder
+            };
+
+            return this.serviceData.transferAsset(asset)
+            .toPromise()
+            .then(() => {
+              return prod.error;
+            })
+            .catch((error) => {
+              prod.error = 1;              
+
+              if (error === 'Server error') {
+                  this.errorMessage = 'Could not connect to REST server. Please check your configuration details';
+              } else {
+                  this.errorMessage = error;
+              }
+
+              return prod.error;
+            });
+
+          }
+          else{
+            return prod.error;
+          }          
         })   
         .then((err) => {
           this.errorMessage = null;
