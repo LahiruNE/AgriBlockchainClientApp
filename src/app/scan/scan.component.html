@@ -1,4 +1,458 @@
 
-<div class="col-md-12">
-    <img src="../../assets/test.png" style="margin-top: 10%; margin-left: 40%;">
+<div class="container">
+       
+        <div class="jumbotron">
+                <div class="row">
+                    <form [formGroup]="myForm">
+                        <table id="detTbl">
+                            <tr>
+                                <td style="width: 150px">
+                                    <label ><b>Product ID</b></label>                        
+            
+                                </td>
+                                <td style="width: 200px">
+                                    <input formControlName="productId" class="form-control">                             
+                                </td>
+                                <td style="padding-left: 30px;">
+                                    <button (click)="getproduct(myForm.value.productId);cls();" type="submit" class="btn btn-success pull-right" style="height:40px !important">Submit</button>
+                                    <button id="setModal" data-toggle="modal" data-target="#invokeAssetModal" style="display:none">Invoke</button>
+                                
+                                </td>
+                            </tr>
+                        </table>
+                    </form>          
+                </div>   
+            </div>
+        <div class="modal fade" id="viewHistoryModal" tabindex="-1" role="dialog" aria-labelledby="modalLabel" aria-hidden="true">
+                <div class="modal-dialog modal-lg">
+                <div class="modal-content">
+                  <div class="modal-header">
+                    <h4 class="modal-title" id="addParticipantModalLabel">Historian Details</h4>
+                    <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">×</span><span class="sr-only">Close</span></button>
+                  </div>
+                  <div class="modal-body">
+                        <table class="table table-striped">
+                                <!--  <thead>
+                                   <th><img src="../../assets/clock.png" width="20px" height="20px">  Timestamp</th>
+                                   <th><img src="../../assets/tran.png" width="26px" height="28px">   Transaction Type</th>
+                                 </thead> -->
+                                 <tbody *ngFor="let element of productspath" >
+                                
+                                   <tr>
+                                        <td>Role</td>
+                                       <td>{{element.path.authperson.type}}</td>
+                                   </tr>
+                                   <tr>
+                                        <td>Location</td>
+                                       <td>{{element.path.authperson.address.city}}</td>
+                                   </tr>
+                                   <tr>
+                                        <td>Transfer Quantity</td>
+                                       <td>{{element.path.Qty}}</td>
+                                   </tr>
+                                 
+                                   <tr>
+                                        <td>certification Body</td>
+                                       <td>{{element.path.authperson.certification.certificationBody.name}}</td>
+                                   </tr>         
+                                 </tbody>
+                                 </table>
+                  </div>
+                  </div>
+                  </div>
+                  </div>
+        <div class="modal fade" id="phModal" tabindex="-1" role="dialog" aria-labelledby="deleteAssetModalLabel">
+                <div class="modal-dialog modal-lg" role="document">
+                  <div class="modal-content">
+                    <div class="modal-header">
+                      <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                      <h4 class="modal-title" id="deleteAssetModalLabel"></h4>
+                    </div>
+                    
+                  </div>
+                </div>
+              </div>
+              <div class="modal fade" id="viewactivityModal" tabindex="-1" role="dialog" aria-labelledby="deleteAssetModalLabel">
+                    <div class="modal-dialog modal-lg" role="document">
+                      <div class="modal-content">
+                        <div class="modal-header">
+                          <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                          <h4 class="modal-title" id="deleteAssetModalLabel"></h4>
+                        </div>
+                        <div *ngFor = "let dataele of onlyacti" class="col-md-12">
+                                <table  *ngIf = "(actitype =='MANURING') && (dataele.type =='pesticide') " class="table table-striped">
+                                   
+                                      <tr>
+                                          <td>Pesticide Name</td>
+                                          <td>{{dataele.data.pesticide.name}}</td>
+                                      </tr>
+                                      <tr>
+                                            <td>Amount</td>
+                                            <td>{{dataele.data.pesticide.amount}}</td>
+                                          </tr>
+                                        <tr>
+                                            <td>Manufacture Date</td>
+                                            <td>{{dataele.data.pesticide.manufactureDate.split('T')[0]}}</td>
+                                        </tr>
+                                      <tr>
+                                            <td>Expiry Date</td>
+                                            <td>{{dataele.data.pesticide.expiryDate.split('T')[0]}}</td>
+                                        </tr>
+                                        
+                                        <tr>
+                                            <td>DateOfSale</td>
+                                            <td>{{dataele.data.pesticide.dateOfSale.split('T')[0]}}</td>
+                                        </tr>
+                                  
+                                </table>
+                                <table  *ngIf = "(actitype =='MANURING') && (dataele.type =='fertilizer') " class="table table-striped">
+                                        
+                                          <tr>
+                                              <td>Fertilizer Name</td>
+                                              <td>{{dataele.data.fertilizer.name}}</td>
+                                            </tr>
+                                            <tr>
+                                                <td>Amount</td>
+                                                <td>{{dataele.data.fertilizer.amount}}</td>
+                                            </tr>
+                                            <tr>
+                                                    <td>Manufacture Date</td>
+                                                    <td>{{dataele.data.fertilizer.manufactureDate.split('T')[0]}}</td>
+                                                </tr>
+                                              <tr>
+                                                    <td>Expiry Date</td>
+                                                    <td>{{dataele.data.fertilizer.expiryDate.split('T')[0]}}</td>
+                                                </tr>
+                                                
+                                                <tr>
+                                                    <td>DateOfSale</td>
+                                                    <td>{{dataele.data.fertilizer.dateOfSale.split('T')[0]}}</td>
+                                                </tr>
+                                      
+                                    </table>
+                                
+                              </div>
+                      </div>
+                    </div>
+                  </div>
+<div id="historyview" class="history">
+<div style="background-color: #dce0a0;box-shadow: 0px 1px 1px 1px #a8ad5e;" class="col-md-12">
+        <div style="padding-top: 26px;padding-left: 154px;" class="col-md-3">
+                <img src="../../assets/farmer.png" width="60px"/>&nbsp;
+        </div>
+        <div class="col-md-6">
+                <h1 style="font-family: 'Mali', cursive;text-align: center;padding-top: 32px;">Farm To Fork Within <b>{{trandays}}</b> Days..</h1>&nbsp;
+        </div>
+        <div style="padding: 26px"  class="col-md-3">
+                <img src="../../assets/stall.png" width="60px"/>
+        </div>    
+</div><hr>
+<!-- <div style="background-color: #dce0a0;box-shadow: 0px 1px 1px 1px #a8ad5e;" class="userpath col-md-12">
+    <div class="col-md-1"></div>
+    <div class="col-md-10">
+        <div style="padding-left: 15%;" class="col-md-4">
+            <img src="../../assets/user1.png" width="50px" height="50px"/><br>
+            <p>Old owner : <b>{{oldowner}}</b></p>
+        </div>
+        <div class="col-md-2">
+            <img src="../../assets/blue-arrow.png"  width="100px" height="70px"/>
+        </div>
+        <div style="padding-left: 10%;" class="col-md-4">
+            <img src="../../assets/user2.png" width="50px" height="50px"/><br>
+            <p>Current owner : <b>{{currentowner}}</b></p>
+        </div>
+       
+        
+    </div>
+    <div class="col-md-1"></div>   
+</div><br> -->
+        <div>
+                <div class="col-md-12 bhoechie-tab-container">
+                    <div class="col-lg-3 col-md-3 col-sm-3 col-xs-3 bhoechie-tab-menu">
+                      <div class="list-group">
+                        <a href="#tab_1" class="list-group-item active ">
+                        <i class="fab fa-pagelines fa-2x"></i><br> Plot Details
+                        </a>
+                        <a href="#tab_2" class="list-group-item ">
+                        <i class="fas fa-feather-alt fa-2x"></i><br> Farm Details
+                        </a>
+                        <a href="#tab_3" class="list-group-item ">
+                        <i class="far fa-address-card fa-2x"></i><br> Certification Details
+                        </a>
+                        <a href="#tab_4" class="list-group-item ">
+                        <i class="fas fa-project-diagram fa-2x"></i><br> Product Path
+                        </a>
+                        <a href="#tab_5" class="list-group-item">
+                        <i class="fas fa-fill-drip fa-2x"></i><br/>Plot Activities
+                        </a>
+                        <a href="#tab_6" class="list-group-item">
+                        <i class="fas fa-comments fa-2x"></i><br/>Certification Body Comments
+                        </a>
+                        <a href="#tab_7" class="list-group-item">
+                        <i class="fas fa-vial fa-2x"></i><br/>PH Readings
+                        </a>
+                      </div>
+                    </div>
+                    <div class="col-lg-9 col-md-9 col-sm-9 col-xs-9 bhoechie-tab">
+                        <!-- flight section -->
+                        <div id="tab_1" class="bhoechie-tab-content active">
+                                <table  class="table table-striped "  *ngFor = "let ele of plotdetails">
+                                        <tr>
+                                            <td>Cultivation Start Date</td>
+                                            <td><b>{{ele.cultivationStartDate.split('T')[0]}}</b></td>
+                                        </tr>
+                                        <tr>
+                                            <td>Seeded Date</td>
+                                            <td *ngIf = "ele.seededDate == ''">Not yet Seeded</td>
+                                            <td *ngIf = "ele.seededDate != ''"><b>{{ele.seededDate.split('T')[0]}}</b></td>
+                                            </tr>
+                                        <tr>
+                                            <td>Plucked Date</td>
+                                            <td><b>{{pluckeddate.split('T')[0]}}</b></td>
+                                            </tr>
+                                        <tr>
+                                            <td>Extent</td>
+                                            <td>{{ele.extent}}m<sup>2</sup></td>
+                                            </tr>
+                                        <tr>
+                                            <td colspan="2">Closer Plots</td><br>
+                                        </tr>
+                                        <tr>
+                                            <td style="padding-left:8%">North</td>
+                                            <td>{{ele.closerplots.North}}</td>
+                                        </tr>
+                                        <tr>
+                                            <td  style="padding-left:8%">East</td>
+                                            <td>{{ele.closerplots.East}}</td>
+                                        </tr>
+                                        <tr>
+                                            <td  style="padding-left:8%">South</td>
+                                            <td>{{ele.closerplots.South}}</td>
+                                        </tr>
+                                        <tr>
+                                            <td  style="padding-left:8%">West</td>
+                                            <td>{{ele.closerplots.West}}</td>
+                                        </tr>
+                                       
+                                    </table>
+                                    <!-- <div class="col-md-12">
+                                        <div class="newbtn col-md-6" data-toggle="modal" data-target="#phModal">
+                                       
+                                                PH Readings
+                                        
+                                        </div>
+                                        <div class="newbtn col-md-6" data-toggle="modal" data-target="#activityModal">
+                                            
+                                                Plot Activities
+                                         
+                                        </div>
+                                        <br><br>
+                                    </div> -->
+                                    
+                        </div>
+                        <!-- train section -->
+                        <div id="tab_2" class="bhoechie-tab-content">
+                            <table  class="table table-striped "  *ngFor = "let element of farmdetails">
+                                
+                                <tr>
+                                    <td>Farm Location</td>
+                                    <td>{{element.FarmLocation}}</td>
+                                </tr>
+                                <tr>
+                                    <td>Farm Owner</td>
+                                    <td>{{element.owner.name}}</td>
+                                </tr>
+                                <tr>
+                                    <td>owner Address</td>
+                                    <td>{{element.owner.address.city}}</td>
+                                </tr>
+                                <tr>
+                                    <td colspan="2">Near Factories</td><br>
+                                </tr>
+                                <tr>
+                                    <td style="padding-left:8%">North</td>
+                                    <td>{{element.nearFactories.North}}</td>
+                                </tr>
+                                <tr>
+                                    <td  style="padding-left:8%">East</td>
+                                    <td>{{element.nearFactories.East}}</td>
+                                </tr>
+                                <tr>
+                                    <td  style="padding-left:8%">South</td>
+                                    <td>{{element.nearFactories.South}}</td>
+                                </tr>
+                                <tr>
+                                    <td  style="padding-left:8%">West</td>
+                                    <td>{{element.nearFactories.West}}</td>
+                                </tr>
+                            </table>
+                        </div>
+            
+                        <!-- hotel search -->
+                        <div id="tab_3" class="bhoechie-tab-content"><br>
+                                <table  class="table table-striped "  *ngFor = "let item of productdetails">
+                                        <tr>
+                                            <td>Certification No</td>
+                                            <td>{{item.certification.certificationNo}}</td>
+                                        </tr>
+                                        <tr>
+                                            <td>CertificationBody</td>
+                                            <td>{{item.certification.certificationBody.name}}</td>
+                                        </tr>
+                                        <tr>
+                                            <td>Authorized Person</td>
+                                            <td>{{item.certification.certificationBody.authPerson}}</td>
+                                        </tr>
+                                        <tr> 
+                                           <td style="text-align: center" colspan="2"><img src="../../assets/cert.png" width="60px" height="60px"/></td>    
+                                                
+                                        </tr>
+                                        <tr> 
+                                            <td style="text-align: center;" colspan="2">Certification valid From <b>{{item.certification.from.split('T')[0]}}</b> To <b>{{item.certification.to.split('T')[0]}}</b></td>
+                                            
+                                        </tr>
+                                       
+                                    </table>
+                        </div>
+                        <div id="tab_4" class="bhoechie-tab-content">
+                                <div class="col-md-12">
+                                        <div *ngIf ="productspath ==''" class="alert alert-warning" role="alert" style="text-align: center; margin-top: 10px; padding: 5px;"><h4>No Product Path Details available!</h4></div>
+                                        <table class="table" id="detTbl2">
+                                                <!--  <thead>
+                                                   <th><img src="../../assets/clock.png" width="20px" height="20px">  Timestamp</th>
+                                                   <th><img src="../../assets/tran.png" width="26px" height="28px">   Transaction Type</th>
+                                                 </thead> -->
+                                                 <tbody *ngFor="let element of productspath" >
+                                                   
+                                                       <tr style="box-shadow: 0px 0px 1px 1px #ddd;" [ngClass]="{'color': ( element.path.Qty > element.new )}">
+                                                           <td><img src="../../assets/clock.png" width="20px" height="20px"> 
+                                                            {{element.path.timestamp.split('T')[0]}}
+                                                           </td>
+                                                           <td><!-- <img src="../../assets/tran.png" width="26px" height="28px"> -->
+                                                            <b>Product Owner :</b> {{element.path.authperson.name}}
+                                                           </td>
+                                                           <td>
+                                                             <a style="cursor: pointer" data-toggle="modal" data-target="#viewHistoryModal">View More</a>
+                                                           </td>
+                                                           
+                                                         </tr>
+                                                         <tr >
+                                                                <i style="margin-left: 130%;" [ngClass]="{'iconcolor': ( element.path.Qty > element.new )}" class="fas fa-caret-down fa-3x"></i>
+                                                               
+                                                         <!-- <img src="../../assets/arrow.png" width="30px" height="25px" style="margin-left: 130%"> -->
+                                 
+                                                         </tr> 
+                                                 </tbody>
+                                                 <div>
+                                                        <img src="../../assets/3-dots.png" width="30px" height="25px" style="margin-left: 130%">
+                                                    </div>
+                                                   
+                                                 </table>
+                                                 
+                                </div>
+                        </div>
+                        <div id="tab_5" class="bhoechie-tab-content">
+                                <div *ngIf ="activity==''" class="alert alert-warning" role="alert" style="text-align: center; margin-top: 10px; padding: 5px;"><h4>No Plot Activities available!</h4></div>
+                                <table *ngIf ="activity !=''"  class="table table-striped">
+                                  <thead>
+                                    <th>Date</th>
+                                    <th>Time</th>
+                                    <th>Activity</th>
+                                    <th></th>
+                                  </thead>
+                                  <tbody>
+                                      <tr *ngFor = 'let items of activity'>
+                                          <td>{{items.time.split('T')[0]}}</td>
+                                          <td>{{items.time.split('T')[1]}}</td>
+                                          <td>{{items.activitytype}}</td>
+                                          <td *ngIf ="items.activitytype =='MANURING'" ><a style="cursor: pointer" data-toggle="modal" (click) = "getpro(items.transactionId)" data-target="#viewactivityModal">View More</a></td>
+                                         
+                                        </tr>
+                                  </tbody>
+                                  </table>
+                        </div>
+                        <div id="tab_6" class="bhoechie-tab-content">
+                            <div id="historyview" class="history col-md-12">
+                                        <!--our-quality-shadow-->
+                                        <div class="clearfix"></div>
+                                        <!-- <h1 class="heading1">Plot Historian</h1> -->
+                                        <div class="tabbable-panel margin-tops4 ">
+                                          <div class="tabbable-line">
+                                            <ul class="nav nav-tabs tabtop  tabsetting">
+                                              <li class="active"> <a href="#tab_default_1" data-toggle="tab"> Farm Comments </a> </li>
+                                              <li> <a href="#tab_default_2" data-toggle="tab"> Plot Comments</a> </li>
+                                              
+                                             
+                                            </ul>
+                                            <div class="tab-content margin-tops">
+                                              <div class="tab-pane active fade in" id="tab_default_1">
+                                                <div class="col-md-12">
+                                                    <div *ngIf ="farmcomments==''" class="alert alert-warning" role="alert" style="text-align: center; margin-top: 10px; padding: 5px;"><h4>No Farm Comments available!</h4></div>
+                                                    <table *ngIf ="farmcomments !=''"  class="table table-striped">
+                                                        <thead>
+                                                        <th>Inspection Date</th>
+                                                        <th>Inspection Time</th>
+                                                        <th>Comments</th>
+                                                        </thead>
+                                                        <tbody>
+                                                            <tr *ngFor = 'let elment of farmcomments'>
+                                                                <td>{{elment.date.split('T')[0]}}</td>
+                                                                <td>{{elment.date.split('T')[1]}}</td>
+                                                                <td>{{elment.comment}}</td>
+                                                            
+                                                            </tr>
+                                                        </tbody>
+                                                        </table>
+                                                    
+                                                </div>
+                                              </div>
+                                              <div class="tab-pane fade" id="tab_default_2">
+                                                <div class="col-md-12">
+                                                        <div *ngIf ="plotcomments==''" class="alert alert-warning" role="alert" style="text-align: center; margin-top: 10px; padding: 5px;"><h4>No Farm Comments available!</h4></div>
+                                                        <table *ngIf ="plotcomments !=''"  class="table table-striped">
+                                                            <thead>
+                                                            <th>Inspection Date</th>
+                                                            <th>Inspection Time</th>
+                                                            <th>Comments</th>
+                                                            </thead>
+                                                            <tbody>
+                                                                <tr *ngFor = 'let ement of plotcomments'>
+                                                                    <td>{{ement.date.split('T')[0]}}</td>
+                                                                    <td>{{ement.date.split('T')[1]}}</td>
+                                                                    <td>{{ement.comment}}</td>
+                                                                
+                                                                </tr>
+                                                            </tbody>
+                                                            </table>
+                                                    
+                                                 </div>
+                                              </div>
+                                              
+                                            </div>
+                                          </div>
+                                        </div>
+                                     
+                              </div>
+                    </div>
+                        <div id="tab_7" class="bhoechie-tab-content">
+                                <div *ngIf ="phread==''" class="alert alert-warning" role="alert" style="text-align: center; margin-top: 10px; padding: 5px;"><h4>No Ph Readings available!</h4></div>
+                                <table *ngIf ="phread !=''"  class="table">
+                                    <thead>
+                                      <th>ReadingTime</th>
+                                      <th>PH Value</th>
+                                    </thead>
+                                    <tbody>
+                                        <tr *ngFor = 'let el of phread' [ngClass]="{'color': (element.ph > 20 && element.ph < 50)}">
+                                            <td>{{el.timestamp}}</td>
+                                            <td>{{el.ph}}</td>
+                                           
+                                          </tr>
+                                    </tbody>
+                                    </table>
+                        </div>
+                    </div>
+                </div>
 </div>
+</div>
+</div>
+<br><br>

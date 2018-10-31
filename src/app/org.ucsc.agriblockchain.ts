@@ -26,6 +26,7 @@ import {Event} from './org.hyperledger.composer.system';
       extent: number;
       closerplots: Directions;
       activities: Activity[];
+      certificationactivity:Inspection[];
       phReadings: PHReading[];
       certificationBodyComments: string[];
       status : PlotStatus;
@@ -40,6 +41,7 @@ import {Event} from './org.hyperledger.composer.system';
       nearFactories: Directions;
       otherDescription: string;
       certification: Certification;
+      certificationactivity:Inspection[];
       owner: Stakeholder;
       farmers: Stakeholder[];
    }
@@ -199,6 +201,7 @@ import {Event} from './org.hyperledger.composer.system';
       email: string;
       telephone: string;
       certification: Certification;
+      certificationactivity:Inspection[];
       images: string[];
       company: Company;
       username: string;
@@ -237,6 +240,13 @@ import {Event} from './org.hyperledger.composer.system';
       amount: number;
       time: Date;
    }
+   export class Inspection extends Transaction {
+     plot: Plot;
+     farm: Farm; 
+     stakeholder: Stakeholder;
+     date: Date;
+     comment:string;
+ }
    export class PHThresholdEvent extends Event {
       plot: Plot;
       message: string;

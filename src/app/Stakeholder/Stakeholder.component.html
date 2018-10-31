@@ -2001,7 +2001,6 @@
                         <td>fertilierId</td>
                         <td>{{dataelements.data.fertilizer.split('#')[1]}}</td>
                       </tr>
-
                 <tr>
                     <td>newOwner</td>
                     <td>{{dataelements.data.newOwner.split('#')[1]}}</td>
@@ -2157,7 +2156,7 @@
                    <!--  <button (click)="getForm(participant.stakeholderId);cls();"  type="button" title="view" class="log btn btn-update">
                         <img src="../../assets/book.png" style="width: 20px;">
                       </button> -->
-                    <button *ngIf = "loggingType == 'CERTIFICATION'" (click)="getForm(participant.stakeholderId);" type="button" title="view" class="btn btn-update" data-toggle="modal" data-target="#addcomment">
+                    <button (click)="getForm(participant.stakeholderId);" type="button" title="view" class="btn btn-update" data-toggle="modal" data-target="#addcomment">
                       <img src="../../assets/comment.png" style="width: 20px;">
                     </button>
 

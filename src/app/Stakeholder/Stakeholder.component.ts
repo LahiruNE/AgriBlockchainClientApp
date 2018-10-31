@@ -24,6 +24,7 @@ import { DataService } from '../data.service';
 import { Stakeholder } from '../org.ucsc.agriblockchain';
 import { BsDatepickerConfig } from 'ngx-bootstrap/datepicker';
 import { AddParticipant } from '../org.hyperledger.composer.system';
+import { InspectionService } from '../services/inspection.service';
 import swal from 'sweetalert2';
 @Component({
   selector: 'app-stakeholder',

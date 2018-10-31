@@ -962,6 +962,14 @@
                                    <td>{{element.path.authperson.stakeholderId}}</td>
                                </tr>
                                <tr>
+                                    <td>Role</td>
+                                   <td>{{element.path.authperson.type}}</td>
+                               </tr>
+                               <tr>
+                                    <td>Location</td>
+                                   <td>{{element.path.authperson.address.city}}</td>
+                               </tr>
+                               <tr>
                                     <td>Transfer Quantity</td>
                                    <td>{{element.path.Qty}}</td>
                                </tr>
@@ -1014,12 +1022,13 @@
                                                        </td>
                                                        <td>
                                                          <a style="cursor: pointer" data-toggle="modal" data-target="#viewHistoryModal">View More</a>
-                                                       </td><br>
+                                                       </td>
                                                        
                                                      </tr>
                                                      <tr >
-                             
-                                                     <img src="../../assets/arrow.png" width="30px" height="25px" style="margin-left: 130%">
+                                                            <i style="margin-left: 130%;" [ngClass]="{'iconcolor': ( element.path.Qty > element.new )}" class="fas fa-caret-down fa-3x"></i>
+                                                           
+                                                     <!-- <img src="../../assets/arrow.png" width="30px" height="25px" style="margin-left: 130%"> -->
                              
                                                      </tr> 
                                              </tbody>
