@@ -44,7 +44,8 @@ import { ManuringComponent } from './manuring/manuring.component';
 import { HarvestingComponent } from './harvesting/harvesting.component';
 
 import { DivideDashboardComponent } from './divide-dashboard/divide-dashboard.component';
-
+import { PlantGrowthComponent } from './plant-growth/plant-growth.component';
+ 
 const routes: Routes = [
   { path: '', component: HomeComponent },
   { path: 'Product', component: ProductComponent },
@@ -69,6 +70,7 @@ const routes: Routes = [
   { path: 'Manuring', component: ManuringComponent },
   { path: 'Harvesting', component: HarvestingComponent },
   { path: 'DivideHome', component: DivideDashboardComponent },
+  { path: 'PlantGrowth', component: PlantGrowthComponent },
   { path: '**', redirectTo: '' }
 ];
 

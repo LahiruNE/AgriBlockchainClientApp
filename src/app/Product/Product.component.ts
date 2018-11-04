@@ -91,7 +91,7 @@ export class ProductComponent implements OnInit {
   activeStatus;
   productpath;
 
-  constructor(private localStorageService : LocalStorageService, public serviceData: DataService<Product>, public servicePlot: PlotService, public serviceProduct: ProductService, private fb: FormBuilder,public serviceStakeholder : StakeholderService) {
+  constructor(private localStorageService : LocalStorageService, public serviceData: DataService<Product>, public servicePlot: PlotService, public serviceProduct: ProductService, private fb: FormBuilder, public serviceStakeholder : StakeholderService) {
     this.myForm = fb.group({
       productId: this.productId,
       pluckedDate: this.pluckedDate,

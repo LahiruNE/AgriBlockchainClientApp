@@ -689,7 +689,7 @@ export class FarmComponent implements OnInit {
       if (result.farmers) {
         this.updateForm.setControl('farmersFormArr', this.fb.array([]));
 
-        formObject.farmersFormArr = this.updateForm.get('farmersFormArr') as FormArray;;   
+        formObject.farmersFormArr = this.updateForm.get('farmersFormArr') as FormArray;   
         
         this.farmersArr = result.farmers;
 

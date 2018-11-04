@@ -32,6 +32,7 @@ import {Event} from './org.hyperledger.composer.system';
       status : PlotStatus;
       cultivatedType : ProductType;
       farm: Farm;
+      growthProgress: GrowthProgress
    }
    export class Farm extends Asset {
       farmId: string;
@@ -97,6 +98,19 @@ import {Event} from './org.hyperledger.composer.system';
       divideStatus: DivideStatus; 
       activeStatus: ActiveStatus;
    }
+
+  export class GrowthProgress {
+    growCount: GrowthRecord[];
+    fruitCount: GrowthRecord[]; 
+    destroyedCount: GrowthRecord[];
+  }
+
+  export class GrowthRecord {
+    date: Date;
+    addedDate: Date; 
+    count: number;
+    comment: string
+  }
 
    export class TransferDetails {
       status: TransferStatus;

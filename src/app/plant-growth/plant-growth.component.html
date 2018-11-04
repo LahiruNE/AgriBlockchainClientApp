@@ -1,0 +1,499 @@
+<div class="modal fade" id="progressModal" tabindex="-1" role="dialog" aria-labelledby="progressModalLabel">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+          <h4 class="modal-title" id="addParticipantModalLabel">View Plot Details</h4>
+        <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">×</span><span class="sr-only">Close</span></button>
+        
+      </div>
+      <div class="modal-body">
+          <!-- Steps starts here -->
+      <div class="requestwizard">
+        <div class="requestwizard-row setup-panel">
+          <table id="tbl1" style="width: 100%">
+            <tr>
+              <td>
+                  <div class="requestwizard-step">
+                      <a id="progress1" href="#progress-1" type="button" class="btn btn-default btn-circle" disabled="disabled">1</a>
+                      <p>Sprouted Count</p>
+                  </div>
+              </td>                
+              
+              <td>
+                <div class="requestwizard-step">
+                    <a href="#progress-2" type="button" class="btn btn-default btn-circle" disabled="disabled">2</a>
+                    <p>With Gedi ;-)</p>
+                </div>
+              </td> 
+
+              <td>
+                <div class="requestwizard-step">
+                    <a href="#progress-3" type="button" class="btn btn-default btn-circle" disabled="disabled">3</a>
+                    <p>Destroyed Plants Count</p>
+                </div>
+              </td> 
+      
+            </tr>
+          </table>
+          </div>
+      </div>
+      <hr>
+  
+  <form [formGroup]="plantCountForm">
+      <div class="row setup-content" id="progress-1">
+          <div class="col-xs-12">
+              <div class="col-md-12">
+                <table>
+                    <tr>
+                        <td style="width: 150px" colspan="2">
+                            <input type="hidden" name="count" value="1" />
+                            <div class="control-group" id="fields">
+                                <div>
+                                    <button (click) = "addField(0)" id="b1" class="btn add-more" type="button">+ Add New Plant Count</button>
+                                </div><br>
+                                <table>
+                                    <tr>
+                                      <th style="min-width:150px; text-align:center">Date</th>
+                                      <th style="min-width:200px; text-align:center">Added Date</th>
+                                      <th style="min-width:100px; text-align:center">Qty.</th>
+                                      <th style="min-width:200px; text-align:center">Comments</th>
+                                    </tr>                                            
+                                </table>
+                                <div formArrayName="growthCountFormArr" *ngFor="let item of plantCountForm.get('growthCountFormArr').controls; let i = index;">
+                                    <div [formGroupName]="i">
+                                        <table>
+                                            <tr>
+                                                <td  style="min-width:150px; max-width:150px; padding: 5px; text-align:center">                                                                
+                                                    <input formControlName="date" class="form-control" bsDatepicker [bsConfig]="{ dateInputFormat: 'YYYY-MM-DD' }" [readonly]="setDisabled(i,0)">       
+                                                </td>
+                                                <td  style="min-width:200px; max-width:150px; padding: 5px; text-align:center">                                                                
+                                                    <input formControlName="timeStamp" class="form-control" disabled>       
+                                                </td>
+                                                <td  style="min-width:100px; max-width:100px; padding: 5px; text-align:center">                                                                
+                                                    <input class="form-control" type="number" formControlName="qty" [readonly]="setDisabled(i,0)">
+                                                </td>
+                                                <td  style="min-width:200px; max-width:200px; padding: 5px; text-align:center">                                                                
+                                                    <input class="form-control" type="text" formControlName="comment" [readonly]="setDisabled(i,0)">
+                                                </td>
+                                                <td style="padding-left: 10px">
+                                                    <button (click) = "removeField(i,0)" id="remove' + (this.next - 1) + '" class="btn btn-danger remove-me" [disabled]="setDisabled(i,0)">-</button>
+                                                </td>
+                                            </tr>                                            
+                                        </table>
+                                        <br>
+                                    </div>
+                                </div>
+                            </div>
+                        </td>
+                    </tr>
+                </table>
+                
+                <table style="float : right;">
+                    <tr>
+                      <td style="padding : 5px;">
+                        <button type="button" class="btn btn-default pull-right" data-dismiss="modal">Cancel</button>
+                      </td>
+                      <td style="padding : 5px;">
+                        <button [promiseBtn]="toggleLoad" (click)="updateAsset(0)" type="submit" class="btn btn-success pull-right" ><div class="word">Submit</div><div class="loader" style="display:none"></div></button>
+                      </td>
+                    </tr>
+                  </table>
+              </div>
+          </div>
+      </div>      
+      
+      <div class="row setup-content" id="progress-2">
+          <div class="col-xs-12">
+            <div class="col-md-12">
+                    <table>
+                            <tr>
+                                <td style="width: 150px" colspan="2">
+                                    <input type="hidden" name="count" value="1" />
+                                    <div class="control-group" id="fields">
+                                        <div>
+                                            <button (click) = "addField(1)" id="b1" class="btn add-more" type="button">+ Add New Plant Count</button>
+                                        </div><br>
+                                        <table>
+                                            <tr>
+                                              <th style="min-width:150px; text-align:center">Date</th>
+                                              <th style="min-width:200px; text-align:center">Added Date</th>
+                                              <th style="min-width:100px; text-align:center">Qty.</th>
+                                              <th style="min-width:200px; text-align:center">Comments</th>
+                                            </tr>                                            
+                                        </table>
+                                        <div formArrayName="withFruitCountFormArr" *ngFor="let item of plantCountForm.get('withFruitCountFormArr').controls; let i = index;">
+                                            <div [formGroupName]="i">
+                                                <table>
+                                                    <tr>
+                                                        <td  style="min-width:150px; max-width:150px; padding: 5px; text-align:center">                                                                
+                                                            <input formControlName="date" class="form-control" bsDatepicker [bsConfig]="{ dateInputFormat: 'YYYY-MM-DD' }" [readonly]="setDisabled(i,1)">       
+                                                        </td>
+                                                        <td  style="min-width:200px; max-width:150px; padding: 5px; text-align:center">                                                                
+                                                            <input formControlName="timeStamp" class="form-control" disabled>       
+                                                        </td>
+                                                        <td  style="min-width:100px; max-width:100px; padding: 5px; text-align:center">                                                                
+                                                            <input class="form-control" type="number" formControlName="qty" [readonly]="setDisabled(i,1)">
+                                                        </td>
+                                                        <td  style="min-width:200px; max-width:200px; padding: 5px; text-align:center">                                                                
+                                                            <input class="form-control" type="text" formControlName="comment" [readonly]="setDisabled(i,1)">
+                                                        </td>
+                                                        <td style="padding-left: 10px">
+                                                            <button (click) = "removeField(i,1)" id="remove' + (this.next - 1) + '" class="btn btn-danger remove-me" [disabled]="setDisabled(i,1)">-</button>
+                                                        </td>
+                                                    </tr>                                            
+                                                </table>
+                                                <br>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </td>
+                            </tr>
+                        </table>
+                        
+                        <table style="float : right;">
+                            <tr>
+                              <td style="padding : 5px;">
+                                <button type="button" class="btn btn-default pull-right" data-dismiss="modal">Cancel</button>
+                              </td>
+                              <td style="padding : 5px;">
+                                <button [promiseBtn]="toggleLoad" (click)="updateAsset(1)" type="submit" class="btn btn-success pull-right" ><div class="word">Submit</div><div class="loader" style="display:none"></div></button>
+                              </td>
+                            </tr>
+                          </table>   
+            </div>
+          </div>
+      </div> 
+
+      <div class="row setup-content" id="progress-3">
+        <div class="col-xs-12">
+          <div class="col-md-12">
+                <table>
+                        <tr>
+                            <td style="width: 150px" colspan="2">
+                                <input type="hidden" name="count" value="1" />
+                                <div class="control-group" id="fields">
+                                    <div>
+                                        <button (click) = "addField(2)" id="b1" class="btn add-more" type="button">+ Add New Plant Count</button>
+                                    </div><br>
+                                    <table>
+                                        <tr>
+                                          <th style="min-width:150px; text-align:center">Date</th>
+                                          <th style="min-width:200px; text-align:center">Added Date</th>
+                                          <th style="min-width:100px; text-align:center">Qty.</th>
+                                          <th style="min-width:200px; text-align:center">Comments</th>
+                                        </tr>                                            
+                                    </table>
+                                    <div formArrayName="destroyedCountFormArr" *ngFor="let item of plantCountForm.get('destroyedCountFormArr').controls; let i = index;">
+                                        <div [formGroupName]="i">
+                                            <table>
+                                                <tr>
+                                                    <td  style="min-width:150px; max-width:150px; padding: 5px; text-align:center">                                                                
+                                                        <input formControlName="date" class="form-control" bsDatepicker [bsConfig]="{ dateInputFormat: 'YYYY-MM-DD' }" [readonly]="setDisabled(i,2)">       
+                                                    </td>
+                                                    <td  style="min-width:200px; max-width:150px; padding: 5px; text-align:center">                                                                
+                                                        <input formControlName="timeStamp" class="form-control" disabled>       
+                                                    </td>
+                                                    <td  style="min-width:100px; max-width:100px; padding: 5px; text-align:center">                                                                
+                                                        <input class="form-control" type="number" formControlName="qty" [readonly]="setDisabled(i,2)">
+                                                    </td>
+                                                    <td  style="min-width:200px; max-width:200px; padding: 5px; text-align:center">                                                                
+                                                        <input class="form-control" type="text" formControlName="comment" [readonly]="setDisabled(i,2)">
+                                                    </td>
+                                                    <td style="padding-left: 10px">
+                                                        <button (click) = "removeField(i,2)" id="remove' + (this.next - 1) + '" class="btn btn-danger remove-me" [disabled]="setDisabled(i,2)">-</button>
+                                                    </td>
+                                                </tr>                                            
+                                            </table>
+                                            <br>
+                                        </div>
+                                    </div>
+                                </div>
+                            </td>
+                        </tr>
+                    </table>
+                    
+                    <table style="float : right;">
+                        <tr>
+                          <td style="padding : 5px;">
+                            <button type="button" class="btn btn-default pull-right" data-dismiss="modal">Cancel</button>
+                          </td>
+                          <td style="padding : 5px;">
+                            <button [promiseBtn]="toggleLoad" (click)="updateAsset(2)" type="submit" class="btn btn-success pull-right" ><div class="word">Submit</div><div class="loader" style="display:none"></div></button>
+                          </td>
+                        </tr>
+                      </table>
+          </div>
+        </div>
+      </div> 
+  </form>
+
+
+<!-- Form ends here -->
+    </div>
+  </div>
+</div>
+</div>
+
+<div class="modal fade" id="viewAssetModal" tabindex="-1" role="dialog" aria-labelledby="viewAssetModalLabel">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+          <h4 class="modal-title" id="addParticipantModalLabel">View Plot Details</h4>
+        <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">×</span><span class="sr-only">Close</span></button>
+        
+      </div>
+      <div class="modal-body">
+          <!-- Steps starts here -->
+      <div class="requestwizard">
+        <div class="requestwizard-row setup-panel">
+          <table id="tbl1" style="width: 100%">
+            <tr>
+                <td>
+                    <div class="requestwizard-step">
+                        <a id="view1" href="#view-1" type="button" class="btn btn-default btn-circle" disabled="disabled">1</a>
+                        <p>Basic Information</p>
+                    </div>
+                </td>                
+              
+              <td>
+                <div class="requestwizard-step">
+                    <a href="#view-2" type="button" class="btn btn-default btn-circle" disabled="disabled">2</a>
+                    <p>Seeding Details</p>
+                </div>
+              </td> 
+
+              <td>
+                <div class="requestwizard-step">
+                    <a href="#view-3" type="button" class="btn btn-default btn-circle" disabled="disabled">3</a>
+                    <p>Growth Progress</p>
+                </div>
+              </td> 
+      
+            </tr>
+          </table>
+          </div>
+      </div>
+      <hr>
+  
+  <form [formGroup]="myForm">
+      <div class="row setup-content" id="view-1">
+          <div class="col-xs-12">
+              <div class="col-md-12">
+                <table id="detTbl">
+                  <tr>
+                    <td style="width: 150px">
+                            <label ><b>Plot ID</b></label>                        
+
+                    </td>
+                    <td>
+                        <input formControlName="plotId" class="form-control" disabled>  
+                      
+                    </td>
+                  </tr>
+
+                  <tr>
+                      <td style="width: 150px">
+                              <label><b>Cultivation Start Date</b></label>                        
+  
+                      </td>
+                      <td>
+                          <input formControlName="cultivationStartDate" class="form-control" disabled>      
+                      </td>
+                    </tr>                    
+
+                    <tr>
+                        <td style="width: 150px">
+                                <label><b>Extent</b></label>                        
+    
+                        </td>
+                        <td>  
+                          <div class="input-group mb-3">
+                            <input style="width: 94%" formControlName="extent" type="text" class="form-control" aria-label="Recipient's username" aria-describedby="basic-addon2" disabled>
+                            <div class="input-group-append" style="height: 43px !important;">
+                              <span class="input-group-text" id="basic-addon2"><h5>m<sup style="color : #000 !important">2</sup></h5></span>
+                            </div>
+                          </div>
+                        </td>
+                    </tr>
+
+                    <tr>
+                      <td style="width: 150px">
+                              <label><b>Farm</b></label>                        
+  
+                      </td>
+                      <td>  
+                          <input formControlName="farm" class="form-control"  disabled>
+                      </td>
+                  </tr>
+
+                    <tr>
+                        <td style="width: 150px; border-top: 1px solid #bababc" colspan="2">
+                                <label for="farmId"><b>Closer Plots</b></label>                        
+    
+                        </td>
+                    </tr>       
+
+                    <tr>
+                      <td colspan="2">
+                          <div class="col-md-12">  
+                              <table>
+                                  <tr>
+                                      <td><label>North</label></td>
+                                      <td><input formControlName="closerPlotsN" class="form-control" disabled>
+                                      </td>
+                                  </tr>
+                                  <tr>
+                                      <td><label>South</label></td>
+                                      <td><input formControlName="closerPlotsS" class="form-control" disabled></td>
+                                  </tr>
+                                  <tr>
+                                      <td><label>East</label></td>
+                                      <td><input formControlName="closerPlotsE" class="form-control" disabled></td>
+        
+  
+                                  </tr>
+                                  <tr>
+  
+                                      <td><label>West</label></td>
+                                      <td><input formControlName="closerPlotsW" class="form-control" disabled></td>
+                                  </tr>
+
+                                  
+                              
+                                </table>
+                          </div>
+
+                      </td>
+                    </tr>
+
+                    <tr>
+                        <td style="width: 150px; border-top: 1px solid #bababc" colspan="2">
+                                <label for="farmId"><b>Comments</b></label>                                          
+                        </td>
+                    </tr>
+                    <tr>
+                      <td colspan="2">
+                          <ol>
+                              <li *ngFor="let comment of certiicationComment" >{{comment}}</li>   
+                            </ol> 
+                      </td>
+                    </tr>
+                </table>
+
+                <button class="btn btn-primary nextBtn btn-lg pull-right" type="button" >Next</button>             
+              </div>
+          </div>
+      </div>      
+      
+      <div class="row setup-content" id="view-2">
+          <div class="col-xs-12">
+            <div class="col-md-12">
+                <table id="detTbl">
+                    <tr>
+                        <td style="width: 150px">
+                                <label><b>Seeded Date</b></label>                        
+    
+                        </td>
+                        <td>
+                            <input formControlName="seededDate" class="form-control" disabled>      
+                        </td>
+                    </tr>
+
+                  <tr>
+                    <td style="width: 150px">
+                            <label ><b>Cultivated Type</b></label>                        
+
+                    </td>
+                    <td>
+                        <input formControlName="cultivatedType" class="form-control" disabled>  
+                      
+                    </td>
+                  </tr>
+                </table>
+
+                <button class="btn btn-primary nextBtn btn-lg pull-right" type="button" >Next</button>    
+            </div>
+          </div>
+      </div> 
+
+      <div class="row setup-content" id="view-3">
+        <div class="col-xs-12">
+          <div class="col-md-12">
+              <table style="margin-left:-7px">
+                <tr>
+                    <td style="padding:3px">
+                        <div style="width:150px; height:150px; border-radius:25%; background-color:#f9f1a2; text-align: center">
+                            <img style="width:50px; margin-top: 10px" src="../../assets/002-seeds.png">
+                            <h4>Seeded</h4>
+                        </div>
+                    </td>
+                    <td style="padding:3px">
+                        <i class="fas fa-angle-double-right fa-3x"></i>
+                    </td>
+                    <td style="padding:3px">
+                        <div style="width:150px; height:150px; border-radius:25%; background-color:#9ff9aa; text-align: center">
+                            <img style="width:50px; margin-top: 10px" src="../../assets/001-plant.png">
+                            <h4>Sprouted</h4>
+                        </div>                    
+                    </td>
+                    <td style="padding:3px">
+                        <i class="fas fa-angle-double-right fa-3x"></i>
+                    </td>
+                    <td style="padding:3px">
+                        <div style="width:150px; height:150px; border-radius:25%; background-color:#9fbcf9; text-align: center">
+                            <img style="width:50px; margin-top: 10px" src="../../assets/001-tomato.png">
+                            <h4>With Yield</h4>
+                        </div>
+                    </td>
+                    <td style="padding:3px">
+                        <i class="fas fa-angle-double-right fa-3x"></i>
+                    </td>
+                    <td style="padding:3px">
+                        <div style="width:150px; height:150px; border-radius:25%; background-color:#edafaf; text-align: center">
+                            <img style="width:50px; margin-top: 10px" src="../../assets/002-cereals.png">
+                            <h4>Destoyed</h4>
+                        </div>
+                    </td>
+                </tr>
+              </table>
+          </div>
+        </div>
+      </div> 
+  </form>
+
+
+<!-- Form ends here -->
+    </div>
+  </div>
+</div>
+</div>
+
+<div class="container">
+  <div class="jumbotron">
+    <h2 class="display-5">Seeded Plots</h2>
+    
+    <div *ngFor="let farm of farms">
+        <h4>Farm #{{farm}}</h4>
+        <div class="loop" style="margin-left:-12px !important">
+          <ng-container *ngIf="seededPlots[farm]?.length>0">
+          <div *ngFor="let plot of seededPlots[farm]" class="card" style="width: 18rem;">
+            <img src="../../assets/seeds.png">
+            <div class="card-body">
+              <h4 class="card-title">Plot #{{plot.plotId}}</h4>
+              <h5>Type : {{plot.cultivatedType}}</h5>
+              <h5>Cultivated Date : {{plot.cultivationStartDate.toString().split('T')[0]}}</h5>
+              <h5>Seeded Date : {{plot.seededDate.toString().split('T')[0]}}</h5>
+              <a (click)="getFormForView(plot, 'view');" class="btn btn-primary" data-toggle="modal" data-target="#viewAssetModal" style="color: #fff;">View Details</a>
+              <br><a (click)="getFormForView(plot, 'progress');" class="btn btn-primary" data-toggle="modal" data-target="#progressModal" style="color: #fff;">Update Progress</a>
+            </div>
+          </div> 
+          </ng-container>
+
+          <div *ngIf="seededPlots[farm]?seededPlots[farm].length == 0 : true" class="col-md-12">
+              <div class="alert alert-warning" role="alert" style="text-align: center; margin-top: 30px; padding: 5px; width: 300px"><h4>No plots available for farm #{{farm}}!</h4></div>
+          </div>
+        </div>       
+    </div> 
+
+  </div>
+</div>  
