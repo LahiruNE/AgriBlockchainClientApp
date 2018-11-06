@@ -19,17 +19,23 @@ import 'rxjs/add/operator/toPromise';
 import { LocalStorageService } from '../services/local-storage.service';
 import $ from 'jquery';
 import { FarmService } from '../Farm/Farm.service';
+import { InspectionService } from '../services/inspection.service';
+import { BsDatepickerConfig } from 'ngx-bootstrap/datepicker';
 import swal from 'sweetalert2';
 
 @Component({
   selector: 'app-plot',
   templateUrl: './Plot.component.html',
   styleUrls: ['./Plot.component.css'],
-  providers: [PlotService,FarmService]
+  providers: [PlotService,FarmService,InspectionService]
 })
 export class PlotComponent implements OnInit {
 
+  colorTheme = 'theme-dark-blue';
+  bsConfig = Object.assign({}, { containerClass: this.colorTheme },{dateInputFormat: 'YYYY-MM-DD'});
+
   myForm: FormGroup;
+  commentForm:FormGroup;
 
   private allAssets;
   private asset;
@@ -41,6 +47,7 @@ export class PlotComponent implements OnInit {
   private availFarms = [];
   private certiicationComment = [];
   private toggleLoad;
+  private comm;
 
   private userType = this.localStorageService.getFromLocal('currentUser').type;
 
@@ -59,8 +66,11 @@ export class PlotComponent implements OnInit {
   closerPlotsE = new FormControl('');
   closerPlotsW = new FormControl('');
 
+  inspectiondate = new FormControl('');
+  cercomments = new FormControl('');
+  commenttime = new FormControl('');
 
-  constructor(private localStorageService: LocalStorageService, public servicePlot: PlotService, fb: FormBuilder, public serviceFarm: FarmService) {
+  constructor(private localStorageService: LocalStorageService, public servicePlot: PlotService, fb: FormBuilder, public serviceFarm: FarmService,public serviceInspection : InspectionService) {
     this.myForm = fb.group({
       plotId: this.plotId,
       cultivationStartDate: this.cultivationStartDate,
@@ -76,6 +86,13 @@ export class PlotComponent implements OnInit {
       closerPlotsE : this.closerPlotsE,
       closerPlotsW : this.closerPlotsW
     });
+
+    this.commentForm = fb.group({
+      plotId: this.plotId,
+      inspectiondate : this.inspectiondate,
+      commenttime : this.commenttime,
+      cercomments : this.cercomments
+    }); 
   };
 
   ngOnInit(): void {
@@ -239,6 +256,41 @@ export class PlotComponent implements OnInit {
       }
     });
   }
+
+  addComment(form: any){
+    $('.loader').show();
+    $('.word').hide();
+    let date = new Date(this.inspectiondate.value);
+    let time = new Date(this.commenttime.value);
+    let d = date.getFullYear().toString() +"-"+ ("0" + (date.getMonth()+1).toString()).slice(-2) +"-"+ ("0" + date.getDate().toString()).slice(-2);
+    let t = ("0" + time.getHours().toString()).slice(-2) + ":" + ("0" + time.getMinutes().toString()).slice(-2);
+
+    this.comm = {
+      $class: "org.ucsc.agriblockchain.Inspection",
+      'date': this.inspectiondate.value,
+      'comment': this.cercomments.value,
+      'time':d + "T" + t + ":00.000Z",
+      'plot': "resource:org.ucsc.agriblockchain.Plot#"+form.get('plotId').value
+    };
+    console.log(this.comm);
+    this.serviceInspection.addTransaction(this.comm)
+    .toPromise()
+    .then(() => {
+      this.errorMessage = null;
+      this.loadAll();
+      $('#addcomment .close').trigger('click');
+      swal(
+        'Success!',
+        'Comment is added successfully!',
+        'success'
+      )
+      $('.loader').hide();
+      $('.word').show();
+
+      
+      
+    })
+  } 
 
 
   updateAsset(form: any): Promise<any> {
@@ -515,6 +567,43 @@ export class PlotComponent implements OnInit {
       }
     });
   }
+
+  getFormForComment(id: any){
+    console.log(id);
+    return this.servicePlot.getAsset(id)
+    .toPromise()
+    .then((result) => {
+      this.errorMessage = null;
+      const formObject = {
+        'plotId': null,
+        'inspectiondate':null,
+        'cercomments':null,
+        'commenttime':null
+        
+        
+      };
+  
+      if (result.plotId) {
+        formObject.plotId = result.plotId;
+      } else {
+        formObject.plotId = null;
+      }
+     
+      this.commentForm.setValue(formObject); 
+  
+    })
+    .catch((error) => {
+      if (error === 'Server error') {
+        this.errorMessage = 'Could not connect to REST server. Please check your configuration details';
+      } else if (error === '404 - Not Found') {
+        this.errorMessage = '404 - Could not find API route. Please check your available APIs.';
+      } else {
+        this.errorMessage = error;
+      }
+    });
+  
+  
+    }
 
   resetForm(): void {
     $('#add1').trigger('click');

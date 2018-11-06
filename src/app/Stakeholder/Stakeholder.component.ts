@@ -30,7 +30,7 @@ import swal from 'sweetalert2';
   selector: 'app-stakeholder',
   templateUrl: './Stakeholder.component.html',
   styleUrls: ['./Stakeholder.component.css'],
-  providers: [StakeholderService]
+  providers: [StakeholderService,InspectionService]
 })
 export class StakeholderComponent implements OnInit {
 
@@ -40,12 +40,15 @@ export class StakeholderComponent implements OnInit {
   
 
   myForm: FormGroup;
+  commentForm:FormGroup;
+
   maintype:String;
   loggingUser:string;
   loggingType: string;
   loggingId: string;
   StakeholderType :String;
   TypeofTransaction :String;
+
   private allParticipants;
   private alldata;
   private userHistorians;
@@ -60,6 +63,8 @@ export class StakeholderComponent implements OnInit {
   private currentId;
   private errorMessage;
   private clas;
+  private comm;
+
 
   stakeholderId = new FormControl('', Validators.required);
   name = new FormControl('', Validators.required);
@@ -86,8 +91,11 @@ export class StakeholderComponent implements OnInit {
   comment = new FormControl('', Validators.required);
   rating = new FormControl('', Validators.required);
 
+  inspectiondate = new FormControl('');
+  cercomments = new FormControl('');
+  commenttime = new FormControl('');
 
-  constructor(private localStorageService : LocalStorageService,private router: ActivatedRoute,private normalRouter: Router,public dataService: DataService<Stakeholder>,public serviceStakeholder: StakeholderService, fb: FormBuilder) {
+  constructor(private localStorageService : LocalStorageService,private router: ActivatedRoute,private normalRouter: Router,public dataService: DataService<Stakeholder>,public serviceStakeholder: StakeholderService,public serviceInspection : InspectionService, fb: FormBuilder) {
     this.myForm = fb.group({
       stakeholderId: this.stakeholderId,
       name: this.name,
@@ -114,6 +122,14 @@ export class StakeholderComponent implements OnInit {
       comment: this.comment,
       rating: this.rating
     });
+
+    this.commentForm = fb.group({
+      stakeholderId: this.stakeholderId,
+      inspectiondate : this.inspectiondate,
+      commenttime : this.commenttime,
+      cercomments : this.cercomments
+    }); 
+
   };
 
   ngOnInit(): void {
@@ -443,19 +459,8 @@ $('#stage1').trigger('click');
       .toPromise()
       .then((iden) => {
         iden.forEach(datalist => {
-          if(datalist.hasOwnProperty('product')){
-            data.push({data:datalist,type:'product'});
-          }
-          if(datalist.hasOwnProperty('seed')){
-            data.push({data:datalist,type:'seed'});
-          }
-          if(datalist.hasOwnProperty('pesticide')){
-            data.push({data:datalist,type:'pesticide'});
-          }
-          if(datalist.hasOwnProperty('fertilizer')){
-            data.push({data:datalist,type:'fertilizer'});
-          }
-           
+         
+          data.push(datalist);
           this.clas = datalist.$class 
         });
         this.alldata = data;
@@ -622,6 +627,44 @@ $('#stage1').trigger('click');
     });
   }
 
+/* ================== */
+
+addComment(form: any){
+  $('.loader').show();
+  $('.word').hide();
+  let date = new Date(this.inspectiondate.value);
+  let time = new Date(this.commenttime.value);
+  let d = date.getFullYear().toString() +"-"+ ("0" + (date.getMonth()+1).toString()).slice(-2) +"-"+ ("0" + date.getDate().toString()).slice(-2);
+  let t = ("0" + time.getHours().toString()).slice(-2) + ":" + ("0" + time.getMinutes().toString()).slice(-2);
+
+  this.comm = {
+    $class: "org.ucsc.agriblockchain.Inspection",
+    'date': this.inspectiondate.value,
+    'comment': this.cercomments.value,
+    'time':d + "T" + t + ":00.000Z",
+    'stakeholder': "resource:org.ucsc.agriblockchain.Stakeholder#"+form.get('stakeholderId').value,
+    
+  };
+  console.log(this.comm);
+  this.serviceInspection.addTransaction(this.comm)
+  .toPromise()
+  .then(() => {
+    this.errorMessage = null;
+    this.loadAll();
+    $('#addcomment .close').trigger('click');
+    swal(
+      'Success!',
+      'Comment is added successfully!',
+      'success'
+    )
+    $('.loader').hide();
+    $('.word').show();
+
+    
+    
+  })
+} 
+
 
    updateParticipant(form: any): Promise<any> {
     this.participant = {
@@ -684,60 +727,6 @@ $('#stage1').trigger('click');
       }
     });
   }
-
-  addComment(form: any):Promise<any>{
-    this.participant = {
-      $class: 'org.ucsc.agriblockchain.Stakeholder',
-      'name': this.name.value,
-      'address': {
-        '$class': 'org.ucsc.agriblockchain.Address',
-        'city': this.city.value,
-        'country': this.country.value
-      },
-      'email': this.email.value,
-      'telephone': this.telephone.value,
-      'certification': {
-        '$class': 'org.ucsc.agriblockchain.Certification',
-        'certificationNo': this.certificationNo.value,
-        'certificationBody': 'resource:org.ucsc.agriblockchain.Stakeholder#'+this.certificationBody.value,
-        'from': this.from.value,
-        'to': this.to.value,
-      },
-      'images': this.images.value,
-      'company': {
-        '$class': 'org.ucsc.agriblockchain.Company',
-        'name': this.companyname.value,
-        'address': {
-          '$class': 'org.ucsc.agriblockchain.Address',
-          'city': this.companycity.value,
-          'country': this.companycountry.value
-        }
-      },
-      'username': this.username.value,
-      'password': this.password.value,
-      'type': this.type.value,
-      'description': this.description.value,
-      'authPerson': this.authPerson.value, 
-      'vehicleNo': this.vehicleNo.value,
-      'distributionType': this.distributionType.value,
-      'branchNo': this.branchNo.value,
-      'comment' :this.comment.value,
-      'rating' :this.rating.value
-    };
-    return this.serviceStakeholder.updateParticipant(form.get('stakeholderId').value, this.participant)
-    .toPromise()
-    .then(() => {
-      this.errorMessage = null;
-      if(this.loggingType == 'ADMIN'){
-        this.loadAll();
-      }
-      if(this.loggingType == 'CERTIFICATION'){
-        this.loadALLNext();
-      }
-      
-    })
-  }
-
 
   deleteParticipant(): Promise<any> {
 
@@ -953,6 +942,43 @@ $('#stage1').trigger('click');
     });
 
   }
+  getFormForComment(id: any){
+    console.log(id);
+    return this.serviceStakeholder.getparticipant(id)
+    .toPromise()
+    .then((result) => {
+      this.errorMessage = null;
+      const formObject = {
+        'stakeholderId': null,
+        'inspectiondate':null,
+        'cercomments':null,
+        'commenttime':null
+        
+        
+      };
+  
+      if (result.stakeholderId) {
+        formObject.stakeholderId = result.stakeholderId;
+      } else {
+        formObject.stakeholderId = null;
+      }
+     
+      this.commentForm.setValue(formObject); 
+  
+    })
+    .catch((error) => {
+      if (error === 'Server error') {
+        this.errorMessage = 'Could not connect to REST server. Please check your configuration details';
+      } else if (error === '404 - Not Found') {
+        this.errorMessage = '404 - Could not find API route. Please check your available APIs.';
+      } else {
+        this.errorMessage = error;
+      }
+    });
+  
+  
+    }
+
 
   resetForm(): void {
     this.myForm.setValue({

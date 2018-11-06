@@ -1489,58 +1489,99 @@
   
 
 
-<div class="modal fade" id="addcomment" tabindex="-1" role="dialog" aria-labelledby="modalLabel" aria-hidden="true">
-    <div class="modal-dialog">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h4 class="modal-title" id="addParticipantModalLabel">Add Comment</h4>
-        <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">×</span><span class="sr-only">Close</span></button>
-      </div>
-      <div class="modal-body">
-          
-  
-  <form  [formGroup]="myForm">
-     <div class="col-md-12">
-       <table id="detTbl">
-          <!-- <tr>
-              <td style="width: 150px"><label for="stakeholderId"><b>stakeholderId</b></label></td>
+  <div class="modal fade" id="addcomment" tabindex="-1" role="dialog" aria-labelledby="addAssetModalLabel">
+      <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+          <div class="modal-header">
+              <h4 class="modal-title" id="addParticipantModalLabel">Add Comments</h4>
+            <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">×</span><span class="sr-only">Close</span></button>
+         
+          </div>
+          <div class="modal-body">
+              <!-- Steps starts here -->
+          <div class="requestwizard">
+            <div class="requestwizard-row setup-panel">
+              <table id="tbl1" style="width: 100%">
+                <tr>
+                    <td>
+                        <div class="requestwizard-step">
+                            <a id="add1" href="#add-a" type="button" class="btn btn-default btn-circle" disabled="disabled">1</a>
+                            <p>Add Comments</p>
+                        </div>
+                    </td>
+                </tr>
+              </table>
+              </div>
+          </div>
+          <hr>
+      
+      <form [formGroup]="commentForm">
+          <div class="row setup-content" id="add-a">
+              <div class="col-xs-12">
+                  <div class="col-md-12">
+                    <table id="detTb2">
+                        <tr>
+                            <td style="width: 150px"><label for="stakeholderId"><b>StakeholderId</b></label></td>
 
-              <td><input [ngModel]="stakeholderId" formControlName="stakeholderId" class="form-control" readonly>     </td>
+                            <td><input [ngModel]="stakeholderId" formControlName="stakeholderId" class="form-control" readonly>     </td>
 
-          </tr> -->
-         <tr>
-           <td style="width: 150px"><label for="comment"><b>Comments</b></label></td>
-         <td>
-          <textarea formControlName="comment" type="text" class="form-control"></textarea>
-           </td>
-         </tr>
-         <tr>
-           <td style="width: 150px"><label for="rating"><b>Status</b></label></td>
-           <td><select formControlName="rating" type="text" class="form-control" >
-             <option value="Rejected">Rejected</option>
-             <option value="Warn">Warn</option>
-             <option value="Active">Active</option>
-           </select>
-          </td> 
-           
-         </tr>
-         <tr>
-           <td style="width: 150px"></td>
-           <td style="float:right;"><button (click)="addComment(myForm)" type="submit" class="btn btn-primary" data-dismiss="modal">Submit</button></td>
-         </tr>
-
-       </table> 
-     </div>
+                        </tr><br>
+                      <tr>
+                          <td>
+                              <label for="inspectiondate"><b>Inspection Date</b></label>
+                          </td>
+                        <td style="width: 150px">
+                    
+                          <input formControlName="inspectiondate" class="form-control" bsDatepicker [bsConfig]="bsConfig" >                     
     
-  </form>
-
-
-
+                        </td>
+                        
+                      </tr><br>
+                      <tr>
+                          <td style="width: 150px">
+                              <label><b>Inspection Time</b></label>                        
+          
+                          </td>
+                          <td>
+                              <timepicker formControlName="commenttime" [showMeridian]=false></timepicker>
+                          </td>
+                          </tr><br>
+                      <tr>
+                          <td>
+                             <label for="cercomments"><b>Comment</b></label>
+                          </td>
+                          <td>
+                              <input formControlName="cercomments" class="form-control">   
+                              
+                          </td>
+                      </tr><br>
+                    </table>
+                    <table style="float : right;">
+                          <tr>
+                            <td style="padding : 5px;">
+                              <button type="button" class="btn btn-default pull-right" data-dismiss="modal">Cancel</button>
+                            </td>
+                            <td style="padding : 5px;">
+                                  <button [promiseBtn]="toggleLoad"  (click)="addComment(commentForm)" type="submit" class="btn btn-success pull-right" ><div class="word">Submit</div><div class="loader" style="display:none"></div></button>
+                            </td>
+                          </tr>
+                        </table>
+                    
+                  </div>
+              </div>
+          </div>
+         
+          
+    
+         
+      </form>
+    
+    
+    <!-- Form ends here -->
+        </div>
+      </div>
     </div>
-  </div>
-</div>
-</div>
-  
+    </div>
   
 
 <div class="modal fade" id="viewHistoryModal" tabindex="-1" role="dialog" aria-labelledby="modalLabel" aria-hidden="true">
@@ -1985,22 +2026,10 @@
        <div *ngIf = "(clas == 'org.ucsc.agriblockchain.TransferPackage') && (TypeofTransaction == 'TransferPackage')" class="col-md-12">
           <div *ngFor = "let dataelements of alldata" class="col-md-12">
               <table  class="table table-striped">
-                <tr *ngIf = "dataelements.type == 'product'">
+                <tr>
                   <td>productId</td>
                   <td>{{dataelements.data.product.split('#')[1]}}</td>
                 </tr>
-                <tr *ngIf = "dataelements.type == 'seed'">
-                    <td>seedId</td>
-                    <td>{{dataelements.data.seed.split('#')[1]}}</td>
-                  </tr>
-                  <tr *ngIf = "dataelements.type == 'pesticide'">
-                      <td>pesticideId</td>
-                      <td>{{dataelements.data.pesticide.split('#')[1]}}</td>
-                    </tr>
-                    <tr *ngIf = "dataelements.type == 'fertilizer'">
-                        <td>fertilierId</td>
-                        <td>{{dataelements.data.fertilizer.split('#')[1]}}</td>
-                      </tr>
                 <tr>
                     <td>newOwner</td>
                     <td>{{dataelements.data.newOwner.split('#')[1]}}</td>
@@ -2156,7 +2185,7 @@
                    <!--  <button (click)="getForm(participant.stakeholderId);cls();"  type="button" title="view" class="log btn btn-update">
                         <img src="../../assets/book.png" style="width: 20px;">
                       </button> -->
-                    <button (click)="getForm(participant.stakeholderId);" type="button" title="view" class="btn btn-update" data-toggle="modal" data-target="#addcomment">
+                    <button (click)="getFormForComment(participant.stakeholderId);" type="button" title="view" class="btn btn-update" data-toggle="modal" data-target="#addcomment">
                       <img src="../../assets/comment.png" style="width: 20px;">
                     </button>
 

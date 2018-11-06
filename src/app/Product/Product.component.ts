@@ -50,7 +50,8 @@ export class ProductComponent implements OnInit {
   private productspath; 
   private stakename; 
   private asset;
-  private remainingqty;
+  private preqty;
+  private pretype;
   private newQty;
   private currentId;
   private errorMessage;
@@ -66,6 +67,7 @@ export class ProductComponent implements OnInit {
   private units = ['KG', 'G', 'MT', 'L', 'ML', 'ITEM'];
   private productsArr = [];
   private divideViewQty;  
+  private stat;
 
   productId = new FormControl('', Validators.required);
   pluckedDate = new FormControl('', Validators.required);
@@ -252,23 +254,37 @@ export class ProductComponent implements OnInit {
   }
 
   getProductdata(productid): Promise<any>{ 
-    this.remainingqty = 0;
+    
     const path =[];
     return this.serviceProduct.getAsset(productid) 
     .toPromise() 
     .then((result) => { 
-      this.newQty = result.quantity;
-      for(let i of result.productpath){
-        this.remainingqty = this.newQty - i.Qty
-        this.newQty = this.remainingqty;
-        path.push({path:i,new:this.remainingqty});
-        
-      }
-    
-      this.productspath = path;
+      this.productspath = result.productpath;
+      this.pretype = result.productType;
+      
+     /*    for(var i = 0;i < this.preqty.length; i++ ){
+          if([i+1] == this.preqty.length){
+            
+            if(this.preqty[i].quantity == this.preqty[i-1].quantity){
+              path.push({path:this.preqty[i],ty:this.pretype,stat:false});
+            }
+            else{
+              path.push({path:this.preqty[i],ty:this.pretype,stat:true});
+            }
+          }
+          else if(this.preqty[i].quantity == this.preqty[i+1].quantity ){
+            path.push({path:this.preqty[i],ty:this.pretype,stat:false});
+ 
+          }
+          else{
+            path.push({path:this.preqty[i],ty:this.pretype,stat:true});
+          }
+
+        } */
+
+       
       console.log(this.productspath) 
       console.log(result) 
-      
     }) 
      
   } 

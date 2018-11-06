@@ -264,6 +264,9 @@ sup{
     width: 42%;
     font-size: 14px;
 }
+#detTb2{
+    width: 100%;
+}
 
 @import url(https://fonts.googleapis.com/css?family=Lato:400,900,700,300);
 .heading4{font-size:18px;font-weight:400;font-family:'Lato', sans-serif;color:#111111;margin:0px 0px 5px 0px;}

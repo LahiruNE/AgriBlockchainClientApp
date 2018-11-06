@@ -126,8 +126,8 @@ import {Event} from './org.hyperledger.composer.system';
    }
    export class Trace {
       timestamp: Date;
-      Qty:number;
-      curQty:number;
+      quantity:number;
+      type:string;
       authperson: Stakeholder;
    }
    export class Address {
@@ -259,6 +259,7 @@ import {Event} from './org.hyperledger.composer.system';
      farm: Farm; 
      stakeholder: Stakeholder;
      date: Date;
+     time: Date;
      comment:string;
  }
    export class PHThresholdEvent extends Event {

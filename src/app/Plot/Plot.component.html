@@ -679,7 +679,105 @@
   </div>
   </div>
 
+<!-- ========================= -->
 
+<div class="modal fade" id="addcomment" tabindex="-1" role="dialog" aria-labelledby="addAssetModalLabel">
+    <div class="modal-dialog modal-lg">
+      <div class="modal-content">
+        <div class="modal-header">
+            <h4 class="modal-title" id="addParticipantModalLabel">Add Comments</h4>
+          <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">×</span><span class="sr-only">Close</span></button>
+       
+        </div>
+        <div class="modal-body">
+            <!-- Steps starts here -->
+        <div class="requestwizard">
+          <div class="requestwizard-row setup-panel">
+            <table id="tbl1" style="width: 100%">
+              <tr>
+                  <td>
+                      <div class="requestwizard-step">
+                          <a id="add1" href="#add-a" type="button" class="btn btn-default btn-circle" disabled="disabled">1</a>
+                          <p>Add Comments</p>
+                      </div>
+                  </td>
+              </tr>
+            </table>
+            </div>
+        </div>
+        <hr>
+    
+    <form [formGroup]="commentForm">
+        <div class="row setup-content" id="add-a">
+            <div class="col-xs-12">
+                <div class="col-md-12">
+                  <table id="detTbl">
+                    <tr>
+                        <td style="width: 150px">
+                            <label for="plotId"><b>PlotId</b></label>                        
+            
+                        </td>
+                            <td>
+                              <input formControlName="plotId" class="form-control" disabled>  
+                                  
+                            </td>
+                        </tr>
+                    <tr>
+                        <td>
+                            <label for="inspectiondate"><b>Inspection Date</b></label>
+                        </td>
+                      <td style="width: 150px">
+                  
+                        <input formControlName="inspectiondate" class="form-control" bsDatepicker [bsConfig]="bsConfig" >                     
+  
+                      </td>
+                      
+                    </tr>
+                    <tr>
+                        <td style="width: 150px">
+                            <label><b>Inspection Time</b></label>                        
+        
+                        </td>
+                        <td>
+                            <timepicker formControlName="commenttime" [showMeridian]=false></timepicker>
+                        </td>
+                        </tr>
+                    <tr>
+                        <td>
+                           <label for="cercomments"><b>Comment</b></label>
+                        </td>
+                        <td>
+                            <input formControlName="cercomments" class="form-control">   
+                            
+                        </td>
+                    </tr>
+                  </table>
+                  <table style="float : right;">
+                        <tr>
+                          <td style="padding : 5px;">
+                            <button type="button" class="btn btn-default pull-right" data-dismiss="modal">Cancel</button>
+                          </td>
+                          <td style="padding : 5px;">
+                                <button [promiseBtn]="toggleLoad"  (click)="addComment(commentForm)" type="submit" class="btn btn-success pull-right" ><div class="word">Submit</div><div class="loader" style="display:none"></div></button>
+                          </td>
+                        </tr>
+                      </table>
+                  
+                </div>
+            </div>
+        </div>
+       
+        
+  
+       
+    </form>
+  
+  
+  <!-- Form ends here -->
+      </div>
+    </div>
+  </div>
+  </div>
 
 
 
@@ -771,7 +869,9 @@
                   <button (click)="getPlotdata(asset.plotId);cls();"  type="button" title="view" class="log btn btn-update">
                       <img src="../../assets/book.png" style="width: 20px;">
                     </button>
-
+                <button type="button" title="view" (click)="getFormForComment(asset.plotId);" class="btn btn-update" data-toggle="modal" data-target="#addcomment">
+                    <img src="../../assets/comment.png" style="width: 20px;">
+                </button>
               <button (click)="getForm(asset.plotId);" type="button" class="btn btn-update" data-toggle="modal" data-target="#updateAssetModal">
                   <svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
                   width="12.8px" height="12.8px" viewBox="0 0 30.7 30.7" style="enable-background:new 0 0 30.7 30.7;" xml:space="preserve">

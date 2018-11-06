@@ -19,7 +19,7 @@ export class ScanComponent implements OnInit {
   private productspath;
   private farmdetails;
   private pluckeddate;
-  private remainingqty;
+  private preqty;
   private farmcomments;
   private plotcomments;
   private newQty;
@@ -91,7 +91,6 @@ days()
 }  
 
 getproduct(id){
-    this.remainingqty = 0;
     const path =[];
     const productdata =[];
     const plotdata = [];
@@ -99,17 +98,10 @@ getproduct(id){
     return this.serviceProduct.getAsset(id)
     .toPromise()
     .then((result) => {
-      this.newQty = result.quantity;
-      for(let i of result.productpath){
-        this.remainingqty = this.newQty - i.Qty
-        this.newQty = this.remainingqty;
-        path.push({path:i,new:this.remainingqty});
-        
-      }    
-  
+      this.preqty = result.quantity;
       this.farmcomments = result.plot.farm.certificationactivity;
       this.plotcomments = result.plot.certificationactivity;
-      this.productspath = path;
+      this.productspath = result.productpath;
       this.cultdate = result.plot.seededDate;
       this.pluckeddate = result.pluckedDate;
       this.phread = result.plot.phReadings;
@@ -125,6 +117,7 @@ getproduct(id){
       console.log(this.activity);
       console.log(this.productdetails);
       console.log( this.plotdetails);
+      console.log( this.farmdetails);
       this.days();
     })
  

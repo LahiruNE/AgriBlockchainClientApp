@@ -40,20 +40,15 @@
                                 
                                    <tr>
                                         <td>Role</td>
-                                       <td>{{element.path.authperson.type}}</td>
+                                       <td>{{element.authperson.type}}</td>
                                    </tr>
                                    <tr>
                                         <td>Location</td>
-                                       <td>{{element.path.authperson.address.city}}</td>
+                                       <td>{{element.authperson.address.city}}</td>
                                    </tr>
-                                   <tr>
-                                        <td>Transfer Quantity</td>
-                                       <td>{{element.path.Qty}}</td>
-                                   </tr>
-                                 
                                    <tr>
                                         <td>certification Body</td>
-                                       <td>{{element.path.authperson.certification.certificationBody.name}}</td>
+                                       <td>{{element.authperson.certification.certificationBody.name}}</td>
                                    </tr>         
                                  </tbody>
                                  </table>
@@ -201,11 +196,16 @@
                                             <td>Cultivation Start Date</td>
                                             <td><b>{{ele.cultivationStartDate.split('T')[0]}}</b></td>
                                         </tr>
-                                        <tr>
+                                        <!-- <tr *ngIf = "ele.seededDate !== ''">
                                             <td>Seeded Date</td>
-                                            <td *ngIf = "ele.seededDate == ''">Not yet Seeded</td>
-                                            <td *ngIf = "ele.seededDate != ''"><b>{{ele.seededDate.split('T')[0]}}</b></td>
+                                           
+                                            <td><b>{{ele.seededDate.split('T')[0]}}</b></td>
                                             </tr>
+                                        <tr *ngIf = "ele.seededDate == ''">
+                                            <td>Seeded Date</td>
+                                            <td>Not yet Seeded</td>
+                                                
+                                        </tr> -->
                                         <tr>
                                             <td>Plucked Date</td>
                                             <td><b>{{pluckeddate.split('T')[0]}}</b></td>
@@ -324,12 +324,12 @@
                                                  </thead> -->
                                                  <tbody *ngFor="let element of productspath" >
                                                    
-                                                       <tr style="box-shadow: 0px 0px 1px 1px #ddd;" [ngClass]="{'color': ( element.path.Qty > element.new )}">
+                                                       <tr style="box-shadow: 0px 0px 1px 1px #ddd;">
                                                            <td><img src="../../assets/clock.png" width="20px" height="20px"> 
-                                                            {{element.path.timestamp.split('T')[0]}}
+                                                            {{element.timestamp.split('T')[0]}}
                                                            </td>
                                                            <td><!-- <img src="../../assets/tran.png" width="26px" height="28px"> -->
-                                                            <b>Product Owner :</b> {{element.path.authperson.name}}
+                                                            <b>Product Owner :</b> {{element.authperson.name}}
                                                            </td>
                                                            <td>
                                                              <a style="cursor: pointer" data-toggle="modal" data-target="#viewHistoryModal">View More</a>
@@ -337,7 +337,7 @@
                                                            
                                                          </tr>
                                                          <tr >
-                                                                <i style="margin-left: 130%;" [ngClass]="{'iconcolor': ( element.path.Qty > element.new )}" class="fas fa-caret-down fa-3x"></i>
+                                                                <i style="margin-left: 130%;" class="fas fa-caret-down fa-3x"></i>
                                                                
                                                          <!-- <img src="../../assets/arrow.png" width="30px" height="25px" style="margin-left: 130%"> -->
                                  
@@ -397,7 +397,7 @@
                                                         <tbody>
                                                             <tr *ngFor = 'let elment of farmcomments'>
                                                                 <td>{{elment.date.split('T')[0]}}</td>
-                                                                <td>{{elment.date.split('T')[1]}}</td>
+                                                                <td>{{elment.time.split('T')[1]}}</td>
                                                                 <td>{{elment.comment}}</td>
                                                             
                                                             </tr>

@@ -19,20 +19,26 @@ import 'rxjs/add/operator/toPromise';
 import { LocalStorageService } from '../services/local-storage.service';
 import $ from 'jquery';
 import { StakeholderService } from '../Stakeholder/Stakeholder.service';
+import { InspectionService } from '../services/inspection.service';
 import { FileHolder } from 'angular2-image-upload';
+import { BsDatepickerConfig } from 'ngx-bootstrap/datepicker';
 import swal from 'sweetalert2';
 
 @Component({
   selector: 'app-farm',
   templateUrl: './Farm.component.html',
   styleUrls: ['./Farm.component.css'],
-  providers: [FarmService,StakeholderService]
+  providers: [FarmService,StakeholderService,InspectionService]
 })
 export class FarmComponent implements OnInit {
 
+  colorTheme = 'theme-dark-blue';
+  bsConfig = Object.assign({}, { containerClass: this.colorTheme },{dateInputFormat: 'YYYY-MM-DD'});
+ 
   myForm: FormGroup;
   viewForm: FormGroup;
   updateForm: FormGroup;
+  commentForm:FormGroup;
   farmersFormArr: FormArray;
   imagesFormArr: FormArray;
   certImagesFormArr: FormArray;
@@ -51,6 +57,7 @@ export class FarmComponent implements OnInit {
   private uploadImages = [];
   private uploadCertImages = [];
   private toggleLoad;
+  private comm;
 
   private userType = this.localStorageService.getFromLocal('currentUser').type;
 
@@ -81,8 +88,13 @@ export class FarmComponent implements OnInit {
   certiImages = new FormControl('');
   certiComments = new FormControl(''); 
 
+  inspectiondate = new FormControl('');
+  cercomments = new FormControl('');
+  commenttime = new FormControl('');
 
-  constructor(private localStorageService: LocalStorageService, public serviceFarm: FarmService, public serviceStakeholder : StakeholderService, private fb: FormBuilder) {
+  constructor(private localStorageService: LocalStorageService, public serviceFarm: FarmService, public serviceStakeholder : StakeholderService,public serviceInspection : InspectionService, private fb: FormBuilder) {
+   
+    
     this.myForm = fb.group({
       farmId: this.farmId,
       FarmLocation: this.FarmLocation,
@@ -93,6 +105,13 @@ export class FarmComponent implements OnInit {
       certification: this.certification,
       owner: this.owner
     });
+
+    this.commentForm = fb.group({
+      farmId: this.farmId,
+      inspectiondate : this.inspectiondate,
+      commenttime : this.commenttime,
+      cercomments : this.cercomments
+    }); 
 
     this.viewForm = fb.group({
       farmId: this.farmId,
@@ -367,7 +386,42 @@ export class FarmComponent implements OnInit {
     
   }
 
-  
+  addComment(form: any){
+    $('.loader').show();
+    $('.word').hide();
+    let date = new Date(this.inspectiondate.value);
+    let time = new Date(this.commenttime.value);
+    let d = date.getFullYear().toString() +"-"+ ("0" + (date.getMonth()+1).toString()).slice(-2) +"-"+ ("0" + date.getDate().toString()).slice(-2);
+    let t = ("0" + time.getHours().toString()).slice(-2) + ":" + ("0" + time.getMinutes().toString()).slice(-2);
+
+    this.comm = {
+      $class: "org.ucsc.agriblockchain.Inspection",
+      'date': this.inspectiondate.value,
+      'comment': this.cercomments.value,
+      'time':d + "T" + t + ":00.000Z",
+      'farm': "resource:org.ucsc.agriblockchain.Farm#"+form.get('farmId').value,
+      'stakeholder': "resource:org.ucsc.agriblockchain.Stakeholder#null",
+      'plot': "resource:org.ucsc.agriblockchain.Plot#null"
+    };
+    console.log(this.comm);
+    this.serviceInspection.addTransaction(this.comm)
+    .toPromise()
+    .then(() => {
+      this.errorMessage = null;
+      this.loadAll();
+      $('#addcomment .close').trigger('click');
+      swal(
+        'Success!',
+        'Comment is added successfully!',
+        'success'
+      )
+      $('.loader').hide();
+      $('.word').show();
+
+      
+      
+    })
+  } 
 
   updateAsset(form: any)  { 
 
@@ -564,7 +618,42 @@ export class FarmComponent implements OnInit {
       }
     });
   }
+  getFormForComment(id: any){
+  console.log(id);
+  return this.serviceFarm.getAsset(id)
+  .toPromise()
+  .then((result) => {
+    this.errorMessage = null;
+    const formObject = {
+      'farmId': null,
+      'inspectiondate':null,
+      'cercomments':null,
+      'commenttime':null
+      
+      
+    };
 
+    if (result.farmId) {
+      formObject.farmId = result.farmId;
+    } else {
+      formObject.farmId = null;
+    }
+   
+    this.commentForm.setValue(formObject); 
+
+  })
+  .catch((error) => {
+    if (error === 'Server error') {
+      this.errorMessage = 'Could not connect to REST server. Please check your configuration details';
+    } else if (error === '404 - Not Found') {
+      this.errorMessage = '404 - Could not find API route. Please check your available APIs.';
+    } else {
+      this.errorMessage = error;
+    }
+  });
+
+
+  }
   getFormForUpdate(id: any): Promise<any> {
     $('#update1').trigger('click');
     this.uploadImages = [];
