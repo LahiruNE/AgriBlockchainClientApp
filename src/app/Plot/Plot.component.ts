@@ -93,6 +93,51 @@ export class PlotComponent implements OnInit {
   public chartLegend:boolean = true;
   public chartType:string = 'line';
 
+  public growCountChartData:Array<any> = [
+    {data: this.growCountData, label: 'Sprouted Plant Count'},
+  ];
+  public growCountChartLabels:Array<any> = this.growCountLabels;
+  public growCountChartColors:Array<any> = [
+    {
+      backgroundColor: 'rgba(148,159,177,0.2)',
+      borderColor: 'rgba(148,159,177,1)',
+      pointBackgroundColor: 'rgba(148,159,177,1)',
+      pointBorderColor: '#fff',
+      pointHoverBackgroundColor: '#fff',
+      pointHoverBorderColor: 'rgba(148,159,177,0.8)'
+    },
+  ];
+
+  public withFruitCountChartData:Array<any> = [
+    {data: this.withFruitCountData, label: 'With Fruit Plant Count'},
+  ];
+  public withFruitCountChartLabels:Array<any> = this.withFruitCountLabels;
+  public withFruitCountChartColors:Array<any> = [
+    {
+      backgroundColor: 'rgba(148,159,177,0.2)',
+      borderColor: 'rgba(148,159,177,1)',
+      pointBackgroundColor: 'rgba(148,159,177,1)',
+      pointBorderColor: '#fff',
+      pointHoverBackgroundColor: '#fff',
+      pointHoverBorderColor: 'rgba(148,159,177,0.8)'
+    },
+  ];
+
+  public destroyedCountChartData:Array<any> = [
+    {data: this.destroyedCountData, label: 'Destroyed Plant Count'},
+  ];
+  public destroyedCountChartLabels:Array<any> = this.destroyedCountData;
+  public destroyedCountChartColors:Array<any> = [
+    {
+      backgroundColor: 'rgba(148,159,177,0.2)',
+      borderColor: 'rgba(148,159,177,1)',
+      pointBackgroundColor: 'rgba(148,159,177,1)',
+      pointBorderColor: '#fff',
+      pointHoverBackgroundColor: '#fff',
+      pointHoverBorderColor: 'rgba(148,159,177,0.8)'
+    },
+  ];
+  
   constructor(public serviceData: DataService<Product>, private localStorageService: LocalStorageService, public servicePlot: PlotService, fb: FormBuilder, public serviceFarm: FarmService,public serviceInspection : InspectionService) {
     this.myForm = fb.group({
       plotId: this.plotId,
