@@ -59,6 +59,8 @@ import { NgxQRCodeModule } from 'ngx-qrcode2';
 import { DivideDashboardComponent } from './divide-dashboard/divide-dashboard.component';
 import { PlantGrowthComponent } from './plant-growth/plant-growth.component';
 
+import { ChartsModule } from 'ng2-charts';
+
   @NgModule({
   declarations: [
     AppComponent,
@@ -107,7 +109,8 @@ import { PlantGrowthComponent } from './plant-growth/plant-growth.component';
     }),
     NgDatepickerModule,
     TimepickerModule.forRoot(),
-    NgxQRCodeModule
+    NgxQRCodeModule,
+    ChartsModule
   ],
   providers: [
     DataService,

@@ -1,228 +1,3 @@
-<!--
- Licensed under the Apache License, Version 2.0 (the "License");
- you may not use this file except in compliance with the License.
- You may obtain a copy of the License at
-
- http://www.apache.org/licenses/LICENSE-2.0
-
- Unless required by applicable law or agreed to in writing, software
- distributed under the License is distributed on an "AS IS" BASIS,
- WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- See the License for the specific language governing permissions and
- limitations under the License.
--->
-<!-- <div class="modal fade" id="addAssetModal" tabindex="-1" role="dialog" aria-labelledby="addAssetModalLabel">
-  <div class="modal-dialog" role="document">
-    <div class="modal-content">
-      <div class="modal-header">
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-        <h4 class="modal-title" id="addAssetModalLabel">Create asset</h4>
-          <p class="modal-intro">Enter the required values below.</p>
-      </div>
-      <form [formGroup]="myForm">
-        <div class="modal-body">
-
-
-          
-
-            
-              <div class="form-group text-left">
-                <label for="plotId">plotId</label>
-                
-                  <input formControlName="plotId" type="text" class="form-control">
-                
-              </div>
-            
-          
-
-            
-              <div class="form-group text-left">
-                <label for="cultivationStartDate">cultivationStartDate</label>
-                
-                  <input formControlName="cultivationStartDate" type="text" class="form-control">
-                
-              </div>
-            
-          
-
-            
-              <div class="form-group text-left">
-                <label for="extent">extent</label>
-                
-                  <input formControlName="extent" type="number" step='any' class="form-control">
-                
-              </div>
-            
-          
-
-            
-              <div class="form-group text-left">
-                <label for="closerplots">closerplots</label>
-                
-                    <textarea formControlName="closerplots" class="form-control" rows="3"></textarea>
-                
-              </div>
-            
-          
-
-            
-              <div class="form-group text-left">
-                <label for="activities">activities</label>
-                
-                    <textarea formControlName="activities" class="form-control" rows="3"></textarea>
-                
-              </div>
-            
-          
-
-            
-              <div class="form-group text-left">
-                <label for="phReadings">phReadings</label>
-                
-                    <textarea formControlName="phReadings" class="form-control" rows="3"></textarea>
-                
-              </div>
-            
-          
-
-            
-              <div class="form-group text-left">
-                <label for="certificationBodyComments">certificationBodyComments</label>
-                
-                  <input formControlName="certificationBodyComments" type="text" class="form-control">
-                
-              </div>
-            
-          
-
-            
-              <div class="form-group text-left">
-                <label for="farm">farm</label>
-                
-                    <textarea formControlName="farm" class="form-control" rows="3"></textarea>
-                
-              </div>
-            
-          
-
-        </div>
-        <div class="modal-footer">
-            <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
-          <button (click)="addAsset(myForm);" type="submit" class="btn btn-success" data-dismiss="modal">Confirm</button>
-
-        </div>
-      </form>
-    </div>
-  </div>
-</div> 
-
-
-<div class="modal fade" id="updateAssetModal" tabindex="-1" role="dialog" aria-labelledby="updateAssetModalLabel">
-  <div class="modal-dialog" role="document">
-    <div class="modal-content">
-      <div class="modal-header">
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-        <h4 class="modal-title" id="updateAssetModalLabel">Update Asset</h4>
-      </div>
-      <form [formGroup]="myForm">
-        <div class="modal-body">
-
-
-          
-            <div class="form-group text-left">
-              <label for="plotId">plotId</label>
-              
-              
-                <input [ngModel]="plotId" formControlName="plotId" class="form-control" disabled="disabled">  
-              
-
-            </div>
-          
-            <div class="form-group text-left">
-              <label for="cultivationStartDate">cultivationStartDate</label>
-              
-              
-                <input [ngModel]="cultivationStartDate"formControlName="cultivationStartDate" type="text" class="form-control">
-              
-
-            </div>
-          
-            <div class="form-group text-left">
-              <label for="extent">extent</label>
-              
-              
-                <input [ngModel]="extent" formControlName="extent" type="number" step='any' class="form-control">
-              
-
-            </div>
-          
-            <div class="form-group text-left">
-              <label for="closerplots">closerplots</label>
-              
-              
-                
-                  <textarea [ngModel]="closerplots" formControlName="closerplots" class="form-control" rows="3"></textarea>
-                
-              
-
-            </div>
-          
-            <div class="form-group text-left">
-              <label for="activities">activities</label>
-              
-              
-                
-                  <textarea [ngModel]="activities" formControlName="activities" class="form-control" rows="3"></textarea>
-                
-              
-
-            </div>
-          
-            <div class="form-group text-left">
-              <label for="phReadings">phReadings</label>
-              
-              
-                
-                  <textarea [ngModel]="phReadings" formControlName="phReadings" class="form-control" rows="3"></textarea>
-                
-              
-
-            </div>
-          
-            <div class="form-group text-left">
-              <label for="certificationBodyComments">certificationBodyComments</label>
-              
-              
-                <input [ngModel]="certificationBodyComments"formControlName="certificationBodyComments" type="text" class="form-control">
-              
-
-            </div>
-          
-            <div class="form-group text-left">
-              <label for="farm">farm</label>
-              
-              
-                
-                  <textarea [ngModel]="farm" formControlName="farm" class="form-control" rows="3"></textarea>
-                
-              
-
-            </div>
-          
-
-
-        </div>
-        <div class="modal-footer">
-          <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-          <button (click)="updateAsset(myForm)" type="submit" class="btn btn-success" data-dismiss="modal">Submit</button>
-        </div>
-      </form>
-    </div>
-  </div>
-</div>
-
--->
-
 <div class="modal fade" id="addAssetModal" tabindex="-1" role="dialog" aria-labelledby="addAssetModalLabel">
     <div class="modal-dialog modal-lg">
       <div class="modal-content">
@@ -547,7 +322,14 @@
                         <a href="#view-2" type="button" class="btn btn-default btn-circle" disabled="disabled">2</a>
                         <p>Historian Details</p>
                     </div>
-                </td>   -->              
+                </td>   -->  
+                
+                <td>
+                  <div class="requestwizard-step">
+                      <a href="#view-2" type="button" class="btn btn-default btn-circle" disabled="disabled">2</a>
+                      <p>Growth Progress</p>
+                  </div>
+                </td> 
         
               </tr>
             </table>
@@ -665,11 +447,169 @@
             </div>
         </div>
         <div class="row setup-content" id="view-2">
-            <div class="col-xs-12">
-                <div class="col-md-12">
-                  </div>
+          <div class="col-xs-12">
+            <div class="col-md-12">
+                <table style="margin:auto">
+                  <tr>
+                      <td style="padding:3px">
+                          <div *ngIf="seededArr.hasOwnProperty('type')" style="width:200px; height:230px; border-radius:25%; background-color:#f9f1a2; text-align: center">
+                              <img style="width:50px; margin-top: 10px" src="../../assets/002-seeds.png">
+                              <h4>Seeded</h4>
+                              <h5><span style="font-size:24px; font-weight:bold">{{seededArr.qty}}KG</span> of</h5>
+                              <h5><span style="font-size:24px; font-weight:bold">{{seededArr.type}}</span></h5>
+                              <h5>on {{seededArr.date}}</h5>
+                          </div>
+                          <div *ngIf="!seededArr.hasOwnProperty('type')" style="width:200px; height:230px; border-radius:25%; background-color:#f9f1a2; text-align: center">
+                            <img style="width:50px; margin-top: 10px" src="../../assets/002-seeds.png">
+                            <h4>Seeded</h4>
+                            <h5>No Data Available!</h5>
+                        </div>
+                      </td>
+                      <td style="padding:3px">
+                          <i class="fas fa-angle-double-right fa-3x"></i>
+                      </td>
+                      <td style="padding:3px">
+                            <div *ngIf="growCountArr.length > 0" style="width:200px; height:230px; border-radius:25%; background-color:#9ff9aa; text-align: center">
+                                <img style="width:50px; margin-top: 10px" src="../../assets/001-plant.png">
+                                <h4>Sprouted</h4>
+                                <h5><span style="font-size:36px; font-weight:bold">{{growCountArr[(growCountArr.length-1)].count}}</span></h5>
+                                <h5>total plants</h5>
+                                <h5>as recorded on</h5>
+                                <h5>{{growCountArr[(growCountArr.length-1)].addedDate.split("T")[0] + " " + growCountArr[(growCountArr.length-1)].addedDate.split("T")[1].split(":")[0] + ":" + growCountArr[(growCountArr.length-1)].addedDate.split("T")[1].split(":")[1]}}</h5>
+                            </div>
+                            
+                            <div *ngIf="growCountArr.length <= 0" style="width:200px; height:230px; border-radius:25%; background-color:#9ff9aa; text-align: center">
+                                <img style="width:50px; margin-top: 10px" src="../../assets/001-plant.png">
+                                <h4>Sprouted</h4>
+                                <h5>No Data Available!</h5>
+                            </div>
+                        </td>
+                        <td style="padding:3px">
+                            <i class="fas fa-angle-double-right fa-3x"></i>
+                        </td>
+                        <td style="padding:3px">
+                            <div *ngIf="withFruitCountArr.length > 0" style="width:200px; height:230px; border-radius:25%; background-color:#9fbcf9; text-align: center">
+                                <img style="width:50px; margin-top: 10px" src="../../assets/001-tomato.png">
+                                <h4>With Yield</h4>
+                                <h5><span style="font-size:36px; font-weight:bold">{{withFruitCountArr[(withFruitCountArr.length-1)].count}}</span></h5>
+                                <h5>total plants</h5>
+                                <h5>as recorded on</h5>
+                                <h5>{{withFruitCountArr[(withFruitCountArr.length-1)].addedDate.split("T")[0] + " " + withFruitCountArr[(withFruitCountArr.length-1)].addedDate.split("T")[1].split(":")[0] + ":" + withFruitCountArr[(withFruitCountArr.length-1)].addedDate.split("T")[1].split(":")[1]}}</h5>
+                            </div>
+    
+                            <div *ngIf="withFruitCountArr.length <= 0" style="width:200px; height:230px; border-radius:25%; background-color:#9fbcf9; text-align: center">
+                                <img style="width:50px; margin-top: 10px" src="../../assets/001-tomato.png">
+                                <h4>With Yield</h4>
+                                <h5>No Data Available!</h5>
+                            </div>
+                        </td>
+                  </tr>
+                  <tr>
+                      <td style="padding:3px">                        
+                      </td>
+                      <td style="padding:3px">                        
+                      </td>
+                      <td style="padding:3px">                        
+                      </td>
+                      <td style="padding:3px">                        
+                      </td>
+                      <td style="padding:3px; text-align:center">     
+                          <i class="fas fa-angle-double-down fa-3x"></i>                   
+                      </td>
+                  </tr>
+                  <tr>
+                      <td style="padding:3px">                        
+                      </td>
+                      <td style="padding:3px">                        
+                      </td>
+                      <td style="padding:3px">
+                        <div *ngIf="harvestedArr.hasOwnProperty('type')" style="width:200px; height:230px; border-radius:25%; background-color:#fccf8f; text-align: center">
+                            <img style="width:50px; margin-top: 10px" src="../../assets/vegetable.png">
+                            <h4>Harvested</h4>
+                            <h5><span style="font-size:24px; font-weight:bold">{{harvestedArr.qty + harvestedArr.unit}}</span> of</h5>
+                            <h5><span style="font-size:24px; font-weight:bold">{{harvestedArr.type}}</span></h5>
+                            <h5>on {{harvestedArr.date}}</h5>
+                        </div>
+                        <div *ngIf="!harvestedArr.hasOwnProperty('type')" style="width:200px; height:230px; border-radius:25%; background-color:#fccf8f; text-align: center">
+                            <img style="width:50px; margin-top: 10px" src="../../assets/vegetable.png">
+                            <h4>Harvested</h4>
+                            <h5>No Data Available!</h5>
+                        </div>
+                      </td>  
+                      <td style="padding:3px">
+                          <i class="fas fa-angle-double-left fa-3x"></i>
+                      </td>
+                      <td style="padding:3px">
+                            <div *ngIf="destroyedCountArr.length > 0" style="width:200px; height:230px; border-radius:25%; background-color:#edafaf; text-align: center">
+                                <img style="width:50px; margin-top: 10px" src="../../assets/002-cereals.png">
+                                <h4>Destoyed</h4>
+                                <h5><span style="font-size:36px; font-weight:bold">{{destroyedCountArr[(destroyedCountArr.length-1)].count}}</span></h5>
+                                <h5>total plants</h5>
+                                <h5>as recorded on</h5>
+                                <h5>{{destroyedCountArr[(destroyedCountArr.length-1)].addedDate.split("T")[0] + " " + destroyedCountArr[(destroyedCountArr.length-1)].addedDate.split("T")[1].split(":")[0] + ":" + destroyedCountArr[(destroyedCountArr.length-1)].addedDate.split("T")[1].split(":")[1]}}</h5>
+                            </div>
+                            <div *ngIf="destroyedCountArr.length <= 0" style="width:200px; height:230px; border-radius:25%; background-color:#edafaf; text-align: center">
+                                <img style="width:50px; margin-top: 10px" src="../../assets/002-cereals.png">
+                                <h4>Destoyed</h4>
+                                <h5>No Data Available!</h5>
+                            </div>
+                      </td>                    
+                  </tr>
+                </table>
+
+                <span *ngIf="growCountArr.length > 0" class="grow-tip">
+                        <i class="fas fa-chart-line"></i>
+                        <span ><div class="row">
+                            <div class="col-md-12">
+                              <div style="display: block;">
+                              <canvas baseChart width="400" height="400"
+                                          [datasets]="growCountChartData"
+                                          [labels]="growCountChartLabels"
+                                          [options]="chartOptions"
+                                          [colors]="growCountChartColors"
+                                          [legend]="chartLegend"
+                                          [chartType]="chartType"></canvas>
+                              </div>
+                            </div>                
+                          </div></span>
+                    </span>
+        
+                    <span *ngIf="withFruitCountArr.length > 0" class="fruit-tip">
+                        <i class="fas fa-chart-line"></i>
+                        <span ><div class="row">
+                            <div class="col-md-12">
+                                <div style="display: block;">
+                                <canvas baseChart width="400" height="400"
+                                            [datasets]="withFruitCountChartData"
+                                            [labels]="withFruitCountChartLabels"
+                                            [options]="chartOptions"
+                                            [colors]="withFruitCountChartColors"
+                                            [legend]="chartLegend"
+                                            [chartType]="chartType"></canvas>
+                                </div>
+                            </div>                
+                            </div></span>
+                    </span>
+        
+                    <span *ngIf="destroyedCountArr.length > 0" class="destroyed-tip">
+                        <i class="fas fa-chart-line"></i>
+                        <span ><div class="row">
+                            <div class="col-md-12">
+                                <div style="display: block;">
+                                <canvas baseChart width="400" height="400"
+                                            [datasets]="destroyedCountChartData"
+                                            [labels]="destroyedCountChartLabels"
+                                            [options]="chartOptions"
+                                            [colors]="destroyedCountChartColors"
+                                            [legend]="chartLegend"
+                                            [chartType]="chartType"></canvas>
+                                </div>
+                            </div>                
+                            </div></span>
+                    </span>
             </div>
-        </div>        
+          </div>
+        </div>         
     </form>
   
   

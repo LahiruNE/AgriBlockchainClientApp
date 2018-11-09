@@ -255,16 +255,16 @@
                     </div>
                 </td>                
               
-              <td>
+              <!-- <td>
                 <div class="requestwizard-step">
                     <a href="#view-2" type="button" class="btn btn-default btn-circle" disabled="disabled">2</a>
                     <p>Seeding Details</p>
                 </div>
-              </td> 
+              </td>  -->
 
               <td>
                 <div class="requestwizard-step">
-                    <a href="#view-3" type="button" class="btn btn-default btn-circle" disabled="disabled">3</a>
+                    <a href="#view-3" type="button" class="btn btn-default btn-circle" disabled="disabled">2</a>
                     <p>Growth Progress</p>
                 </div>
               </td> 
@@ -409,6 +409,17 @@
                       
                     </td>
                   </tr>
+
+                  <tr>
+                    <td style="width: 150px">
+                            <label ><b>Cultivated Amount (KG)</b></label>                        
+
+                    </td>
+                    <td>
+                        <input formControlName="seededAmount" class="form-control" disabled>  
+                      
+                    </td>
+                  </tr>
                 </table>
 
                 <button class="btn btn-primary nextBtn btn-lg pull-right" type="button" >Next</button>    
@@ -419,43 +430,162 @@
       <div class="row setup-content" id="view-3">
         <div class="col-xs-12">
           <div class="col-md-12">
-              <table style="margin-left:-7px">
+              <table style="margin:auto">
                 <tr>
                     <td style="padding:3px">
-                        <div style="width:150px; height:150px; border-radius:25%; background-color:#f9f1a2; text-align: center">
+                        <div *ngIf="seededArr != {}" style="width:200px; height:230px; border-radius:25%; background-color:#f9f1a2; text-align: center">
                             <img style="width:50px; margin-top: 10px" src="../../assets/002-seeds.png">
                             <h4>Seeded</h4>
+                            <h5><span style="font-size:24px; font-weight:bold">{{seededArr.qty}}KG</span> of</h5>
+                            <h5><span style="font-size:24px; font-weight:bold">{{seededArr.type}}</span></h5>
+                            <h5>on {{seededArr.date}}</h5>
+                        </div>
+
+                        <div *ngIf="seededArr == {}" style="width:200px; height:230px; border-radius:25%; background-color:#f9f1a2; text-align: center">
+                            <img style="width:50px; margin-top: 10px" src="../../assets/002-seeds.png">
+                            <h4>Seeded</h4>
+                            <h5>No Data Available!</h5>
                         </div>
                     </td>
                     <td style="padding:3px">
                         <i class="fas fa-angle-double-right fa-3x"></i>
                     </td>
                     <td style="padding:3px">
-                        <div style="width:150px; height:150px; border-radius:25%; background-color:#9ff9aa; text-align: center">
+                        <div *ngIf="growCountArr.length > 0" style="width:200px; height:230px; border-radius:25%; background-color:#9ff9aa; text-align: center">
                             <img style="width:50px; margin-top: 10px" src="../../assets/001-plant.png">
                             <h4>Sprouted</h4>
-                        </div>                    
-                    </td>
-                    <td style="padding:3px">
-                        <i class="fas fa-angle-double-right fa-3x"></i>
-                    </td>
-                    <td style="padding:3px">
-                        <div style="width:150px; height:150px; border-radius:25%; background-color:#9fbcf9; text-align: center">
-                            <img style="width:50px; margin-top: 10px" src="../../assets/001-tomato.png">
-                            <h4>With Yield</h4>
+                            <h5><span style="font-size:36px; font-weight:bold">{{growCountArr[(growCountArr.length-1)].count}}</span></h5>
+                            <h5>total plants</h5>
+                            <h5>as recorded on</h5>
+                            <h5>{{growCountArr[(growCountArr.length-1)].addedDate.split("T")[0] + " " + growCountArr[(growCountArr.length-1)].addedDate.split("T")[1].split(":")[0] + ":" + growCountArr[(growCountArr.length-1)].addedDate.split("T")[1].split(":")[1]}}</h5>
+                        </div>
+                        
+                        <div *ngIf="growCountArr.length <= 0" style="width:200px; height:230px; border-radius:25%; background-color:#9ff9aa; text-align: center">
+                            <img style="width:50px; margin-top: 10px" src="../../assets/001-plant.png">
+                            <h4>Sprouted</h4>
+                            <h5>No Data Available!</h5>
                         </div>
                     </td>
                     <td style="padding:3px">
                         <i class="fas fa-angle-double-right fa-3x"></i>
                     </td>
                     <td style="padding:3px">
-                        <div style="width:150px; height:150px; border-radius:25%; background-color:#edafaf; text-align: center">
-                            <img style="width:50px; margin-top: 10px" src="../../assets/002-cereals.png">
-                            <h4>Destoyed</h4>
+                        <div *ngIf="withFruitCountArr.length > 0" style="width:200px; height:230px; border-radius:25%; background-color:#9fbcf9; text-align: center">
+                            <img style="width:50px; margin-top: 10px" src="../../assets/001-tomato.png">
+                            <h4>With Yield</h4>
+                            <h5><span style="font-size:36px; font-weight:bold">{{withFruitCountArr[(withFruitCountArr.length-1)].count}}</span></h5>
+                            <h5>total plants</h5>
+                            <h5>as recorded on</h5>
+                            <h5>{{withFruitCountArr[(withFruitCountArr.length-1)].addedDate.split("T")[0] + " " + withFruitCountArr[(withFruitCountArr.length-1)].addedDate.split("T")[1].split(":")[0] + ":" + withFruitCountArr[(withFruitCountArr.length-1)].addedDate.split("T")[1].split(":")[1]}}</h5>
+                        </div>
+
+                        <div *ngIf="withFruitCountArr.length <= 0" style="width:200px; height:230px; border-radius:25%; background-color:#9fbcf9; text-align: center">
+                            <img style="width:50px; margin-top: 10px" src="../../assets/001-tomato.png">
+                            <h4>With Yield</h4>
+                            <h5>No Data Available!</h5>
                         </div>
                     </td>
                 </tr>
+                <tr>
+                    <td style="padding:3px">                        
+                    </td>
+                    <td style="padding:3px">                        
+                    </td>
+                    <td style="padding:3px">                        
+                    </td>
+                    <td style="padding:3px">                        
+                    </td>
+                    <td style="padding:3px; text-align:center">     
+                        <i class="fas fa-angle-double-down fa-3x"></i>                   
+                    </td>
+                </tr>
+                <tr>
+                    <td style="padding:3px">                        
+                    </td>
+                    <td style="padding:3px">                      
+                    </td>
+                    <td style="padding:3px">
+                        <div style="width:200px; height:230px; border-radius:25%; background-color:#fccf8f; text-align: center">
+                            <img style="width:50px; margin-top: 10px" src="../../assets/vegetable.png">
+                            <h4>Harvested</h4>
+                            <h5><span style="font-size:24px; font-weight:bold">{{harvestedArr.qty + harvestedArr.unit}}</span> of</h5>
+                            <h5><span style="font-size:24px; font-weight:bold">{{harvestedArr.type}}</span></h5>
+                            <h5>on {{harvestedArr.date}}</h5>
+                        </div>
+                    </td> 
+                    <td style="padding:3px">
+                        <i class="fas fa-angle-double-left fa-3x"></i>
+                    </td>
+                    <td style="padding:3px">
+                        <div *ngIf="destroyedCountArr.length > 0" style="width:200px; height:230px; border-radius:25%; background-color:#edafaf; text-align: center">
+                            <img style="width:50px; margin-top: 10px" src="../../assets/002-cereals.png">
+                            <h4>Destoyed</h4>
+                            <h5><span style="font-size:36px; font-weight:bold">{{destroyedCountArr[(destroyedCountArr.length-1)].count}}</span></h5>
+                            <h5>total plants</h5>
+                            <h5>as recorded on</h5>
+                            <h5>{{destroyedCountArr[(destroyedCountArr.length-1)].addedDate.split("T")[0] + " " + destroyedCountArr[(destroyedCountArr.length-1)].addedDate.split("T")[1].split(":")[0] + ":" + destroyedCountArr[(destroyedCountArr.length-1)].addedDate.split("T")[1].split(":")[1]}}</h5>
+                        </div>
+                        <div *ngIf="destroyedCountArr.length <= 0" style="width:200px; height:230px; border-radius:25%; background-color:#edafaf; text-align: center">
+                            <img style="width:50px; margin-top: 10px" src="../../assets/002-cereals.png">
+                            <h4>Destoyed</h4>
+                            <h5>No Data Available!</h5>
+                        </div>
+                    </td>                    
+                </tr>
               </table>
+
+              <span *ngIf="growCountArr.length > 0" class="grow-tip">
+                    <i class="fas fa-chart-line"></i>
+                    <span ><div class="row">
+                        <div class="col-md-12">
+                          <div style="display: block;">
+                          <canvas baseChart width="400" height="400"
+                                      [datasets]="growCountChartData"
+                                      [labels]="growCountChartLabels"
+                                      [options]="chartOptions"
+                                      [colors]="growCountChartColors"
+                                      [legend]="chartLegend"
+                                      [chartType]="chartType"></canvas>
+                          </div>
+                        </div>                
+                      </div></span>
+                </span>
+    
+                <span *ngIf="withFruitCountArr.length > 0" class="fruit-tip">
+                    <i class="fas fa-chart-line"></i>
+                    <span ><div class="row">
+                        <div class="col-md-12">
+                            <div style="display: block;">
+                            <canvas baseChart width="400" height="400"
+                                        [datasets]="withFruitCountChartData"
+                                        [labels]="withFruitCountChartLabels"
+                                        [options]="chartOptions"
+                                        [colors]="withFruitCountChartColors"
+                                        [legend]="chartLegend"
+                                        [chartType]="chartType"></canvas>
+                            </div>
+                        </div>                
+                        </div></span>
+                </span>
+    
+                <span *ngIf="destroyedCountArr.length > 0" class="destroyed-tip">
+                    <i class="fas fa-chart-line"></i>
+                    <span ><div class="row">
+                        <div class="col-md-12">
+                            <div style="display: block;">
+                            <canvas baseChart width="400" height="400"
+                                        [datasets]="destroyedCountChartData"
+                                        [labels]="destroyedCountChartLabels"
+                                        [options]="chartOptions"
+                                        [colors]="destroyedCountChartColors"
+                                        [legend]="chartLegend"
+                                        [chartType]="chartType"></canvas>
+                            </div>
+                        </div>                
+                        </div></span>
+                </span>
+
+              
           </div>
         </div>
       </div> 
@@ -496,4 +626,5 @@
     </div> 
 
   </div>
-</div>  
+</div> 
+

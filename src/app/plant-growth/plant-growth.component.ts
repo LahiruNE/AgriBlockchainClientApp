@@ -1,17 +1,18 @@
 import { Component, OnInit } from '@angular/core';
 import { PlotService } from '../Plot/Plot.service';
-import { Plot } from '../org.ucsc.agriblockchain';
+import { Plot, Product } from '../org.ucsc.agriblockchain';
 import { FormGroup, FormControl, Validators, FormBuilder, FormArray } from '@angular/forms';
 import 'rxjs/add/operator/toPromise';
 import { LocalStorageService } from '../services/local-storage.service';
 import $ from 'jquery';
 import swal from 'sweetalert2';
+import { DataService } from '../data.service';
 
 @Component({
   selector: 'app-plant-growth',
   templateUrl: './plant-growth.component.html',
   styleUrls: ['./plant-growth.component.css'],
-  providers: [PlotService]
+  providers: [PlotService, DataService]
 })
 
 export class PlantGrowthComponent implements OnInit {
@@ -34,6 +35,9 @@ export class PlantGrowthComponent implements OnInit {
   private withFruitCountNo;
   private destroyedCountNo;
 
+  private seededArr = {};
+  private harvestedArr = {};
+
   plotId = new FormControl('', Validators.required);
   cultivationStartDate = new FormControl('', Validators.required);
   extent = new FormControl('', Validators.required);
@@ -45,6 +49,7 @@ export class PlantGrowthComponent implements OnInit {
   status = new FormControl('', Validators.required);
   amount = new FormControl('');
   seededDate = new FormControl('');
+  seededAmount = new FormControl('');
   cultivatedType = new FormControl('');
   closerPlotsN = new FormControl('');
   closerPlotsS = new FormControl('');
@@ -53,11 +58,69 @@ export class PlantGrowthComponent implements OnInit {
   wateringDate = new FormControl('');
   wateringTime = new FormControl('');
 
-  constructor(private localStorageService: LocalStorageService, public servicePlot: PlotService, private fb: FormBuilder) {
+
+  private growCountData = [];
+  private growCountLabels = [];
+  private withFruitCountData = [];
+  private withFruitCountLabels = [];
+  private destroyedCountData = [];
+  private destroyedCountLabels = [];
+  
+  public chartOptions:any = {responsive: true};
+  public chartLegend:boolean = true;
+  public chartType:string = 'line';
+
+  public growCountChartData:Array<any> = [
+    {data: this.growCountData, label: 'Sprouted Plant Count'},
+  ];
+  public growCountChartLabels:Array<any> = this.growCountLabels;
+  public growCountChartColors:Array<any> = [
+    {
+      backgroundColor: 'rgba(148,159,177,0.2)',
+      borderColor: 'rgba(148,159,177,1)',
+      pointBackgroundColor: 'rgba(148,159,177,1)',
+      pointBorderColor: '#fff',
+      pointHoverBackgroundColor: '#fff',
+      pointHoverBorderColor: 'rgba(148,159,177,0.8)'
+    },
+  ];
+
+  public withFruitCountChartData:Array<any> = [
+    {data: this.withFruitCountData, label: 'With Fruit Plant Count'},
+  ];
+  public withFruitCountChartLabels:Array<any> = this.withFruitCountLabels;
+  public withFruitCountChartColors:Array<any> = [
+    {
+      backgroundColor: 'rgba(148,159,177,0.2)',
+      borderColor: 'rgba(148,159,177,1)',
+      pointBackgroundColor: 'rgba(148,159,177,1)',
+      pointBorderColor: '#fff',
+      pointHoverBackgroundColor: '#fff',
+      pointHoverBorderColor: 'rgba(148,159,177,0.8)'
+    },
+  ];
+
+  public destroyedCountChartData:Array<any> = [
+    {data: this.destroyedCountData, label: 'Destroyed Plant Count'},
+  ];
+  public destroyedCountChartLabels:Array<any> = this.destroyedCountData;
+  public destroyedCountChartColors:Array<any> = [
+    {
+      backgroundColor: 'rgba(148,159,177,0.2)',
+      borderColor: 'rgba(148,159,177,1)',
+      pointBackgroundColor: 'rgba(148,159,177,1)',
+      pointBorderColor: '#fff',
+      pointHoverBackgroundColor: '#fff',
+      pointHoverBorderColor: 'rgba(148,159,177,0.8)'
+    },
+  ];
+
+  constructor(public serviceData: DataService<Product>, private localStorageService: LocalStorageService, public servicePlot: PlotService, private fb: FormBuilder) {
     this.myForm = fb.group({
       plotId: this.plotId,
       cultivationStartDate: this.cultivationStartDate,
       seededDate: this.seededDate,
+      seededAmount: this.seededAmount,
       extent: this.extent,
       closerplots: this.closerplots,
       activities: this.activities,
@@ -146,7 +209,7 @@ export class PlantGrowthComponent implements OnInit {
           }
           else{
             this.seededPlots[asset.farm.farmId] = [asset];
-          }
+          }          
         }
       });
 
@@ -163,18 +226,33 @@ export class PlantGrowthComponent implements OnInit {
   }
 
   getFormForView(plot: Plot, type) {
+    this.growCountArr = [];
+    this.withFruitCountArr = [];
+    this.destroyedCountArr = [];
+    this.harvestedArr = {};
+    this.seededArr = {};
+
+    this.growthCountNo = 0;
+    this.withFruitCountNo = 0;
+    this.destroyedCountNo = 0;
+
+    this.getHarvestDetails(plot.plotId);
+    
     if(type == 'view'){
       $('#view1').click();
     }
     else{
       $('#progress1').click();
       this.plantCountForm.setControl('growthCountFormArr', this.fb.array([]));
+      this.plantCountForm.setControl('withFruitCountFormArr', this.fb.array([]));
+      this.plantCountForm.setControl('destroyedCountFormArr', this.fb.array([]));
     }
 
     const formObject = {
       'plotId': null,
       'cultivationStartDate': null,
       'seededDate': null,
+      'seededAmount': null,
       'extent': null,
       'closerplots': null,
       'activities': null,
@@ -212,8 +290,16 @@ export class PlantGrowthComponent implements OnInit {
 
     if (plot.seededDate) {
       formObject.seededDate = plot.seededDate.toString().split('T')[0];
+      this.seededArr['date'] = plot.seededDate.toString().split('T')[0];
     } else {
-      formObject.seededDate = null;
+      formObject.seededDate = null;      
+    }
+
+    if (plot.seededAmount) {
+      formObject.seededAmount = plot.seededAmount;
+      this.seededArr['qty'] = plot.seededAmount;
+    } else {
+      formObject.seededAmount = null;      
     }
 
     if (plot.extent) {
@@ -271,11 +357,12 @@ export class PlantGrowthComponent implements OnInit {
 
     if (plot.cultivatedType) {
       formObject.cultivatedType = plot.cultivatedType;
+      this.seededArr['type'] = plot.cultivatedType; 
     } else {
-      formObject.cultivatedType = null;
+      formObject.cultivatedType = null;          
     }
     
-    if(plot.growthProgress) {
+    if(plot.growthProgress) {      
       this.growthCountNo = plot.growthProgress.growCount.length;
       this.withFruitCountNo = plot.growthProgress.fruitCount.length;
       this.destroyedCountNo = plot.growthProgress.destroyedCount.length;
@@ -303,7 +390,10 @@ export class PlantGrowthComponent implements OnInit {
             qty: grow.count,
             comment: grow.comment
           })
-        ); 
+        );
+        
+        this.growCountData.push(grow.count);
+        this.growCountLabels.push(grow.date);
       });
 
       this.withFruitCountArr.forEach(grow=>{
@@ -317,7 +407,10 @@ export class PlantGrowthComponent implements OnInit {
             qty: grow.count,
             comment: grow.comment
           })
-        ); 
+        );
+        
+        this.withFruitCountData.push(grow.count);
+        this.withFruitCountLabels.push(grow.date);
       });
 
       this.destroyedCountArr.forEach(grow=>{
@@ -331,10 +424,11 @@ export class PlantGrowthComponent implements OnInit {
             qty: grow.count,
             comment: grow.comment
           })
-        ); 
+        );
+        
+        this.destroyedCountData.push(grow.count);
+        this.destroyedCountLabels.push(grow.date);
       });
-
-    } else {
 
     }
 
@@ -472,6 +566,7 @@ export class PlantGrowthComponent implements OnInit {
       $class: 'org.ucsc.agriblockchain.Plot',
       'cultivationStartDate': this.cultivationStartDate.value,
       'seededDate': this.seededDate.value,
+      'seededAmount': this.seededAmount.value,
       'extent': this.extent.value,
       'closerplots' : plots,
       'activities': this.activities.value,
@@ -522,6 +617,28 @@ export class PlantGrowthComponent implements OnInit {
     else {
       return false;
     }
+  }
+
+  getHarvestDetails(plotId){
+    let plot = "resource%3Aorg.ucsc.agriblockchain.Plot%23" + plotId;
+    
+    return this.serviceData.getHavestDetails(plot)
+    .toPromise()
+    .then((result) => {
+      this.harvestedArr['date'] = result[0].pluckedDate.toString().split('T')[0];
+      this.harvestedArr['qty'] = result[0].quantity;
+      this.harvestedArr['type'] = result[0].productType;
+      this.harvestedArr['unit'] = result[0].unit;
+    })
+    .catch((error) => {
+      if (error === 'Server error') {
+        this.errorMessage = 'Could not connect to REST server. Please check your configuration details';
+      } else if (error === '404 - Not Found') {
+        this.errorMessage = '404 - Could not find API route. Please check your available APIs.';
+      } else {
+        this.errorMessage = error;
+      }
+    });
   }
 
 }

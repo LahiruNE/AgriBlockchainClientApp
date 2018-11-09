@@ -23,6 +23,8 @@ import {Event} from './org.hyperledger.composer.system';
       plotId: string;
       cultivationStartDate: Date;
       seededDate: Date;
+      seededAmount: number;
+      seed: Seed;
       extent: number;
       closerplots: Directions;
       activities: Activity[];

@@ -38,17 +38,21 @@ export class SeedingComponent implements OnInit {
   status = new FormControl('', Validators.required);
   amount = new FormControl('');
   seededDate = new FormControl('');
+  seededAmount = new FormControl('');
   cultivatedType = new FormControl('');
   closerPlotsN = new FormControl('');
   closerPlotsS = new FormControl('');
   closerPlotsE = new FormControl('');
   closerPlotsW = new FormControl('');
+  certificationactivity = new FormControl('');  
+  growthProgress = new FormControl('');
 
   constructor(private localStorageService: LocalStorageService, public servicePlot: PlotService, public serviceSeed: SeedService,fb: FormBuilder) {
     this.myForm = fb.group({
       plotId: this.plotId,
       cultivationStartDate: this.cultivationStartDate,
       seededDate: this.seededDate,
+      seededAmount: this.seededAmount,
       extent: this.extent,
       closerplots: this.closerplots,
       activities: this.activities,
@@ -62,6 +66,8 @@ export class SeedingComponent implements OnInit {
       closerPlotsS : this.closerPlotsS,
       closerPlotsE : this.closerPlotsE,
       closerPlotsW : this.closerPlotsW,
+      certificationactivity : this.certificationactivity,
+      growthProgress : this.growthProgress,
     });
   };
 
@@ -200,6 +206,7 @@ export class SeedingComponent implements OnInit {
       'plotId': null,
       'cultivationStartDate': null,
       'seededDate': null,
+      'seededAmount': null,
       'extent': null,
       'closerplots': null,
       'activities': null,
@@ -213,6 +220,8 @@ export class SeedingComponent implements OnInit {
       'closerPlotsS' : null,
       'closerPlotsE' : null,
       'closerPlotsW' : null, 
+      'certificationactivity' : null,
+      'growthProgress' : null,
     };
 
     if (plot.plotId) {
@@ -231,6 +240,12 @@ export class SeedingComponent implements OnInit {
       formObject.seededDate = plot.seededDate.toString().split('T')[0];
     } else {
       formObject.seededDate = null;
+    }
+
+    if (plot.seededAmount) {
+      formObject.seededAmount = plot.seededAmount;
+    } else {
+      formObject.seededAmount = null;
     }
 
     if (plot.extent) {
@@ -292,6 +307,18 @@ export class SeedingComponent implements OnInit {
       formObject.cultivatedType = null;
     }    
 
+    if (plot.certificationactivity) {
+      formObject.certificationactivity = plot.certificationactivity;
+    } else {
+      formObject.certificationactivity = null;
+    }
+
+    if (plot.growthProgress) {
+      formObject.growthProgress = plot.growthProgress;
+    } else {
+      formObject.growthProgress = null;
+    }
+
     this.myForm.setValue(formObject);
 
   }
@@ -314,6 +341,8 @@ export class SeedingComponent implements OnInit {
       $class: 'org.ucsc.agriblockchain.Plot',
       'cultivationStartDate': this.cultivationStartDate.value,
       'seededDate': this.seededDate.value,
+      'seededAmount': this.amount.value,
+      'seed': "resource:org.ucsc.agriblockchain.Seed#" + seedId,
       'extent': this.extent.value,
       'closerplots' : plots,
       'activities': this.activities.value,
@@ -322,6 +351,8 @@ export class SeedingComponent implements OnInit {
       'status' : "SEEDED",
       'cultivatedType' : this.cultivatedType.value,
       'farm': "resource:org.ucsc.agriblockchain.Farm#" + this.farm.value,
+      'certificationactivity': this.certificationactivity.value,      
+      'growthProgress': this.growthProgress.value,
     };
     
     return this.toggleLoad = this.servicePlot.updateAsset(form.get('plotId').value, this.asset)

@@ -22,12 +22,14 @@ import { FarmService } from '../Farm/Farm.service';
 import { InspectionService } from '../services/inspection.service';
 import { BsDatepickerConfig } from 'ngx-bootstrap/datepicker';
 import swal from 'sweetalert2';
+import { DataService } from '../data.service';
+import { Product } from '../org.ucsc.agriblockchain';
 
 @Component({
   selector: 'app-plot',
   templateUrl: './Plot.component.html',
   styleUrls: ['./Plot.component.css'],
-  providers: [PlotService,FarmService,InspectionService]
+  providers: [PlotService,FarmService,InspectionService, DataService]
 })
 export class PlotComponent implements OnInit {
 
@@ -48,6 +50,11 @@ export class PlotComponent implements OnInit {
   private certiicationComment = [];
   private toggleLoad;
   private comm;
+  private seededArr = {};
+  private harvestedArr = {};
+  private growCountArr = [];
+  private withFruitCountArr = [];
+  private destroyedCountArr = [];
 
   private userType = this.localStorageService.getFromLocal('currentUser').type;
 
@@ -60,6 +67,12 @@ export class PlotComponent implements OnInit {
   certificationBodyComments = new FormControl('', Validators.required);
   farm = new FormControl('', Validators.required);
   status = new FormControl('', Validators.required);
+  seededDate = new FormControl('');
+  cultivatedType = new FormControl('');
+  seededAmount = new FormControl('');
+  certificationactivity = new FormControl('');
+  seed = new FormControl('');
+  growthProgress = new FormControl('');
 
   closerPlotsN = new FormControl('');
   closerPlotsS = new FormControl('');
@@ -69,8 +82,18 @@ export class PlotComponent implements OnInit {
   inspectiondate = new FormControl('');
   cercomments = new FormControl('');
   commenttime = new FormControl('');
+  private growCountData = [];
+  private growCountLabels = [];
+  private withFruitCountData = [];
+  private withFruitCountLabels = [];
+  private destroyedCountData = [];
+  private destroyedCountLabels = [];
+  
+  public chartOptions:any = {responsive: true};
+  public chartLegend:boolean = true;
+  public chartType:string = 'line';
 
-  constructor(private localStorageService: LocalStorageService, public servicePlot: PlotService, fb: FormBuilder, public serviceFarm: FarmService,public serviceInspection : InspectionService) {
+  constructor(public serviceData: DataService<Product>, private localStorageService: LocalStorageService, public servicePlot: PlotService, fb: FormBuilder, public serviceFarm: FarmService,public serviceInspection : InspectionService) {
     this.myForm = fb.group({
       plotId: this.plotId,
       cultivationStartDate: this.cultivationStartDate,
@@ -84,7 +107,13 @@ export class PlotComponent implements OnInit {
       closerPlotsN : this.closerPlotsN,
       closerPlotsS : this.closerPlotsS,
       closerPlotsE : this.closerPlotsE,
-      closerPlotsW : this.closerPlotsW
+      closerPlotsW : this.closerPlotsW,
+      seededDate : this.seededDate,
+      cultivatedType : this.cultivatedType,
+      seededAmount : this.seededAmount,
+      certificationactivity : this.certificationactivity,
+      seed : this.seed,
+      growthProgress : this.growthProgress,
     });
 
     this.commentForm = fb.group({
@@ -309,13 +338,20 @@ export class PlotComponent implements OnInit {
       $class: 'org.ucsc.agriblockchain.Plot',
       'cultivationStartDate': this.cultivationStartDate.value,
       'extent': this.extent.value,
+      'seededDate': this.seededDate.value,
+      'seededAmount': this.seededAmount.value,
+      'seed': this.seed.value,
+      'certificationactivity': this.certificationactivity.value,
+      'cultivatedType': this.cultivatedType.value,
+      'growthProgress': this.growthProgress.value,
       'closerplots' : plots,
-      'activities': [],
-      'phReadings': [],
-      'certificationBodyComments': [],
+      'activities': this.activities.value,
+      'phReadings': this.phReadings.value,
+      'certificationBodyComments': this.certificationBodyComments.value,
       'status' : this.status.value,
       'farm': "resource:org.ucsc.agriblockchain.Farm#" + this.farm.value,
     };
+    
     return this.toggleLoad = this.servicePlot.updateAsset(form.get('plotId').value, this.asset)
     .toPromise()
     .then(() => {
@@ -386,7 +422,13 @@ export class PlotComponent implements OnInit {
         'closerPlotsN' : null,
         'closerPlotsS' : null,
         'closerPlotsE' : null,
-        'closerPlotsW' : null 
+        'closerPlotsW' : null,
+        'seededDate' : null,
+        'cultivatedType' : null,
+        'seededAmount' : null, 
+        'certificationactivity' : null,
+        'seed' : null,
+        'growthProgress' : null,
       };
 
       if (result.plotId) {
@@ -399,6 +441,24 @@ export class PlotComponent implements OnInit {
         formObject.cultivationStartDate = result.cultivationStartDate;
       } else {
         formObject.cultivationStartDate = null;
+      }
+
+      if (result.seededDate) {
+        formObject.seededDate = result.seededDate.toString().split('T')[0];
+      } else {
+        formObject.seededDate = null;      
+      }
+
+      if (result.cultivatedType) {
+        formObject.cultivatedType = result.cultivatedType;
+      } else {
+        formObject.cultivatedType = null;          
+      }
+
+      if (result.seededAmount) {
+        formObject.seededAmount = result.seededAmount;
+      } else {
+        formObject.seededAmount = null;      
       }
 
       if (result.extent) {
@@ -452,6 +512,24 @@ export class PlotComponent implements OnInit {
         formObject.status = null;
       }
 
+      if (result.certificationactivity) {
+        formObject.certificationactivity = result.certificationactivity;
+      } else {
+        formObject.certificationactivity = null;
+      }
+
+      if (result.seed) {
+        formObject.seed = result.seed;
+      } else {
+        formObject.seed = null;
+      }
+
+      if (result.growthProgress) {
+        formObject.growthProgress = result.growthProgress;
+      } else {
+        formObject.growthProgress = null;
+      }
+
       this.myForm.setValue(formObject);
 
     })
@@ -467,6 +545,14 @@ export class PlotComponent implements OnInit {
   }
 
   getFormForView(id: any): Promise<any> {
+    this.growCountArr = [];
+    this.withFruitCountArr = [];
+    this.destroyedCountArr = [];
+    this.harvestedArr = {};
+    this.seededArr = {};
+
+    this.getHarvestDetails(id);
+
     $('#view1').trigger('click');
 
     return this.servicePlot.getAsset(id)
@@ -486,7 +572,13 @@ export class PlotComponent implements OnInit {
         'closerPlotsN' : null,
         'closerPlotsS' : null,
         'closerPlotsE' : null,
-        'closerPlotsW' : null 
+        'closerPlotsW' : null,
+        'seededDate' : null,
+        'cultivatedType' : null,
+        'seededAmount' : null,
+        'certificationactivity' : null,
+        'seed' : null,
+        'growthProgress' : null,
       };
 
       if (result.plotId) {
@@ -499,6 +591,27 @@ export class PlotComponent implements OnInit {
         formObject.cultivationStartDate = result.cultivationStartDate.toString().split('T')[0];
       } else {
         formObject.cultivationStartDate = null;
+      }
+
+      if (result.seededDate) {
+        formObject.seededDate = result.seededDate.toString().split('T')[0];
+        this.seededArr['date'] = result.seededDate.toString().split('T')[0];
+      } else {
+        formObject.seededDate = null;      
+      }
+
+      if (result.cultivatedType) {
+        formObject.cultivatedType = result.cultivatedType;
+        this.seededArr['type'] = result.cultivatedType; 
+      } else {
+        formObject.cultivatedType = null;          
+      }
+
+      if (result.seededAmount) {
+        formObject.seededAmount = result.seededAmount;
+        this.seededArr['qty'] = result.seededAmount;
+      } else {
+        formObject.seededAmount = null;      
       }
 
       if (result.extent) {
@@ -554,6 +667,52 @@ export class PlotComponent implements OnInit {
         formObject.status = null;
       }
 
+      if (result.growthProgress) {
+        this.growCountArr = result.growthProgress.growCount;
+        this.withFruitCountArr = result.growthProgress.fruitCount;
+        this.destroyedCountArr = result.growthProgress.destroyedCount;
+
+        this.growCountArr.forEach(grow=>{
+          let date = grow.addedDate.split("T")[0];
+          let time = grow.addedDate.split("T")[1].split(":")[0] + ":" + grow.addedDate.split("T")[1].split(":")[1];
+          
+          if(this.growCountData.indexOf(grow.count) == -1 || (this.growCountData.indexOf(grow.count) != -1 && this.growCountData.length < this.growCountArr.length)){
+            this.growCountData.push(grow.count);
+          }
+          
+          if(this.growCountLabels.indexOf(grow.date) == -1 || (this.growCountLabels.indexOf(grow.date) != -1 && this.growCountLabels.length < this.growCountArr.length)){
+            this.growCountLabels.push(grow.date);
+          }
+          
+        });
+
+        this.withFruitCountArr.forEach(grow=>{
+          let date = grow.addedDate.split("T")[0];
+          let time = grow.addedDate.split("T")[1].split(":")[0] + ":" + grow.addedDate.split("T")[1].split(":")[1];
+        
+          if(this.withFruitCountData.indexOf(grow.count) == -1 || (this.withFruitCountData.indexOf(grow.count) != -1 && this.withFruitCountData.length < this.withFruitCountArr.length)){
+            this.withFruitCountData.push(grow.count);
+          }
+          
+          if(this.withFruitCountLabels.indexOf(grow.date) == -1 || (this.withFruitCountLabels.indexOf(grow.date) != -1 && this.withFruitCountLabels.length < this.withFruitCountArr.length)){
+            this.withFruitCountLabels.push(grow.date);
+          }
+        });
+
+        this.destroyedCountArr.forEach(grow=>{
+          let date = grow.addedDate.split("T")[0];
+          let time = grow.addedDate.split("T")[1].split(":")[0] + ":" + grow.addedDate.split("T")[1].split(":")[1];
+          
+          if(this.destroyedCountData.indexOf(grow.count) == -1 || (this.destroyedCountData.indexOf(grow.count) != -1 && this.destroyedCountData.length < this.destroyedCountArr.length)){
+            this.destroyedCountData.push(grow.count);
+          }
+          
+          if(this.destroyedCountLabels.indexOf(grow.date) == -1 || (this.destroyedCountLabels.indexOf(grow.date) != -1 && this.destroyedCountLabels.length < this.destroyedCountArr.length)){
+            this.destroyedCountLabels.push(grow.date);
+          }          
+        });
+      } 
+      
       this.myForm.setValue(formObject);
 
     })
@@ -617,12 +776,15 @@ export class PlotComponent implements OnInit {
       'phReadings': null,
       'certificationBodyComments': null,
       'farm': null,
-      'status': null,
+      'status':null,
       'closerPlotsN' : null,
       'closerPlotsS' : null,
       'closerPlotsE' : null,
-      'closerPlotsW' : null                                   
-      });
+      'closerPlotsW' : null,
+      'seededDate' : null,
+      'cultivatedType' : null,
+      'seededAmount' : null                        
+    });
   }
 
   loadFarms(): Promise<any>{
@@ -634,6 +796,28 @@ export class PlotComponent implements OnInit {
       result.forEach(asset => {
         this.availFarms.push(asset);
       });
+    })
+    .catch((error) => {
+      if (error === 'Server error') {
+        this.errorMessage = 'Could not connect to REST server. Please check your configuration details';
+      } else if (error === '404 - Not Found') {
+        this.errorMessage = '404 - Could not find API route. Please check your available APIs.';
+      } else {
+        this.errorMessage = error;
+      }
+    });
+  }
+
+  getHarvestDetails(plotId){
+    let plot = "resource%3Aorg.ucsc.agriblockchain.Plot%23" + plotId;
+    
+    return this.serviceData.getHavestDetails(plot)
+    .toPromise()
+    .then((result) => {
+      this.harvestedArr['date'] = result[0].pluckedDate.toString().split('T')[0];;
+      this.harvestedArr['qty'] = result[0].quantity;
+      this.harvestedArr['type'] = result[0].productType;
+      this.harvestedArr['unit'] = result[0].unit;
     })
     .catch((error) => {
       if (error === 'Server error') {

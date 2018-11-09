@@ -48,6 +48,10 @@ export class HarvestingComponent implements OnInit {
   harvestedAmount = new FormControl('');
   pluckedDate = new FormControl('');
   unit = new FormControl('');
+  certificationactivity = new FormControl('');
+  seed = new FormControl('');
+  growthProgress = new FormControl('');
+  seededAmount = new FormControl('');
 
   constructor(private localStorageService: LocalStorageService, public servicePlot: PlotService, public serviceProduct: ProductService, fb: FormBuilder) {
     this.myForm = fb.group({
@@ -69,7 +73,11 @@ export class HarvestingComponent implements OnInit {
       closerPlotsW : this.closerPlotsW,
       harvestedAmount : this.harvestedAmount,
       pluckedDate : this.pluckedDate,
-      unit : this.unit
+      unit : this.unit,
+      certificationactivity : this.certificationactivity,
+      seed : this.seed,
+      growthProgress : this.growthProgress,
+      seededAmount : this.seededAmount
     });
   };
 
@@ -181,6 +189,10 @@ export class HarvestingComponent implements OnInit {
       'harvestedAmount' : null, 
       'pluckedDate' : null,
       'unit' : null,
+      'certificationactivity' : null,
+      'seed' : null,
+      'growthProgress' : null,
+      'seededAmount' : null
     };
 
     if (plot.plotId) {
@@ -263,6 +275,30 @@ export class HarvestingComponent implements OnInit {
       formObject.cultivatedType = null;
     }    
 
+    if (plot.certificationactivity) {
+      formObject.certificationactivity = plot.certificationactivity;
+    } else {
+      formObject.certificationactivity = null;
+    }
+
+    if (plot.seed) {
+      formObject.seed = plot.seed.seedId;
+    } else {
+      formObject.seed = null;
+    }
+
+    if (plot.growthProgress) {
+      formObject.growthProgress = plot.growthProgress;
+    } else {
+      formObject.growthProgress = null;
+    }
+
+    if (plot.seededAmount) {
+      formObject.seededAmount = plot.seededAmount;
+    } else {
+      formObject.seededAmount = null;
+    }
+
     this.myForm.setValue(formObject);
 
   }
@@ -289,12 +325,17 @@ export class HarvestingComponent implements OnInit {
       'certificationBodyComments': this.certificationBodyComments.value,
       'status' : "HARVESTED",
       'farm': "resource:org.ucsc.agriblockchain.Farm#" + this.farm.value,
+      'seededDate': this.seededDate.value,
+      'seededAmount': this.seededAmount.value,
+      'seed': "resource:org.ucsc.agriblockchain.Seed#" + this.seed.value,
+      'certificationactivity': this.certificationactivity.value,
+      'cultivatedType': this.cultivatedType.value,
+      'growthProgress': this.growthProgress.value,
     };
     
     return this.toggleLoad = this.servicePlot.updateAsset(form.get('plotId').value, this.asset)
     .toPromise() 
     .then((plot)=>{   
-
       let certi = {
         $class: "org.ucsc.agriblockchain.Certification",
         "certificationNo": this.farmCerti.certificationNo,

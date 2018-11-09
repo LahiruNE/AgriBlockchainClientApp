@@ -273,6 +273,15 @@ export class DataService<Type> {
           .map(this.extractData)
           .catch(this.handleError);
 
-    }  
+    } 
+    
+    public getHavestDetails(plot){
+        let ns = 'queries/getHarvestDetails';
+        console.log(this.actionUrl+ns +'?' + 'plot='+ plot);
+        return this.http.get(this.actionUrl +ns +'?' + 'plot='+ plot)
+        .map(this.extractData)
+        .catch(this.handleError);
+
+    }
  
 }
