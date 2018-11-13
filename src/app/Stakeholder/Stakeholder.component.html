@@ -1501,16 +1501,14 @@
               <!-- Steps starts here -->
           <div class="requestwizard">
             <div class="requestwizard-row setup-panel">
-              <table id="tbl1" style="width: 100%">
-                <tr>
-                    <td>
+              
+                
                         <div class="requestwizard-step">
                             <a id="add1" href="#add-a" type="button" class="btn btn-default btn-circle" disabled="disabled">1</a>
                             <p>Add Comments</p>
                         </div>
-                    </td>
-                </tr>
-              </table>
+                  
+             
               </div>
           </div>
           <hr>
@@ -1609,6 +1607,44 @@
               </div>
       
          </div>
+         <div *ngIf = "TypeofTransaction == 'Inspection'" class="col-md-12">
+          <div *ngFor = "let dataelements of alldata" class="col-md-12">
+              <table  class="table table-striped">
+                  <tr>
+                    <td>Inspection Date</td>
+                    <td>{{dataelements.date.split('T')[0]}}</td>
+                  </tr>
+                  <tr>
+                      <td>Inspection Time</td>
+                      <td>{{dataelements.time.split('T')[1]}}</td>
+                    </tr>
+                    <tr>
+                      <td>Comment</td>
+                      <td>{{dataelements.comment}}</td>
+                    </tr>
+
+                </table>
+
+            </div>
+    
+       </div>
+
+       <div *ngIf = "TypeofTransaction == 'RemoveAsset'" class="col-md-12">
+        <div *ngFor = "let dataelements of alldata" class="col-md-12">
+            <table  class="table table-striped">
+                <tr>
+                  <td>Resource Id</td>
+                  <td>{{dataelements.resourceIds}}</td>
+                </tr>
+                <tr>
+                    <td>Registry</td>
+                    <td>{{dataelements.targetRegistry}}</td>
+                  </tr>
+              </table>
+
+          </div>
+  
+     </div>
 
          <div *ngIf = "TypeofTransaction == 'AddParticipant' || clas == 'org.ucsc.agriblockchain.Stakeholder'" class="col-md-12">
             <div *ngFor = "let dataelements of alldata" class="col-md-12">
@@ -1645,10 +1681,6 @@
                                   <td>Telephone</td>
                                   <td>{{dataelements.telephone}}</td>
                           </tr>
-                          <tr>
-                            <td>Comments</td>
-                            <td>{{dataelements.comment}}</td>
-                        </tr>
                         <tr>
                           <td>Rating</td>
                           <td>{{dataelements.rating}}</td>
@@ -1695,10 +1727,7 @@
                                   <td>Telephone</td>
                                   <td>{{dataelements.telephone}}</td>
                           </tr>
-                          <tr>
-                            <td>Comments</td>
-                            <td>{{dataelements.comment}}</td>
-                        </tr>
+                      
                         <tr>
                           <td>Rating</td>
                           <td>{{dataelements.rating}}</td>
@@ -2028,11 +2057,11 @@
               <table  class="table table-striped">
                 <tr>
                   <td>productId</td>
-                  <td>{{dataelements.data.product.split('#')[1]}}</td>
+                  <td>{{dataelements.product.split('#')[1]}}</td>
                 </tr>
                 <tr>
                     <td>newOwner</td>
-                    <td>{{dataelements.data.newOwner.split('#')[1]}}</td>
+                    <td>{{dataelements.newOwner.split('#')[1]}}</td>
                   </tr>
               </table>
               
@@ -2122,7 +2151,7 @@
               
                   <th class="info">branchNo</th> -->
 
-                  <th  class="info" style="min-width: 100px">Comments</th>
+                  
 
                   <th  class="info" style="min-width: 120px">Status</th>
               
@@ -2173,7 +2202,7 @@
               
                   <td class="participant-properties">{{participant.branchNo}}</td> -->
 
-                  <td  class="participant-properties">{{participant.comment}}</td>
+         
 
                   <td class="participant-properties">{{participant.rating}}</td>
               
@@ -2240,8 +2269,9 @@
                         <li class="active"> <a href="#tab_default_1" data-toggle="tab"> All Activities </a> </li>
                         <li> <a href="#tab_default_2" data-toggle="tab"> Added Assets</a> </li>
                         <li> <a href="#tab_default_5" data-toggle="tab"> Updated Assets</a> </li>
-                        <li> <a href="#tab_default_3" data-toggle="tab"> Farm Activities</a> </li>
+                        <li> <a href="#tab_default_3" data-toggle="tab"> Plot Activities</a> </li>
                         <li> <a href="#tab_default_4" data-toggle="tab"> Transfer Package</a> </li>
+                        <li> <a href="#tab_default_6" data-toggle="tab"> Inspections</a> </li>
                        
                       </ul>
                       <div class="tab-content margin-tops">
@@ -2318,7 +2348,7 @@
                         </div>
                         <div class="tab-pane fade" id="tab_default_3">
                           <div class="col-md-12">
-                              <div *ngIf ="onlyactivities==''" class="alert alert-warning" role="alert" style="text-align: center; margin-top: 10px; padding: 5px;"><h4>No Farm Activities available!</h4></div>
+                              <div *ngIf ="onlyactivities==''" class="alert alert-warning" role="alert" style="text-align: center; margin-top: 10px; padding: 5px;"><h4>No Plot Activities available!</h4></div>
                               <table class="table table-striped" id="detTbl">
                                   <!--  <thead>
                                      <th><img src="../../assets/clock.png" width="20px" height="20px">  Timestamp</th>
@@ -2403,6 +2433,40 @@
                                                  </td>
                                                  <td>
                                                    <a style="cursor: pointer" (click) = "userHis(elitem.transactionInvoked)" data-toggle="modal" data-target="#viewHistoryModal">View More</a>
+                                                 </td><br>
+                                                 
+                                               </tr>
+                                               <tr >
+                       
+                                               <img src="../../assets/arrow.png" width="30px" height="25px" style="margin-left: 120%">
+                       
+                                               </tr> 
+                                       </tbody>
+                                       <div>
+                                          <img src="../../assets/3-dots.png" width="30px" height="25px" style="margin-left: 120%">
+                                      </div> 
+                                       </table>
+                                       </div>
+                            </div>
+                            <div class="tab-pane fade" id="tab_default_6">
+                              <div class="col-md-12">
+                                  <div *ngIf ="onlyinspections==''" class="alert alert-warning" role="alert" style="text-align: center; margin-top: 10px; padding: 5px;"><h4>No Inspections available!</h4></div>
+                                  <table class="table table-striped" id="detTbl">
+                                      <!--  <thead>
+                                         <th><img src="../../assets/clock.png" width="20px" height="20px">  Timestamp</th>
+                                         <th><img src="../../assets/tran.png" width="26px" height="28px">   Transaction Type</th>
+                                       </thead> -->
+                                       <tbody *ngFor="let elitems of onlyinspections" >
+                                         
+                                             <tr style="box-shadow: 0px 0px 1px 1px #ddd;">
+                                                 <td><img src="../../assets/clock.png" width="20px" height="20px"> 
+                                                     {{elitems.transactionTimestamp.split('T')[0]}}
+                                                 </td>
+                                                 <td><!-- <img src="../../assets/tran.png" width="26px" height="28px"> -->
+                                                     {{elitems.transactionType.split('.')[3]}}
+                                                 </td>
+                                                 <td>
+                                                   <a style="cursor: pointer" (click) = "userHis(elitems.transactionInvoked)" data-toggle="modal" data-target="#viewHistoryModal">View More</a>
                                                  </td><br>
                                                  
                                                </tr>

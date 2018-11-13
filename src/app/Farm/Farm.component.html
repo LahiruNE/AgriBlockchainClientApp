@@ -1305,6 +1305,9 @@
               <button  type="button" title="view" (click)="getFormForView(asset.farmId);" class="btn btn-update" data-toggle="modal" data-target="#viewAssetModal">
                 <img src="../../assets/view.png">
               </button>
+              <button (click)="getFarmdata(asset.farmId);cls();"  type="button" title="view" class="log btn btn-update">
+                    <img src="../../assets/book.png" style="width: 20px;">
+                  </button>
               <button type="button" title="view" (click)="getFormForComment(asset.farmId);" class="btn btn-update" data-toggle="modal" data-target="#addcomment">
                 <img src="../../assets/comment.png" style="width: 20px;">
               </button>
@@ -1335,13 +1338,57 @@
           </tr>
         </tbody>
       </table>
+      <br><br>
     </div>
 
     <div *ngIf = "allAssets == ''" class="col-md-12">
         <img src="../../assets/008-planting.png" style="display: block; margin-left: auto; margin-right: auto; margin-top: 50px">
         <div class="alert alert-warning" role="alert" style="text-align: center; margin-top: 30px; padding: 5px;"><h4>No farms available!</h4></div>
     </div>
+    <div id="historyview" class="history col-md-12" style="box-shadow: 0px 0px 6px 2px #ddd;">
+            <br>
+              <div class="col-md-9 row">
+                  <img src="../../assets/search.png" style="width: 45px; height: 45px">&nbsp;&nbsp;&nbsp;
+                  <h1 class="asset-title" id='assetName'> Farm Historian</h1>
+              </div>
+                    
+                    <!--our-quality-shadow-->
+                    <div class="clearfix"></div>
+                    <!-- <h1 class="heading1">Plot Historian</h1> -->
+                    <div class="tabbable-panel margin-tops4 ">
+                      <div class="tabbable-line">
+                        <ul class="nav nav-tabs tabtop  tabsetting">
+                          <li class="active"> <a href="#tab_default_1" data-toggle="tab"> Certification Body Comments</a> </li>
+                        </ul>
+                        <div class="tab-content margin-tops">
+                          <div class="tab-pane active fade in" id="tab_default_1">
+                                <div class="col-md-12">
+                                        <div *ngIf ="farmcomments==''" class="alert alert-warning" role="alert" style="text-align: center; margin-top: 10px; padding: 5px;"><h4>No Farm Comments available!</h4></div>
+                                        <table *ngIf ="farmcomments !=''"  class="table table-striped">
+                                            <thead>
+                                            <th>Inspection Date</th>
+                                            <th>Inspection Time</th>
+                                            <th>Comments</th>
+                                            </thead>
+                                            <tbody>
+                                                <tr *ngFor = 'let elment of farmcomments'>
+                                                    <td>{{elment.date.split('T')[0]}}</td>
+                                                    <td>{{elment.time.split('T')[1]}}</td>
+                                                    <td>{{elment.comment}}</td>
+                                                
+                                                </tr>
+                                            </tbody>
+                                            </table>
+                                        
+                                    </div>
+                          </div>
+
+                        </div>
+                      </div>
+                    </div>
+                 
+          </div>
   </div>
 </div>
-
+<br><br>
 

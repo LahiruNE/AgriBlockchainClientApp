@@ -213,6 +213,24 @@ export class DataService<Type> {
         .catch(this.handleError);
 
     }
+    public getinspection(transactionId){
+        let ns = 'queries/getFromHistorianinspection';
+        let Id = transactionId;
+        console.log(this.actionUrl+ns +'?' + 'Id='+ Id);
+        return this.http.get(this.actionUrl +ns +'?' + 'Id='+ Id)
+        .map(this.extractData)
+        .catch(this.handleError);
+
+    }
+    public getremove(transactionId){
+        let ns = 'queries/getFromHistorianremove';
+        let Id = transactionId;
+        console.log(this.actionUrl+ns +'?' + 'Id='+ Id);
+        return this.http.get(this.actionUrl +ns +'?' + 'Id='+ Id)
+        .map(this.extractData)
+        .catch(this.handleError);
+
+    }
     public getHistorianmerge(transactionId){
         let ns = 'queries/getFromHistorianmergeasset';
         let Id = transactionId;

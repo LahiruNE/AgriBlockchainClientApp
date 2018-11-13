@@ -9,6 +9,8 @@ import {Event} from './org.hyperledger.composer.system';
       certification: Certification;
       productType: ProductType;
       quantity: number;
+      wastequantity: number;
+      lostquantity: number;
       unit: Unit;
       divideStatus: DivideStatus;
       activeStatus: ActiveStatus;

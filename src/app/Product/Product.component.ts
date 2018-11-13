@@ -37,6 +37,7 @@ export class ProductComponent implements OnInit {
   myForm: FormGroup;
   viewForm: FormGroup;
   divideForm: FormGroup;
+  wasteForm:FormGroup;
   certImagesFormArr: FormArray;
   productsFormArr: FormArray;
 
@@ -88,6 +89,9 @@ export class ProductComponent implements OnInit {
   products = new FormControl('');
   divideProduct = new FormControl('');
 
+  wastequantity = new FormControl('');
+  lostquantity = new FormControl('');
+
   parentProduct;
   divideStatus;
   activeStatus;
@@ -100,6 +104,8 @@ export class ProductComponent implements OnInit {
       certification: this.certification,
       productType: this.productType,
       quantity: this.quantity,
+      wastequantity:this.wastequantity,
+      lostquantity:this.lostquantity,
       unit: this.unit,
       divideStatus: this.divideStatus,
       activeStatus: this.activeStatus,
@@ -122,6 +128,8 @@ export class ProductComponent implements OnInit {
       certification: this.certification,
       productType: this.productType,
       quantity: this.quantity,
+      wastequantity:this.wastequantity,
+      lostquantity:this.lostquantity,
       unit: this.unit,
       divideStatus: this.divideStatus,
       activeStatus: this.activeStatus,
@@ -142,6 +150,30 @@ export class ProductComponent implements OnInit {
       divideProduct: this.divideProduct,
       productsFormArr: fb.array([])
     });
+
+    this.wasteForm = fb.group({
+      productId: this.productId,
+      pluckedDate: this.pluckedDate,
+      certification: this.certification,
+      productType: this.productType,
+      quantity: this.quantity,
+      wastequantity:this.wastequantity,
+      lostquantity:this.lostquantity,
+      unit: this.unit,
+      divideStatus: this.divideStatus,
+      activeStatus: this.activeStatus,
+      productpath: this.productpath,
+      plot: this.plot,
+      parentProduct: this.parentProduct,
+      currentOwner: this.currentOwner,
+      issuer: this.issuer,
+      certificationNo : this.certificationNo,
+      certificationBody : this.certificationBody,
+      from : this.from,
+      to : this.to,
+      certImagesFormArr : fb.array([]),
+      certiComments : this.certiComments,
+    })
   };
 
   ngOnInit(): void {
@@ -289,6 +321,164 @@ export class ProductComponent implements OnInit {
      
   } 
   
+  getFormForWaste(id: any){
+    console.log(id);
+    return this.serviceProduct.getAsset(id)
+    .toPromise()
+    .then((result) => {
+      this.errorMessage = null;
+      const formObject = {
+        'productId': null,
+        'pluckedDate': null,
+        'certification': null,
+        'productType': null,
+        'quantity': null,
+        'wastequantity':null,
+        'lostquantity':null,
+        'unit': null,
+        'divideStatus': null,
+        'activeStatus': null,
+        'productpath': null,
+        'plot': null,
+        'parentProduct': null,
+        'currentOwner': null,
+        'issuer': null,
+        'certificationNo' : null,
+        'certificationBody' : null,
+        'from' : null,
+        'to' : null,
+        'certiComments' : null,
+        'certImagesFormArr' : null
+      };
+      if (result.productId) {
+        formObject.productId = result.productId;
+      } else {
+        formObject.productId = null;
+      }
+
+      if (result.pluckedDate) {
+        formObject.pluckedDate = result.pluckedDate;
+      } else {
+        formObject.pluckedDate = null;
+      }
+
+      if (result.certification) {
+        formObject.certification = result.certification;
+        formObject.certificationNo = result.certification.certificationNo;
+        formObject.certificationBody = result.certification.certificationBody.stakeholderId;
+        formObject.from = result.certification.from;
+        formObject.to = result.certification.to;        
+        formObject.certiComments = result.certification.comment;
+
+        this.certiicationComment = result.certification.comment;
+
+        this.myForm.setControl('certImagesFormArr', this.fb.array([]));
+        formObject.certImagesFormArr = this.myForm.get('certImagesFormArr') as FormArray;   
+        
+        this.uploadCertImages = result.certification.images;
+
+        this.uploadCertImages.forEach(image=>{    
+          formObject.certImagesFormArr.push(
+            this.fb.group({
+              image: image 
+            })
+          ); 
+        });
+      } else {
+        formObject.certification = null;
+      }
+
+      if (result.productType) {
+        formObject.productType = result.productType;
+      } else {
+        formObject.productType = null;
+      }
+
+      if (result.quantity) {
+        formObject.quantity = result.quantity;
+      } else {
+        formObject.quantity = null;
+      }
+
+      if (result.wastequantity) {
+        formObject.wastequantity = result.wastequantity;
+      } else {
+        formObject.wastequantity = null;
+      }
+      if (result.lostquantity) {
+        formObject.lostquantity = result.lostquantity;
+      } else {
+        formObject.lostquantity = null;
+      }
+
+      if (result.unit) {
+        formObject.unit = result.unit;
+      } else {
+        formObject.unit = null;
+      }
+
+      if (result.divideStatus) {
+        formObject.divideStatus = result.divideStatus;
+
+        this.divideStatus = result.divideStatus;
+      } else {
+        formObject.divideStatus = null;
+      }
+
+      if (result.activeStatus) {
+        formObject.activeStatus = result.activeStatus;
+
+        this.activeStatus = result.activeStatus;
+      } else {
+        formObject.activeStatus = null;
+      }
+
+      if (result.productpath) {
+        formObject.productpath = result.productpath;
+      } else {
+        formObject.productpath = null;
+      }
+
+      if (result.plot) {
+        formObject.plot = result.plot.plotId;
+      } else {
+        formObject.plot = null;
+      }
+
+      if (result.parentProduct) {
+        formObject.parentProduct = result.parentProduct;
+      } else {
+        formObject.parentProduct = null;
+      }
+
+      if (result.currentOwner) {
+        formObject.currentOwner = result.currentOwner.stakeholderId;
+      } else {
+        formObject.currentOwner = null;
+      }
+
+      if (result.issuer) {
+        formObject.issuer = result.issuer.stakeholderId;
+      } else {
+        formObject.issuer = null;
+      }
+
+      this.wasteForm.setValue(formObject); 
+  
+    })
+    .catch((error) => {
+      if (error === 'Server error') {
+        this.errorMessage = 'Could not connect to REST server. Please check your configuration details';
+      } else if (error === '404 - Not Found') {
+        this.errorMessage = '404 - Could not find API route. Please check your available APIs.';
+      } else {
+        this.errorMessage = error;
+      }
+    });
+  
+  
+    }
+
   loadParticipants(): Promise<any>{
     const tempList = [];
     return this.serviceStakeholder.getAll()
@@ -393,6 +583,8 @@ export class ProductComponent implements OnInit {
       'certification': certi,
       'productType': this.productType.value,
       'quantity': this.quantity.value,
+      'wastequantity':this.wastequantity.value,
+      'lostquantity':this.lostquantity.value,
       'unit': this.unit.value,
       'divideStatus': 'ORIGINAL',
       'activeStatus': 'ACTIVE',
@@ -430,7 +622,91 @@ export class ProductComponent implements OnInit {
       }
     });
   }
+  updateWaste(form: any){
+    $('.loader').show();
+    $('.word').hide();
 
+    if(form.get('quantity').value > this.wastequantity.value){
+      let parent = "";
+    let certImageArr = this.myForm.value['certImagesFormArr'];
+    let certImages = [];
+
+    certImageArr.forEach((image)=>{
+      let item = image.image;
+      certImages.push(item);
+    });
+
+    let certi = {
+      $class: "org.ucsc.agriblockchain.Certification",
+      "certificationNo": this.certificationNo.value,
+      "certificationBody": "resource:org.ucsc.agriblockchain.Stakeholder#" + this.certificationBody.value,
+      "from": this.from.value,
+      "to": this.to.value,
+      "images": certImages,
+    }
+
+    this.asset = {
+      $class: 'org.ucsc.agriblockchain.Product',
+      'pluckedDate': this.pluckedDate.value,
+      'certification': certi,
+      'productType': this.productType.value,
+      'quantity': this.quantity.value - this.wastequantity.value,
+      'unit': this.unit.value,
+      'divideStatus': this.divideStatus,
+      'activeStatus': this.activeStatus,
+      'plot': "resource:org.ucsc.agriblockchain.Plot#" + this.plot.value,
+      'currentOwner': "resource:org.ucsc.agriblockchain.Stakeholder#" + this.currentOwner.value,
+      'issuer': "resource:org.ucsc.agriblockchain.Stakeholder#" + this.issuer.value,
+    };
+
+    if(this.parentProduct != "") {                        
+      this.asset.parentProduct = this.parentProduct;   
+    }
+
+    if(this.productpath != "") {                        
+      this.asset.productpath = this.productpath;   
+    }
+
+    return this.toggleLoad = this.serviceProduct.updateAsset(form.get('productId').value, this.asset)
+    .toPromise()
+    .then(() => {
+      this.errorMessage = null;
+      if(this.userType == "ADMIN"){
+        this.loadAll();
+      }
+      else{
+        this.loadOwnedProducts();
+      }  
+
+      $('#updateAssetModal .close').trigger('click');
+      swal(
+        'Success!',
+        'Waste added successfully!',
+        'success'
+      )
+      $('.loader').hide();
+      $('.word').show();
+    })
+    .catch((error) => {
+      if (error === 'Server error') {
+        this.errorMessage = 'Could not connect to REST server. Please check your configuration details';
+      } else if (error === '404 - Not Found') {
+        this.errorMessage = '404 - Could not find API route. Please check your available APIs.';
+      } else {
+        this.errorMessage = error;
+      }
+    });
+    }
+    else{
+      swal({
+        type: 'error',
+        title: 'Oops...',
+        text: "Can't added. Exceeding quantities!"
+      });
+      $('.loader').hide();
+      $('.word').show();
+    }
+  }
   divideAsset(form: any) {
     $('.loader').show();
     $('.word').hide();
@@ -627,6 +903,8 @@ export class ProductComponent implements OnInit {
         'certification': null,
         'productType': null,
         'quantity': null,
+        'wastequantity':null,
+        'lostquantity':null,
         'unit': null,
         'divideStatus': null,
         'activeStatus': null,
@@ -691,6 +969,17 @@ export class ProductComponent implements OnInit {
         formObject.quantity = result.quantity;
       } else {
         formObject.quantity = null;
+      }
+
+      if (result.wastequantity) {
+        formObject.wastequantity = result.wastequantity;
+      } else {
+        formObject.wastequantity = null;
+      }
+      if (result.lostquantity) {
+        formObject.lostquantity = result.lostquantity;
+      } else {
+        formObject.lostquantity = null;
       }
 
       if (result.unit) {
@@ -772,6 +1061,8 @@ export class ProductComponent implements OnInit {
         'certification': null,
         'productType': null,
         'quantity': null,
+        'wastequantity':null,
+        'lostquantity':null,
         'unit': null,
         'divideStatus': null,
         'activeStatus': null,
@@ -827,6 +1118,16 @@ export class ProductComponent implements OnInit {
         formObject.quantity = result.quantity;
       } else {
         formObject.quantity = null;
+      }
+      if (result.wastequantity) {
+        formObject.wastequantity = result.wastequantity;
+      } else {
+        formObject.wastequantity = null;
+      }
+      if (result.lostquantity) {
+        formObject.lostquantity = result.lostquantity;
+      } else {
+        formObject.lostquantity = null;
       }
 
       if (result.unit) {
@@ -900,6 +1201,8 @@ export class ProductComponent implements OnInit {
       'certification': null,
       'productType': null,
       'quantity': null,
+      'wastequantity':null,
+      'lostquantity':null,
       'unit': null,
       'divideStatus': null,
       'activeStatus': null,

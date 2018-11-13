@@ -56,6 +56,7 @@ export class StakeholderComponent implements OnInit {
   private onlyactivities;
   private onlyupdates;
   private onlytransfers;
+  private onlyinspections;
   private transactionHistorians;
   private Participants;
   private participant;
@@ -257,6 +258,7 @@ $('#stage1').trigger('click');
     const onlyactivity = [];
     const onlytransfer = [];
     const onlyupdate = [];
+    const onlyinspection = [];
     return this.dataService.getHistorianstakeholder()
     .toPromise()
     .then((stake) => {
@@ -279,10 +281,16 @@ $('#stage1').trigger('click');
             
             onlyupdate.push(userhis)
           }
+          if(txType == 'Inspection'){
+            
+            onlyinspection.push(userhis)
+          }
+          
           
       })
       this.onlyupdates = onlyupdate;
       this.onlyaddasset = addasset;
+      this.onlyinspections = onlyinspection; 
       console.log(this.onlyaddasset)
       this.onlyactivities = onlyactivity;
       console.log( this.onlyactivities)
@@ -470,6 +478,32 @@ $('#stage1').trigger('click');
     }
     if(tratype == 'PHReading'){
       return this.dataService.getHistorianph(transactionId)
+      .toPromise()
+      .then((iden) => {
+        iden.forEach(datalist => {
+            data.push(datalist);
+            this.clas = datalist.$class 
+        });
+        this.alldata = data;
+        console.log(this.alldata)
+        console.log('class='+this.clas)
+      })
+    }
+    if(tratype == 'Inspection'){
+      return this.dataService.getinspection(transactionId)
+      .toPromise()
+      .then((iden) => {
+        iden.forEach(datalist => {
+            data.push(datalist);
+            this.clas = datalist.$class 
+        });
+        this.alldata = data;
+        console.log(this.alldata)
+        console.log('class='+this.clas)
+      })
+    }
+    if(tratype == 'RemoveAsset'){
+      return this.dataService.getremove(transactionId)
       .toPromise()
       .then((iden) => {
         iden.forEach(datalist => {

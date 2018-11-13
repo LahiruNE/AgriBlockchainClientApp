@@ -21,6 +21,7 @@ import $ from 'jquery';
 import { FarmService } from '../Farm/Farm.service';
 import { InspectionService } from '../services/inspection.service';
 import { BsDatepickerConfig } from 'ngx-bootstrap/datepicker';
+import { ActivityService } from '../Activity/Activity.service';
 import swal from 'sweetalert2';
 import { DataService } from '../data.service';
 import { Product } from '../org.ucsc.agriblockchain';
@@ -29,7 +30,7 @@ import { Product } from '../org.ucsc.agriblockchain';
   selector: 'app-plot',
   templateUrl: './Plot.component.html',
   styleUrls: ['./Plot.component.css'],
-  providers: [PlotService,FarmService,InspectionService, DataService]
+  providers: [PlotService,FarmService,InspectionService,ActivityService, DataService]
 })
 export class PlotComponent implements OnInit {
 
@@ -50,6 +51,9 @@ export class PlotComponent implements OnInit {
   private certiicationComment = [];
   private toggleLoad;
   private comm;
+  private plotcomments;
+  private actitype;
+  private onlyacti;
   private seededArr = {};
   private harvestedArr = {};
   private growCountArr = [];
@@ -138,7 +142,7 @@ export class PlotComponent implements OnInit {
     },
   ];
   
-  constructor(public serviceData: DataService<Product>, private localStorageService: LocalStorageService, public servicePlot: PlotService, fb: FormBuilder, public serviceFarm: FarmService,public serviceInspection : InspectionService) {
+  constructor(public serviceData: DataService<Product>,private localStorageService: LocalStorageService, public servicePlot: PlotService, fb: FormBuilder, public serviceFarm: FarmService,public serviceInspection : InspectionService,public serviceActivity: ActivityService){
     this.myForm = fb.group({
       plotId: this.plotId,
       cultivationStartDate: this.cultivationStartDate,
@@ -224,9 +228,29 @@ export class PlotComponent implements OnInit {
       this.activity = result.activities ;
       this.ph = result.phReadings;
       this.plotinfo = result;
+      this.plotcomments = result.certificationactivity;
       console.log(this.plotinfo)
       console.log(this.activity )
       console.log(this.ph)
+    })
+    
+  }
+  getpro(id){
+    const activi =[];
+    return this.serviceActivity.getTransaction(id)
+    .toPromise()
+    .then((result) => {
+     this.actitype = result.activitytype;
+     if(result.hasOwnProperty('pesticide')){
+      activi.push({data:result,type:'pesticide'});
+     }
+     if(result.hasOwnProperty('fertilizer')){
+      activi.push({data:result,type:'fertilizer'});
+     }
+      
+      
+      this.onlyacti = activi;
+      console.log( this.onlyacti);
     })
     
   }

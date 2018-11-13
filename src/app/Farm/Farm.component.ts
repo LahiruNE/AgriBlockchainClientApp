@@ -58,6 +58,7 @@ export class FarmComponent implements OnInit {
   private uploadCertImages = [];
   private toggleLoad;
   private comm;
+  private farmcomments;
 
   private userType = this.localStorageService.getFromLocal('currentUser').type;
 
@@ -169,7 +170,7 @@ export class FarmComponent implements OnInit {
   ngOnInit(): void {    
     this.loadAll();
     this.loadParticipants();
-
+    $('.history').hide();
     //setup wizard   
     var navListItems = $('div.setup-panel div a'),
             allWells = $('.setup-content'),
@@ -214,6 +215,21 @@ export class FarmComponent implements OnInit {
     
   }  
 
+  getFarmdata(farmid): Promise<any>{
+    const plotsdata = [];
+    return this.serviceFarm.getAsset(farmid)
+    .toPromise()
+    .then((result) => {
+      
+      this.farmcomments = result.certificationactivity;
+      
+    })
+    
+  }
+  cls(){
+    $('.history').show();
+    document.getElementById('historyview').scrollIntoView(true);
+  }
   loadAll(): Promise<any> {
     const tempList = [];
     return this.serviceFarm.getAll()
