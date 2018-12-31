@@ -57,6 +57,7 @@ export class StakeholderComponent implements OnInit {
   private onlyupdates;
   private onlytransfers;
   private onlyinspections;
+  private onlyaddpartcipants =[];
   private transactionHistorians;
   private Participants;
   private participant;
@@ -270,6 +271,9 @@ $('#stage1').trigger('click');
           if(txType == 'AddAsset'){
             addasset.push(userhis)
           }
+          if(txType == 'AddParticipant'){
+            this.onlyaddpartcipants.push(userhis)
+          }
           if(txType == 'Activity'){
             onlyactivity.push(userhis)
           }
@@ -285,6 +289,7 @@ $('#stage1').trigger('click');
             
             onlyinspection.push(userhis)
           }
+          
           
           
       })
@@ -382,6 +387,19 @@ $('#stage1').trigger('click');
     this.TypeofTransaction = tratype;
     console.log(tratype)
     console.log(transactionId)
+    if(tratype == 'Diary'){
+      return this.dataService.getHistoriandiary(transactionId)
+    .toPromise()
+    .then((iden) => {
+      iden.forEach(datalist => {
+          data.push(datalist);
+          
+      });
+      this.alldata = data;
+      console.log(this.alldata)
+     
+    })
+    }
     if(tratype == 'IssueIdentity'){
       return this.dataService.getHistorianissueidentity(transactionId)
     .toPromise()

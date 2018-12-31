@@ -1590,6 +1590,27 @@
         <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">×</span><span class="sr-only">Close</span></button>
       </div>
       <div class="modal-body">
+          <div *ngIf = "TypeofTransaction == 'Diary'" class="col-md-12">
+              <div *ngFor = "let dataelements of alldata" class="col-md-12">
+                  <table  class="table table-striped">
+                      <tr>
+                        <td>Date</td>
+                        <td>{{dataelements.date.split('T')[0]}}</td>
+                      </tr>
+                      <tr>
+                          <td>Time</td>
+                          <td>{{dataelements.time.split('T')[1]}}</td>
+                        </tr>
+                        <tr>
+                            <td>Record</td>
+                            <td>{{dataelements.record}}</td>
+                          </tr>
+   
+                    </table>
+  
+                </div>
+        
+           </div>
          <div *ngIf = "TypeofTransaction == 'IssueIdentity'" class="col-md-12">
             <div *ngFor = "let dataelements of alldata" class="col-md-12">
                 <table  class="table table-striped">
@@ -1638,7 +1659,7 @@
                 </tr>
                 <tr>
                     <td>Registry</td>
-                    <td>{{dataelements.targetRegistry}}</td>
+                    <td>{{dataelements.targetRegistry.split('#')[1]}}</td>
                   </tr>
               </table>
 
@@ -2125,7 +2146,7 @@
               
                   <th class="info">certificationNo</th> -->
 
-                  <th *ngIf = "loggingType !== 'CERTIFICATION'" class="info" style="min-width: 155px">Certification Body</th>
+                  <th *ngIf = "StakeholderType !== 'CERTIFICATION'" class="info" style="min-width: 155px">Certification Body</th>
 
                   <!-- <th class="info">startDate</th>
 
@@ -2176,7 +2197,7 @@
               
                   <td class="participant-properties">{{participant.certification.certificationNo}}</td> -->
 
-                  <td *ngIf = "loggingType !== 'CERTIFICATION'" class="participant-properties">{{participant.certification.certificationBody.name}}</td>
+                  <td *ngIf = "StakeholderType !== 'CERTIFICATION'" class="participant-properties">{{participant.certification.certificationBody.name}}</td>
 
                  <!--  <td class="participant-properties">{{participant.certification.from}}</td>
 
@@ -2267,11 +2288,12 @@
                     <div class="tabbable-line">
                       <ul class="nav nav-tabs tabtop  tabsetting">
                         <li class="active"> <a href="#tab_default_1" data-toggle="tab"> All Activities </a> </li>
-                        <li> <a href="#tab_default_2" data-toggle="tab"> Added Assets</a> </li>
-                        <li> <a href="#tab_default_5" data-toggle="tab"> Updated Assets</a> </li>
-                        <li> <a href="#tab_default_3" data-toggle="tab"> Plot Activities</a> </li>
-                        <li> <a href="#tab_default_4" data-toggle="tab"> Transfer Package</a> </li>
-                        <li> <a href="#tab_default_6" data-toggle="tab"> Inspections</a> </li>
+                        <li *ngIf = "StakeholderType !== 'CERTIFICATION'"> <a href="#tab_default_2" data-toggle="tab"> Added Assets</a> </li>
+                        <li *ngIf = "StakeholderType !== 'CERTIFICATION'"> <a href="#tab_default_5" data-toggle="tab"> Updated Assets</a> </li>
+                        <li *ngIf = "StakeholderType == 'FARMERS'"> <a href="#tab_default_3" data-toggle="tab"> Plot Activities</a> </li>
+                        <li *ngIf = "StakeholderType !== 'CERTIFICATION'"> <a href="#tab_default_4" data-toggle="tab"> Transfer Package</a> </li>
+                        <li *ngIf = "StakeholderType == 'CERTIFICATION'"> <a href="#tab_default_6" data-toggle="tab"> Inspections</a> </li>
+                        <li *ngIf = "StakeholderType == 'ADMIN'"> <a href="#tab_default_7" data-toggle="tab"> Add Participants</a> </li>
                        
                       </ul>
                       <div class="tab-content margin-tops">
@@ -2482,6 +2504,40 @@
                                        </table>
                                        </div>
                             </div>
+                            <div class="tab-pane fade" id="tab_default_7">
+                                <div class="col-md-12">
+                                    <div *ngIf ="onlyaddpartcipants==''" class="alert alert-warning" role="alert" style="text-align: center; margin-top: 10px; padding: 5px;"><h4>No new partcipants available!</h4></div>
+                                    <table class="table table-striped" id="detTbl">
+                                        <!--  <thead>
+                                           <th><img src="../../assets/clock.png" width="20px" height="20px">  Timestamp</th>
+                                           <th><img src="../../assets/tran.png" width="26px" height="28px">   Transaction Type</th>
+                                         </thead> -->
+                                         <tbody *ngFor="let elitemss of onlyaddpartcipants" >
+                                           
+                                               <tr style="box-shadow: 0px 0px 1px 1px #ddd;">
+                                                   <td><img src="../../assets/clock.png" width="20px" height="20px"> 
+                                                       {{elitemss.transactionTimestamp.split('T')[0]}}
+                                                   </td>
+                                                   <td><!-- <img src="../../assets/tran.png" width="26px" height="28px"> -->
+                                                       {{elitemss.transactionType.split('.')[4]}}
+                                                   </td>
+                                                   <td>
+                                                     <a style="cursor: pointer" (click) = "userHis(elitemss.transactionInvoked)" data-toggle="modal" data-target="#viewHistoryModal">View More</a>
+                                                   </td><br>
+                                                   
+                                                 </tr>
+                                                 <tr >
+                         
+                                                 <img src="../../assets/arrow.png" width="30px" height="25px" style="margin-left: 120%">
+                         
+                                                 </tr> 
+                                         </tbody>
+                                         <div>
+                                            <img src="../../assets/3-dots.png" width="30px" height="25px" style="margin-left: 120%">
+                                        </div> 
+                                         </table>
+                                         </div>
+                              </div>
                       </div>
                     </div>
                   </div>

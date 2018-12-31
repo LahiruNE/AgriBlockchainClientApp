@@ -48,7 +48,7 @@
     
                         </td>
                         <td>
-                            <input formControlName="cultivationStartDate" class="form-control" bsDatepicker [bsConfig]="{ dateInputFormat: 'YYYY-MM-DD' }">  
+                            <input formControlName="cultivationStartDate" class="form-control" bsDatepicker [bsConfig]="bsConfig">  
                                   
                         </td>
                       </tr>
@@ -868,10 +868,10 @@
                 <button  type="button" title="view" (click)="getFormForView(asset.plotId);" class="btn btn-update" data-toggle="modal" data-target="#viewAssetModal">
                     <img src="../../assets/view.png">
                   </button>
-                  <button (click)="getPlotdata(asset.plotId);cls();"  type="button" title="view" class="log btn btn-update">
+                  <button (click)="getPlotdata(asset.plotId);cls();"  type="button" title="Historian" class="log btn btn-update">
                       <img src="../../assets/book.png" style="width: 20px;">
                     </button>
-                <button type="button" title="view" (click)="getFormForComment(asset.plotId);" class="btn btn-update" data-toggle="modal" data-target="#addcomment">
+                <button type="button" title="Comment" (click)="getFormForComment(asset.plotId);" class="btn btn-update" data-toggle="modal" data-target="#addcomment">
                     <img src="../../assets/comment.png" style="width: 20px;">
                 </button>
               <button (click)="getForm(asset.plotId);" type="button" class="btn btn-update" data-toggle="modal" data-target="#updateAssetModal">
@@ -922,11 +922,11 @@
           <div class="tabbable-panel margin-tops4 ">
             <div class="tabbable-line">
               <ul class="nav nav-tabs tabtop  tabsetting">
+                <li> <a href="#tab_default_3" data-toggle="tab"> Farm Details</a> </li>
                 <li class="active"> <a href="#tab_default_1" data-toggle="tab"> Plot Activities </a> </li>
                 <li> <a href="#tab_default_2" data-toggle="tab"> PH Readings</a> </li>
-                <li> <a href="#tab_default_3" data-toggle="tab"> Farm Details</a> </li>
+                <li> <a href="#tab_default_5" data-toggle="tab">Soil Conductivity</a> </li>
                 <li> <a href="#tab_default_4" data-toggle="tab"> Certification Body Comments</a> </li>
-               
               </ul>
               <div class="tab-content margin-tops">
                 <div class="tab-pane active fade in" id="tab_default_1">

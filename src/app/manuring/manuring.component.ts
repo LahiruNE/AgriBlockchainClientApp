@@ -18,6 +18,9 @@ import { PesticideService } from '../Pesticide/Pesticide.service';
 })
 export class ManuringComponent implements OnInit {
 
+  colorTheme = 'theme-dark-blue';
+  bsConfig = Object.assign({}, { containerClass: this.colorTheme },{dateInputFormat: 'YYYY-MM-DD'});
+
   myForm: FormGroup;
 
   private errorMessage;

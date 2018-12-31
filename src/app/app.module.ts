@@ -60,6 +60,7 @@ import { DivideDashboardComponent } from './divide-dashboard/divide-dashboard.co
 import { PlantGrowthComponent } from './plant-growth/plant-growth.component';
 
 import { ChartsModule } from 'ng2-charts';
+import { DiaryComponent } from './diary/diary.component';
 
   @NgModule({
   declarations: [
@@ -88,7 +89,8 @@ import { ChartsModule } from 'ng2-charts';
     WateringComponent,
     ManuringComponent,
     DivideDashboardComponent,
-    PlantGrowthComponent
+    PlantGrowthComponent,
+    DiaryComponent
   ],
   imports: [
     BrowserModule,

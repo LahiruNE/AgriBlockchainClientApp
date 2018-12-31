@@ -11,6 +11,7 @@ import {Event} from './org.hyperledger.composer.system';
       quantity: number;
       wastequantity: number;
       lostquantity: number;
+      wastecomment:string;
       unit: Unit;
       divideStatus: DivideStatus;
       activeStatus: ActiveStatus;

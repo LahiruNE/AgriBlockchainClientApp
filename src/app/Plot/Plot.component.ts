@@ -649,7 +649,7 @@ export class PlotComponent implements OnInit {
         'seed' : null,
         'growthProgress' : null,
       };
-
+      console.log(result);
       if (result.plotId) {
         formObject.plotId = result.plotId;
       } else {

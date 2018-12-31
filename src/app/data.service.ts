@@ -222,6 +222,16 @@ export class DataService<Type> {
         .catch(this.handleError);
 
     }
+    
+    public getHistoriandiary(transactionId){
+        let ns = 'queries/getFromHistoriandiary';
+        let Id = transactionId;
+        console.log(this.actionUrl+ns +'?' + 'Id='+ Id);
+        return this.http.get(this.actionUrl +ns +'?' + 'Id='+ Id)
+        .map(this.extractData)
+        .catch(this.handleError);
+
+    }
     public getremove(transactionId){
         let ns = 'queries/getFromHistorianremove';
         let Id = transactionId;
@@ -270,6 +280,24 @@ export class DataService<Type> {
 
     public getOwnedProducts(user){
         let ns = 'queries/getOwnedProducts';
+        console.log(this.actionUrl+ns +'?' + 'user='+ user);
+        return this.http.get(this.actionUrl +ns +'?' + 'user='+ user)
+        .map(this.extractData)
+        .catch(this.handleError);
+
+    }
+
+    public getOwnedFarms(user){
+        let ns = 'queries/getOwnedFarms';
+        console.log(this.actionUrl+ns +'?' + 'user='+ user);
+        return this.http.get(this.actionUrl +ns +'?' + 'user='+ user)
+        .map(this.extractData)
+        .catch(this.handleError);
+
+    }
+    
+    public getOwnedDiary(user){
+        let ns = 'queries/getOwnedRecords';
         console.log(this.actionUrl+ns +'?' + 'user='+ user);
         return this.http.get(this.actionUrl +ns +'?' + 'user='+ user)
         .map(this.extractData)

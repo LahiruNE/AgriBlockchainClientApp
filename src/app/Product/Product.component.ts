@@ -34,6 +34,9 @@ import { LocalStorageService } from '../services/local-storage.service';
 })
 export class ProductComponent implements OnInit {
 
+  colorTheme = 'theme-dark-blue';
+  bsConfig = Object.assign({}, { containerClass: this.colorTheme },{dateInputFormat: 'YYYY-MM-DD'});
+
   myForm: FormGroup;
   viewForm: FormGroup;
   divideForm: FormGroup;
@@ -69,6 +72,14 @@ export class ProductComponent implements OnInit {
   private productsArr = [];
   private divideViewQty;  
   private stat;
+  private currentowner;
+
+  private seededArr = {};
+  private harvestedArr = {};
+
+  private growCountArr = [];
+  private withFruitCountArr = [];
+  private destroyedCountArr = [];
 
   productId = new FormControl('', Validators.required);
   pluckedDate = new FormControl('', Validators.required);
@@ -91,6 +102,7 @@ export class ProductComponent implements OnInit {
 
   wastequantity = new FormControl('');
   lostquantity = new FormControl('');
+  wastecomment = new FormControl('');
 
   parentProduct;
   divideStatus;
@@ -106,6 +118,7 @@ export class ProductComponent implements OnInit {
       quantity: this.quantity,
       wastequantity:this.wastequantity,
       lostquantity:this.lostquantity,
+      wastecomment: this.wastecomment,
       unit: this.unit,
       divideStatus: this.divideStatus,
       activeStatus: this.activeStatus,
@@ -130,6 +143,7 @@ export class ProductComponent implements OnInit {
       quantity: this.quantity,
       wastequantity:this.wastequantity,
       lostquantity:this.lostquantity,
+      wastecomment: this.wastecomment,
       unit: this.unit,
       divideStatus: this.divideStatus,
       activeStatus: this.activeStatus,
@@ -159,6 +173,7 @@ export class ProductComponent implements OnInit {
       quantity: this.quantity,
       wastequantity:this.wastequantity,
       lostquantity:this.lostquantity,
+      wastecomment: this.wastecomment,
       unit: this.unit,
       divideStatus: this.divideStatus,
       activeStatus: this.activeStatus,
@@ -293,6 +308,7 @@ export class ProductComponent implements OnInit {
     .then((result) => { 
       this.productspath = result.productpath;
       this.pretype = result.productType;
+      this.currentowner = result.currentOwner;
       
      /*    for(var i = 0;i < this.preqty.length; i++ ){
           if([i+1] == this.preqty.length){
@@ -335,6 +351,7 @@ export class ProductComponent implements OnInit {
         'quantity': null,
         'wastequantity':null,
         'lostquantity':null,
+        'wastecomment':null,
         'unit': null,
         'divideStatus': null,
         'activeStatus': null,
@@ -355,7 +372,6 @@ export class ProductComponent implements OnInit {
       } else {
         formObject.productId = null;
       }
-
       if (result.pluckedDate) {
         formObject.pluckedDate = result.pluckedDate;
       } else {
@@ -409,6 +425,12 @@ export class ProductComponent implements OnInit {
         formObject.lostquantity = result.lostquantity;
       } else {
         formObject.lostquantity = null;
+      }
+
+      if (result.wastecomment) {
+        formObject.wastecomment = result.wastecomment;
+      } else {
+        formObject.wastecomment = null;
       }
 
       if (result.unit) {
@@ -585,6 +607,7 @@ export class ProductComponent implements OnInit {
       'quantity': this.quantity.value,
       'wastequantity':this.wastequantity.value,
       'lostquantity':this.lostquantity.value,
+      'wastecomment':this.wastecomment.value,
       'unit': this.unit.value,
       'divideStatus': 'ORIGINAL',
       'activeStatus': 'ACTIVE',
@@ -625,6 +648,7 @@ export class ProductComponent implements OnInit {
   updateWaste(form: any){
     $('.loader').show();
     $('.word').hide();
+    console.log(form.get('productpath').value)
 
     if(form.get('quantity').value > this.wastequantity.value){
       let parent = "";
@@ -651,6 +675,9 @@ export class ProductComponent implements OnInit {
       'certification': certi,
       'productType': this.productType.value,
       'quantity': this.quantity.value - this.wastequantity.value,
+      'wastequantity':this.wastequantity.value,
+      'wastecomment':this.wastecomment.value,
+      'productpath':this.productpath.value,
       'unit': this.unit.value,
       'divideStatus': this.divideStatus,
       'activeStatus': this.activeStatus,
@@ -663,9 +690,9 @@ export class ProductComponent implements OnInit {
       this.asset.parentProduct = this.parentProduct;   
     }
 
-    if(this.productpath != "") {                        
+   /* if(this.productpath != "") {                        
       this.asset.productpath = this.productpath;   
-    }
+    }  */
 
     return this.toggleLoad = this.serviceProduct.updateAsset(form.get('productId').value, this.asset)
     .toPromise()
@@ -905,6 +932,7 @@ export class ProductComponent implements OnInit {
         'quantity': null,
         'wastequantity':null,
         'lostquantity':null,
+        'wastecomment':null,
         'unit': null,
         'divideStatus': null,
         'activeStatus': null,
@@ -981,6 +1009,11 @@ export class ProductComponent implements OnInit {
       } else {
         formObject.lostquantity = null;
       }
+      if (result.wastecomment) {
+        formObject.wastecomment = result.wastecomment;
+      } else {
+        formObject.wastecomment = null;
+      }
 
       if (result.unit) {
         formObject.unit = result.unit;
@@ -1049,6 +1082,14 @@ export class ProductComponent implements OnInit {
   }
 
   getFormForView(id: any): Promise<any> {
+
+    this.growCountArr = [];
+    this.withFruitCountArr = [];
+    this.destroyedCountArr = [];
+    this.harvestedArr = {};
+    this.seededArr = {};
+
+    
     $('#view1').trigger('click');    
 
     return this.serviceProduct.getAsset(id)
@@ -1063,6 +1104,7 @@ export class ProductComponent implements OnInit {
         'quantity': null,
         'wastequantity':null,
         'lostquantity':null,
+        'wastecomment':null,
         'unit': null,
         'divideStatus': null,
         'activeStatus': null,
@@ -1078,7 +1120,7 @@ export class ProductComponent implements OnInit {
         'certiComments' : null,
         'certiImages' : null
       };
-
+    
       if (result.productId) {
         formObject.productId = result.productId;
 
@@ -1128,6 +1170,11 @@ export class ProductComponent implements OnInit {
         formObject.lostquantity = result.lostquantity;
       } else {
         formObject.lostquantity = null;
+      }
+      if (result.wastecomment) {
+        formObject.wastecomment = result.wastecomment;
+      } else {
+        formObject.wastecomment = null;
       }
 
       if (result.unit) {
@@ -1180,7 +1227,38 @@ export class ProductComponent implements OnInit {
 
       this.viewForm.setValue(formObject);
 
+      this.seededArr['date'] = result.plot.seededDate.toString().split('T')[0];
+      this.seededArr['type'] = result.plot.cultivatedType; 
+      this.seededArr['qty'] = result.plot.seededAmount;
+      this.getHarvestDetails(result.plot.plotId);
+      console.log(result);
     })
+    .catch((error) => {
+      if (error === 'Server error') {
+        this.errorMessage = 'Could not connect to REST server. Please check your configuration details';
+      } else if (error === '404 - Not Found') {
+        this.errorMessage = '404 - Could not find API route. Please check your available APIs.';
+      } else {
+        this.errorMessage = error;
+      }
+    });
+  }
+
+  getHarvestDetails(plotId){
+    let plot = "resource%3Aorg.ucsc.agriblockchain.Plot%23" + plotId;
+    
+    return this.serviceData.getHavestDetails(plot)
+    .toPromise()
+    .then((result) => {
+      this.harvestedArr['date'] = result[0].pluckedDate.toString().split('T')[0];;
+      this.harvestedArr['qty'] = result[0].quantity;
+      this.harvestedArr['type'] = result[0].productType;
+      this.harvestedArr['unit'] = result[0].unit;
+    
+      
+      console.log(result);
+    })
+    
     .catch((error) => {
       if (error === 'Server error') {
         this.errorMessage = 'Could not connect to REST server. Please check your configuration details';

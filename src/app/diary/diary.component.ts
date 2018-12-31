@@ -1,0 +1,141 @@
+import { Component, OnInit } from '@angular/core';
+import { FormGroup, FormControl, Validators, FormBuilder, FormArray } from '@angular/forms';
+import { FarmService } from '../Farm/Farm.service';
+import { Farm } from '../org.ucsc.agriblockchain';
+import {DiaryService} from '../services/diary.service';
+import 'rxjs/add/operator/toPromise';
+import { LocalStorageService } from '../services/local-storage.service';
+import $ from 'jquery';
+import { BsDatepickerConfig } from 'ngx-bootstrap/datepicker';
+import swal from 'sweetalert2';
+import { DataService } from '../data.service';
+
+
+@Component({
+  selector: 'app-diary',
+  templateUrl: './diary.component.html',
+  styleUrls: ['./diary.component.css'],
+  providers: [FarmService,DiaryService, DataService]
+})
+export class DiaryComponent implements OnInit {
+
+  colorTheme = 'theme-dark-blue';
+  bsConfig = Object.assign({}, { containerClass: this.colorTheme },{dateInputFormat: 'YYYY-MM-DD'});
+
+  recordForm: FormGroup;
+
+  private errorMessage;
+  private availFarms = [];
+  private allRecords =[];
+  private rec;
+
+  farmId = new FormControl('', Validators.required);
+  recorddate = new FormControl('');
+  records = new FormControl('');
+  recordtime = new FormControl('');
+
+  constructor(private localStorageService : LocalStorageService, public serviceData: DataService<Farm>,public serviceFarm: FarmService,fb: FormBuilder,public serviceDiary:DiaryService) { 
+    this.recordForm = fb.group({
+      farmId: this.farmId,
+      recorddate : this.recorddate,
+      recordtime : this.recordtime,
+      records : this.records
+    }); 
+
+  }
+
+  ngOnInit() {
+    this.loadFarms();
+    this.loadRecords();
+  }
+  loadFarms(): Promise<any>{
+    const tempList = [];
+    let user = "resource%3Aorg.ucsc.agriblockchain.Stakeholder%23" + this.localStorageService.getFromLocal('currentUser').stakeholderId;
+    return this.serviceData.getOwnedFarms(user)
+    .toPromise()
+    .then((result) => {
+      this.errorMessage = null;
+      result.forEach(asset => {
+        this.availFarms.push(asset);
+      });
+      console.log(this.availFarms);
+    })
+    .catch((error) => {
+      if (error === 'Server error') {
+        this.errorMessage = 'Could not connect to REST server. Please check your configuration details';
+      } else if (error === '404 - Not Found') {
+        this.errorMessage = '404 - Could not find API route. Please check your available APIs.';
+      } else {
+        this.errorMessage = error;
+      }
+    });
+  }
+
+  loadRecords(): Promise<any>{
+    let user = "resource%3Aorg.ucsc.agriblockchain.Stakeholder%23" + this.localStorageService.getFromLocal('currentUser').stakeholderId;
+    return this.serviceData.getOwnedDiary(user)
+    .toPromise()
+    .then((result) => {
+      this.errorMessage = null;
+      result.forEach(asset => {
+        this.allRecords.push(asset);
+      });
+      console.log(this.allRecords);
+    })
+    .catch((error) => {
+      if (error === 'Server error') {
+        this.errorMessage = 'Could not connect to REST server. Please check your configuration details';
+      } else if (error === '404 - Not Found') {
+        this.errorMessage = '404 - Could not find API route. Please check your available APIs.';
+      } else {
+        this.errorMessage = error;
+      }
+    });
+  }
+
+  addRecord(form: any){
+    $('.loader').show();
+    $('.word').hide();
+    let date = new Date(this.recorddate.value);
+    let time = new Date(this.recordtime.value);
+    let d = date.getFullYear().toString() +"-"+ ("0" + (date.getMonth()+1).toString()).slice(-2) +"-"+ ("0" + date.getDate().toString()).slice(-2);
+    let t = ("0" + time.getHours().toString()).slice(-2) + ":" + ("0" + time.getMinutes().toString()).slice(-2);
+
+    this.rec = {
+      $class: "org.ucsc.agriblockchain.Diary",
+      'date': this.recorddate.value,
+      'record': this.records.value,
+      'time':d + "T" + t + ":00.000Z",
+      'farm': "resource:org.ucsc.agriblockchain.Farm#"+this.farmId.value,
+      'owner': "resource:org.ucsc.agriblockchain.Stakeholder#"+ this.localStorageService.getFromLocal('currentUser').stakeholderId
+    };
+    console.log(this.rec);
+    this.serviceDiary.addTransaction(this.rec)
+    .toPromise()
+    .then(() => {
+      this.errorMessage = null;
+      this.loadFarms();
+      $('#addrecord .close').trigger('click');
+      swal(
+        'Success!',
+        'CRecord is added successfully!',
+        'success'
+      )
+      $('.loader').hide();
+      $('.word').show();
+
+      
+      
+    })
+  } 
+
+  resetForm(): void {
+    this.recordForm.setValue({
+      'farmId': null,
+      'recorddate':null,
+      'recordtime':null,
+      'records' :null
+                     
+    });
+  }
+}

@@ -16,6 +16,9 @@ import swal from 'sweetalert2';
   providers: [PlotService, SeedService]
 })
 export class SeedingComponent implements OnInit {
+
+  colorTheme = 'theme-dark-blue';
+  bsConfig = Object.assign({}, { containerClass: this.colorTheme },{dateInputFormat: 'YYYY-MM-DD'});
   myForm: FormGroup;
 
   private errorMessage;

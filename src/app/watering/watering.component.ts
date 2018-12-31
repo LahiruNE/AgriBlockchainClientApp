@@ -16,6 +16,9 @@ import { ActivityService } from '../Activity/Activity.service';
   providers: [PlotService, ActivityService]
 })
 export class WateringComponent implements OnInit {
+
+  colorTheme = 'theme-dark-blue';
+  bsConfig = Object.assign({}, { containerClass: this.colorTheme },{dateInputFormat: 'YYYY-MM-DD'});
   myForm: FormGroup;
 
   private errorMessage;

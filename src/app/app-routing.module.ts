@@ -45,6 +45,7 @@ import { HarvestingComponent } from './harvesting/harvesting.component';
 
 import { DivideDashboardComponent } from './divide-dashboard/divide-dashboard.component';
 import { PlantGrowthComponent } from './plant-growth/plant-growth.component';
+import { DiaryComponent } from './diary/diary.component';
  
 const routes: Routes = [
   { path: '', component: HomeComponent },
@@ -71,6 +72,7 @@ const routes: Routes = [
   { path: 'Harvesting', component: HarvestingComponent },
   { path: 'DivideHome', component: DivideDashboardComponent },
   { path: 'PlantGrowth', component: PlantGrowthComponent },
+  { path: 'Diary', component: DiaryComponent },
   { path: '**', redirectTo: '' }
 ];
 

@@ -29,6 +29,9 @@ import swal from 'sweetalert2';
 })
 export class FertilizerComponent implements OnInit {
 
+  colorTheme = 'theme-dark-blue';
+  bsConfig = Object.assign({}, { containerClass: this.colorTheme },{dateInputFormat: 'YYYY-MM-DD'});
+
   myForm: FormGroup;
   viewForm: FormGroup;
   certImagesFormArr: FormArray;
