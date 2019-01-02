@@ -37,7 +37,9 @@ import {Event} from './org.hyperledger.composer.system';
       status : PlotStatus;
       cultivatedType : ProductType;
       farm: Farm;
-      growthProgress: GrowthProgress
+      growthProgress: GrowthProgress;
+      ECVar: ECVar[];
+      ECAvailDates: String; 
    }
    export class Farm extends Asset {
       farmId: string;
@@ -103,6 +105,12 @@ import {Event} from './org.hyperledger.composer.system';
       divideStatus: DivideStatus; 
       activeStatus: ActiveStatus;
    }
+
+  export class ECVar {
+    date: Date;
+    time: Date; 
+    value: number;
+  }
 
   export class GrowthProgress {
     growCount: GrowthRecord[];

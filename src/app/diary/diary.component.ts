@@ -48,7 +48,7 @@ export class DiaryComponent implements OnInit {
     this.loadFarms();
     this.loadRecords();
   }
-  loadFarms(): Promise<any>{
+/*   loadFarms(): Promise<any>{
     const tempList = [];
     let user = "resource%3Aorg.ucsc.agriblockchain.Stakeholder%23" + this.localStorageService.getFromLocal('currentUser').stakeholderId;
     return this.serviceData.getOwnedFarms(user)
@@ -69,7 +69,31 @@ export class DiaryComponent implements OnInit {
         this.errorMessage = error;
       }
     });
+  } */
+
+  loadFarms(): Promise<any>{
+    const tempList = [];
+    return this.serviceFarm.getAll()
+    .toPromise()
+    .then((result) => {
+      this.errorMessage = null;
+      result.forEach(asset => {
+        tempList.push(asset);
+      });
+      this.availFarms = tempList;
+    })
+    .catch((error) => {
+      if (error === 'Server error') {
+        this.errorMessage = 'Could not connect to REST server. Please check your configuration details';
+      } else if (error === '404 - Not Found') {
+        this.errorMessage = '404 - Could not find API route. Please check your available APIs.';
+      } else {
+        this.errorMessage = error;
+      }
+    });
   }
+
+
 
   loadRecords(): Promise<any>{
     let user = "resource%3Aorg.ucsc.agriblockchain.Stakeholder%23" + this.localStorageService.getFromLocal('currentUser').stakeholderId;
