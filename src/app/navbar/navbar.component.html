@@ -131,6 +131,57 @@
           </li>
       </ul>
 
+    <!--CERTIFICATION NAVBAR-->
+    <ul *ngIf="userType == 'CERTIFICATION'" class="navbar-nav mr-auto">
+      <li class="nav-item ">
+        <a id="homeLink" class="nav-link active" [routerLink]="['/CertificationHome']"><i class="fa fa-home"></i>Home</a>
+      </li>
+      
+      <li class="nav-item dropdown">
+        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            <i class="fas fa-boxes"></i>Resources
+        </a>
+        <div class="dropdown-menu" aria-labelledby="navbarDropdown">          
+          <a class="dropdown-item" [routerLink]="['/Plot']">Plots</a>          
+          <a class="dropdown-item" [routerLink]="['/Farm']">Farms</a>   
+        </div>
+      </li>
+
+      <li class="nav-item dropdown">
+        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            <i class="fas fa-gem"></i>Assets
+        </a>
+        <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+          <a class="dropdown-item" [routerLink]="['/Product']">Products</a>        
+          <a class="dropdown-item" [routerLink]="['/Seed']">Seeds</a>          
+          <a class="dropdown-item" [routerLink]="['/Fertilizer']">Fertilizers</a>          
+          <a class="dropdown-item" [routerLink]="['/Pesticide']">Pesticides</a>
+        </div>
+      </li>
+  
+      <li class="nav-item dropdown">
+        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            <i class="fas fa-dolly"></i>Activities
+        </a>
+        <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+          <a class="dropdown-item" [routerLink]="['/Seeding']">Seeding</a>            
+          <a class="dropdown-item" [routerLink]="['/Watering']">Watering</a>          
+          <a class="dropdown-item" [routerLink]="['/Manuring']">Manuring</a>       
+          <a class="dropdown-item" [routerLink]="['/Harvesting']">Harvesting</a>   
+        </div>
+      </li>
+
+      <li class="nav-item dropdown">
+          <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+              <i class="fas fa-cogs"></i>Operations
+          </a>
+          <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+            <a class="dropdown-item" [routerLink]="['/TransferPackage']">Trasnfer a Product</a>            
+            <a class="dropdown-item" [routerLink]="['/ScanProduct']">Scan a Product</a>  
+          </div>
+        </li>
+    </ul>
+
     <!--Others NAVBAR-->
     <ul *ngIf="userType != 'FARMER' && userType != 'ADMIN' && userType != 'CERTIFICATION'" class="navbar-nav mr-auto">
       <li class="nav-item ">

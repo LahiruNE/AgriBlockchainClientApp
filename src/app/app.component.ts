@@ -55,7 +55,7 @@ export class AppComponent implements OnInit {
                   this.router.navigateByUrl('/FarmerHome');
                 }
                 else if(userType == 'CERTIFICATION'){
-                  this.router.navigateByUrl('/DivideHome');
+                  this.router.navigateByUrl('/CertificationHome');
                 }
                 else{
                   this.router.navigateByUrl('/DivideHome');
