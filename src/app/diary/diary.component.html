@@ -41,6 +41,19 @@
                           </select>
                     </td>
                 </tr>
+
+                <tr>
+                  <td style="width: 150px">
+                          <label><b>Plot</b></label>                        
+
+                  </td>
+                  <td>  
+                      <select class="form-control input farmerSelect" formControlName="plotId">
+                            <option value = "">- Select -</option>
+                            <option *ngFor="let item of availPlots" value = {{item.plotId}}>{{"#"+item.plotId }}</option>
+                        </select>
+                  </td>
+              </tr>
                   <tr>
                       <td>
                           <label for="inspectiondate"><b>Added Date</b></label>

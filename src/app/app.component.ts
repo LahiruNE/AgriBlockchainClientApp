@@ -4,6 +4,7 @@ import {LocalStorageService} from './services/local-storage.service';
 import { NgModel } from '@angular/forms';
 import {DataService} from './data.service';
 import { Stakeholder } from './org.ucsc.agriblockchain';
+import {Router} from '@angular/router';
 
 @Component({
   selector: 'app-root',
@@ -12,8 +13,10 @@ import { Stakeholder } from './org.ucsc.agriblockchain';
 })
 
 export class AppComponent implements OnInit {
-  constructor( private localStorageService: LocalStorageService, private dataService: DataService<Stakeholder>) {
-     
+  router: Router;
+
+  constructor(_router: Router, private localStorageService: LocalStorageService, private dataService: DataService<Stakeholder>) {
+    this.router = _router;
   }
 
   public data:any=[]
@@ -42,6 +45,21 @@ export class AppComponent implements OnInit {
                 this.localStorageService.saveInLocal("currentUser", result[0]);
                 this.localStorageService.saveInLocal("isLoggedIn",true);
                 this.isLoggedIn = this.localStorageService.getFromLocal('isLoggedIn');
+
+                let userType = this.localStorageService.getFromLocal('currentUser').type;
+                
+                if(userType == 'ADMIN'){
+                  this.router.navigateByUrl('/Admin');
+                }
+                else if(userType == 'FARMER'){
+                  this.router.navigateByUrl('/FarmerHome');
+                }
+                else if(userType == 'CERTIFICATION'){
+                  this.router.navigateByUrl('/DivideHome');
+                }
+                else{
+                  this.router.navigateByUrl('/DivideHome');
+                }
               })                      
           }
           else{

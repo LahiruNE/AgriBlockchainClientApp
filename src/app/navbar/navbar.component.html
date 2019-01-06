@@ -23,7 +23,7 @@
     <!--ADMIN NAVBAR-->
     <ul *ngIf="userType == 'ADMIN'" class="navbar-nav mr-auto">
       <li class="nav-item ">
-        <a class="nav-link active" [routerLink]="['/Admin']"><i class="fa fa-home"></i>Home</a>
+        <a id="homeLink" class="nav-link active" [routerLink]="['/Admin']"><i class="fa fa-home"></i>Home</a>
       </li>
       <li class="nav-item dropdown">
         <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -83,7 +83,7 @@
     <!--FARMER NAVBAR-->
     <ul *ngIf="userType == 'FARMER'" class="navbar-nav mr-auto">
         <li class="nav-item ">
-          <a class="nav-link active" [routerLink]="['/FarmerHome']"><i class="fa fa-home"></i>Home</a>
+          <a id="homeLink" class="nav-link active" [routerLink]="['/FarmerHome']"><i class="fa fa-home"></i>Home</a>
         </li>
         
         <li class="nav-item dropdown">
@@ -130,6 +130,35 @@
             </div>
           </li>
       </ul>
+
+    <!--Others NAVBAR-->
+    <ul *ngIf="userType != 'FARMER' && userType != 'ADMIN' && userType != 'CERTIFICATION'" class="navbar-nav mr-auto">
+      <li class="nav-item ">
+        <a id="homeLink" class="nav-link active" [routerLink]="['/DivideHome']"><i class="fa fa-home"></i>Home</a>
+      </li>
+      
+      <li class="nav-item dropdown">
+        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            <i class="fas fa-gem"></i>Assets
+        </a>
+        <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+          <a class="dropdown-item" [routerLink]="['/Product']">Products</a>        
+          <a class="dropdown-item" [routerLink]="['/Seed']">Seeds</a>          
+          <a class="dropdown-item" [routerLink]="['/Fertilizer']">Fertilizers</a>          
+          <a class="dropdown-item" [routerLink]="['/Pesticide']">Pesticides</a>
+        </div>
+      </li>
+  
+      <li class="nav-item dropdown">
+          <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+              <i class="fas fa-cogs"></i>Operations
+          </a>
+          <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+            <a class="dropdown-item" [routerLink]="['/TransferPackage']">Trasnfer a Product</a>            
+            <a class="dropdown-item" [routerLink]="['/ScanProduct']">Scan a Product</a>  
+          </div>
+        </li>
+    </ul>
   </div>
 
   <div class="icon-bar row" style="margin-right: 50px">

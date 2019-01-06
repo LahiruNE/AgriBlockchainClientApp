@@ -633,27 +633,74 @@
                         </td>
                     </tr>
                 </table>
-
-                <div class="row" *ngIf="ECStatus == 1">
-                    <div class="col-md-12">
-                        <div style="display: block;">
-                            <canvas baseChart width="500" height="500"
-                                [datasets]="data"
-                                [labels]="dataLabels"
-                                [options]="chartOptions"
-                                [colors]="growCountChartColors"
-                                [legend]="chartLegend"
-                                [chartType]="chartType"></canvas>
-                        </div>
-                    </div>                
+                <br>
+                <div style="border: 1px solid#c6c6c6; padding: 10px; text-align:center" *ngIf="ECStatus == 1 || ECStatus == 2">
+                    <h3 style="margin:auto" *ngIf="ECStatus == 1">Electrical Conductivity Fluctuation of Plot #{{plotId.value}}</h3>
+                    
+                    <div class="row" *ngIf="ECStatus == 1">
+                        <div class="col-md-12">
+                            <div style="display: block;">
+                                <canvas baseChart width="500" height="500"
+                                    [datasets]="data"
+                                    [labels]="dataLabels"
+                                    [options]="chartOptions"
+                                    [colors]="growCountChartColors"
+                                    [legend]="chartLegend"
+                                    [chartType]="chartType"></canvas>
+                            </div>
+                        </div>                
+                    </div>
+    
+                    <br>
+    
+                    <div class="row" *ngIf="ECStatus == 2">
+                        <div class="alert alert-warning" role="alert" style="margin:auto">
+                            No Electrical Conductivity Data Available!
+                        </div>                
+                    </div>
                 </div>
 
                 <br>
 
-                <div class="row" *ngIf="ECStatus == 2">
-                    <div class="alert alert-warning" role="alert" style="margin:auto">
-                        No Data Available!
-                    </div>                
+                <div style="border: 1px solid#c6c6c6; padding: 10px; text-align:center" *ngIf="DStatus == 1 || DStatus == 2">
+                    <h3 style="margin:auto" *ngIf="DStatus == 1">Diary Records on {{allRecords[0].date.split('T')[0]}}</h3>
+                    <br>
+                    <div class="row" *ngIf="DStatus == 1">
+                        <div *ngIf = "allRecords != ''" class="col-md-12">
+                            <table  class="table table-responsive" style="margin: auto; width: 900px;">
+                              <thead class="thead">
+                                <tr class="thead-cols">
+                      
+                                    <th style="min-width: 150px; text-align: center">Farm ID</th>
+                                                                    
+                                    <th style="min-width: 100px; text-align: center">Time</th>
+                                
+                                    <th style="min-width: 200px; text-align: center">Record</th>
+                                </tr>
+                              </thead>
+                              <tbody>
+                                <tr *ngFor="let asset of allRecords">
+                      
+                                      <td>{{asset.farm.split('#')[1]}}</td>
+                                  
+                                      <td>{{asset.time.split('T')[1].split('.')[0]}}</td>
+                                  
+                                      <td>{{asset.record}}</td>
+                                </tr>
+                              </tbody>
+                            </table>
+                            <br><br>
+                          </div>               
+                    </div>
+    
+                    <br>
+    
+                    <div class="row" *ngIf="DStatus == 2">
+                        <div class="alert alert-warning" role="alert" style="margin:auto">
+                            No Records Available!
+                        </div>                
+                    </div>
+                    
                 </div>
               </div>
             </div>

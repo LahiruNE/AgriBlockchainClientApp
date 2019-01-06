@@ -9,13 +9,14 @@ import $ from 'jquery';
 import { BsDatepickerConfig } from 'ngx-bootstrap/datepicker';
 import swal from 'sweetalert2';
 import { DataService } from '../data.service';
+import { PlotService } from '../Plot/Plot.service';
 
 
 @Component({
   selector: 'app-diary',
   templateUrl: './diary.component.html',
   styleUrls: ['./diary.component.css'],
-  providers: [FarmService,DiaryService, DataService]
+  providers: [PlotService,FarmService,DiaryService, DataService]
 })
 export class DiaryComponent implements OnInit {
 
@@ -26,6 +27,7 @@ export class DiaryComponent implements OnInit {
 
   private errorMessage;
   private availFarms = [];
+  private availPlots = [];
   private allRecords =[];
   private rec;
   private toggleLoad;
@@ -34,19 +36,22 @@ export class DiaryComponent implements OnInit {
   recorddate = new FormControl('');
   records = new FormControl('');
   recordtime = new FormControl('');
+  plotId = new FormControl('');
 
-  constructor(private localStorageService : LocalStorageService, public serviceData: DataService<Farm>,public serviceFarm: FarmService,fb: FormBuilder,public serviceDiary:DiaryService) { 
+  constructor(public servicePlot: PlotService, private localStorageService : LocalStorageService, public serviceData: DataService<Farm>,public serviceFarm: FarmService,fb: FormBuilder,public serviceDiary:DiaryService) { 
     this.recordForm = fb.group({
       farmId: this.farmId,
       recorddate : this.recorddate,
       recordtime : this.recordtime,
-      records : this.records
+      records : this.records,
+      plotId : this.plotId
     }); 
 
   }
 
   ngOnInit() {
     this.loadFarms();
+    this.loadPlots();
     this.loadRecords();
   }
 /*   loadFarms(): Promise<any>{
@@ -71,6 +76,28 @@ export class DiaryComponent implements OnInit {
       }
     });
   } */
+
+  loadPlots(): Promise<any> {
+    const tempList = [];
+    return this.servicePlot.getAll()
+    .toPromise()
+    .then((result) => {
+      this.errorMessage = null;
+      result.forEach(asset => {
+        tempList.push(asset);
+      });
+      this.availPlots = tempList;
+    })
+    .catch((error) => {
+      if (error === 'Server error') {
+        this.errorMessage = 'Could not connect to REST server. Please check your configuration details';
+      } else if (error === '404 - Not Found') {
+        this.errorMessage = '404 - Could not find API route. Please check your available APIs.';
+      } else {
+        this.errorMessage = error;
+      }
+    });
+  }
 
   loadFarms(): Promise<any>{
     const tempList = [];
@@ -103,7 +130,7 @@ export class DiaryComponent implements OnInit {
     .then((result) => {
       this.errorMessage = null;
       this.allRecords = []; 
-      
+
       result.forEach(asset => {
         this.allRecords.push(asset);
       });
@@ -131,7 +158,7 @@ export class DiaryComponent implements OnInit {
     this.rec = {
       $class: "org.ucsc.agriblockchain.Diary",
       'date': this.recorddate.value,
-      'record': this.records.value,
+      'record': "Plot #"+ this.plotId.value + " : " + this.records.value,
       'time':d + "T" + t + ":00.000Z",
       'farm': "resource:org.ucsc.agriblockchain.Farm#"+this.farmId.value,
       'owner': "resource:org.ucsc.agriblockchain.Stakeholder#"+ this.localStorageService.getFromLocal('currentUser').stakeholderId

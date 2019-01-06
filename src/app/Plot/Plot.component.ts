@@ -59,7 +59,9 @@ export class PlotComponent implements OnInit {
   private growCountArr = [];
   private withFruitCountArr = [];
   private destroyedCountArr = [];
-  private ECStatus = 0; 
+  private ECStatus = 0;
+  private DStatus = 0; 
+  private allRecords =[];
 
   private userType = this.localStorageService.getFromLocal('currentUser').type;
 
@@ -276,6 +278,41 @@ export class PlotComponent implements OnInit {
         tempList.push(asset);
       });
       this.allAssets = tempList;
+    })
+    .catch((error) => {
+      if (error === 'Server error') {
+        this.errorMessage = 'Could not connect to REST server. Please check your configuration details';
+      } else if (error === '404 - Not Found') {
+        this.errorMessage = '404 - Could not find API route. Please check your available APIs.';
+      } else {
+        this.errorMessage = error;
+      }
+    });
+  }
+
+  loadRecords(date): Promise<any>{
+    this.allRecords = [];
+
+    let user = "resource%3Aorg.ucsc.agriblockchain.Stakeholder%23" + this.localStorageService.getFromLocal('currentUser').stakeholderId;
+    return this.serviceData.getOwnedDiary(user)
+    .toPromise()
+    .then((result) => {
+      this.errorMessage = null;       
+      
+      result.forEach(asset => {
+        let recordDate = asset.date.split("T")[0];
+
+        if(recordDate == date){
+          this.allRecords.push(asset);
+        }
+      });
+
+      if(this.allRecords.length != 0){
+        this.DStatus = 1;
+      }
+      else{
+        this.DStatus = 2; 
+      }
     })
     .catch((error) => {
       if (error === 'Server error') {
@@ -644,6 +681,10 @@ export class PlotComponent implements OnInit {
     this.harvestedArr = {};
     this.seededArr = {};
 
+    this.ECStatus = 0;
+    this.DStatus = 0; 
+    $('#varDate').val("");
+
     this.getHarvestDetails(id);
 
     $('#view1').trigger('click');
@@ -939,7 +980,8 @@ export class PlotComponent implements OnInit {
 
   generateECVar() {
     let date = $("#varDate").val();
-     
+    this.loadRecords(date);
+    
     if(this.ECAvailDates.value != "" && this.ECAvailDates.value.includes(date)){
       this.ECStatus = 1;
       let lab = [];
@@ -963,7 +1005,7 @@ export class PlotComponent implements OnInit {
     }  
     else{
       this.ECStatus = 2; 
-    }  
+    }    
 
   }
 
