@@ -136,7 +136,7 @@ export class StakeholderComponent implements OnInit {
 
   ngOnInit(): void {
   
-  /* $('.history').hide(); */
+   $('#historyview').hide(); 
 
   this.loggingUser = this.localStorageService.getFromLocal('currentUser').name;
   console.log('logname'+this.loggingUser)
@@ -231,7 +231,7 @@ $('#stage1').trigger('click');
       console.log( this.Participants)
     })
 
-   this.getStakeholder();
+ 
     
     
   }
@@ -252,7 +252,7 @@ $('#stage1').trigger('click');
     
   } */
 
-  getStakeholder():Promise<any> {
+  getStakeholder(id):Promise<any> {
     const userHistorian = [];
     const tranHistorian =[];
     const addasset = [];
@@ -260,7 +260,7 @@ $('#stage1').trigger('click');
     const onlytransfer = [];
     const onlyupdate = [];
     const onlyinspection = [];
-    return this.dataService.getHistorianstakeholder()
+    return this.dataService.getHistorianstakeholder(id)
     .toPromise()
     .then((stake) => {
       stake.forEach(userhis =>{
@@ -311,7 +311,7 @@ $('#stage1').trigger('click');
     
   }
   cls(){
-    $('.history').show();
+    $('#historyview').show();
     document.getElementById('historyview').scrollIntoView(true);
   }
 

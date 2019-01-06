@@ -1884,6 +1884,23 @@
             </div>
     
        </div> 
+       <div *ngIf = "(clas == 'org.ucsc.agriblockchain.Plot') && (TypeofTransaction == 'UpdateAsset')" class="col-md-12">
+        <div *ngFor = "let dataelements of alldata" class="col-md-12">
+            <table  class="table table-striped">
+              <tr>
+                <td>plotId</td>
+                <td>{{dataelements.plotId}}</td>
+              </tr>
+              <tr>
+                  <td>FarmId</td>
+                  <td>{{dataelements.farm.split('#')[1]}}</td>
+                </tr>
+               
+            </table>
+            
+          </div>
+  
+     </div>
        
        <div *ngIf = "(clas == 'org.ucsc.agriblockchain.Pesticide') && (TypeofTransaction == 'AddAsset')" class="col-md-12">
           <div *ngFor = "let dataelements of alldata" class="col-md-12">
@@ -2232,10 +2249,10 @@
                       <img src="../../assets/view.png" >
                     </button>
 
-                   <!--  <button (click)="getForm(participant.stakeholderId);cls();"  type="button" title="view" class="log btn btn-update">
+                    <button (click)="getStakeholder(participant.stakeholderId);cls();"  type="button" title="Historian" class="log btn btn-update">
                         <img src="../../assets/book.png" style="width: 20px;">
-                      </button> -->
-                    <button (click)="getFormForComment(participant.stakeholderId);" type="button" title="view" class="btn btn-update" data-toggle="modal" data-target="#addcomment">
+                      </button>
+                    <button (click)="getFormForComment(participant.stakeholderId);" type="button" title="Comment" class="btn btn-update" data-toggle="modal" data-target="#addcomment">
                       <img src="../../assets/comment.png" style="width: 20px;">
                     </button>
 
