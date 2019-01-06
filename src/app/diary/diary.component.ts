@@ -28,6 +28,7 @@ export class DiaryComponent implements OnInit {
   private availFarms = [];
   private allRecords =[];
   private rec;
+  private toggleLoad;
 
   farmId = new FormControl('', Validators.required);
   recorddate = new FormControl('');
@@ -101,6 +102,8 @@ export class DiaryComponent implements OnInit {
     .toPromise()
     .then((result) => {
       this.errorMessage = null;
+      this.allRecords = []; 
+      
       result.forEach(asset => {
         this.allRecords.push(asset);
       });
@@ -134,23 +137,33 @@ export class DiaryComponent implements OnInit {
       'owner': "resource:org.ucsc.agriblockchain.Stakeholder#"+ this.localStorageService.getFromLocal('currentUser').stakeholderId
     };
     console.log(this.rec);
-    this.serviceDiary.addTransaction(this.rec)
+    
+    return this.toggleLoad = this.serviceDiary.addTransaction(this.rec)
     .toPromise()
     .then(() => {
       this.errorMessage = null;
       this.loadFarms();
+      this.loadRecords();
+
       $('#addrecord .close').trigger('click');
       swal(
         'Success!',
-        'CRecord is added successfully!',
+        'Record is added successfully!',
         'success'
       )
       $('.loader').hide();
       $('.word').show();
-
-      
       
     })
+    .catch((error) => {
+      if (error === 'Server error') {
+        this.errorMessage = 'Could not connect to REST server. Please check your configuration details';
+      } else if (error === '404 - Not Found') {
+        this.errorMessage = '404 - Could not find API route. Please check your available APIs.';
+      } else {
+        this.errorMessage = error;
+      }
+    });
   } 
 
   resetForm(): void {
