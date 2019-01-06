@@ -791,8 +791,8 @@
                                   </div>
                              
                                <br>
-
-                      <button (click)="addParticipant(myForm);" type="submit" class="btn btn-primary" >Confirm</button>
+                               <button [promiseBtn]="toggleLoad" (click)="addParticipant(myForm)" type="submit" class="btn btn-success pull-right" ><div class="word">Confirm</div><div class="loader" style="display:none"></div></button>
+                      
                     </div>
                 </div>
             </div>
@@ -1234,7 +1234,8 @@
           </div>
           <div class="modal-footer">
             <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-            <button (click)="updateParticipant(myForm)" type="submit" class="btn btn-primary" data-dismiss="modal">Submit</button>
+            <button [promiseBtn]="toggleLoad" (click)="updateParticipant(myForm)" type="submit" class="btn btn-primary" ><div class="word">Submit</div><div class="loader" style="display:none"></div></button>
+                      
           </div>
         </form>
       </div>

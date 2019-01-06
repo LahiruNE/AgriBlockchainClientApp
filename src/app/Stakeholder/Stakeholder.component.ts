@@ -66,7 +66,7 @@ export class StakeholderComponent implements OnInit {
   private errorMessage;
   private clas;
   private comm;
-
+  private toggleLoad;
 
   stakeholderId = new FormControl('', Validators.required);
   name = new FormControl('', Validators.required);
@@ -565,6 +565,9 @@ $('#stage1').trigger('click');
   }
 
   addParticipant(form: any): Promise<any> {
+    $('.loader').show();
+    $('.word').hide();
+
     this.participant = {
       $class: 'org.ucsc.agriblockchain.Stakeholder',
       'stakeholderId': this.stakeholderId.value,
@@ -624,7 +627,7 @@ $('#stage1').trigger('click');
       'branchNo': null
     }); */
 
-    return this.serviceStakeholder.addParticipant(this.participant)
+    return this.toggleLoad = this.serviceStakeholder.addParticipant(this.participant)
     .toPromise()
     .then(() => {
       this.identity = {
@@ -638,8 +641,17 @@ $('#stage1').trigger('click');
     .then((cardData) => {
       console.log('CARD-DATA', cardData);
       
-      })
+      const file = new File([cardData], 'myCard.card', {type: 'application/octet-stream', lastModified: Date.now()});
 
+      const formData = new FormData();
+      formData.append('card', file);
+
+      console.log("-----");
+      console.log(formData);
+      console.log("-----");
+
+      return this.dataService.walletImport(formData, this.username.value).toPromise();
+    })
     .then(() => {
       this.errorMessage = null;
       this.myForm.setValue({
@@ -668,7 +680,16 @@ $('#stage1').trigger('click');
         'comment': null,
         'rating': null
       });
-      this.loadAll(); 
+      this.loadAll();
+      
+      $('#addParticipantModal .close').trigger('click');
+      swal(
+        'Success!',
+        'Updated successfully!',
+        'success'
+      )
+      $('.loader').hide();
+      $('.word').show();
     })
     .catch((error) => {
       if (error === 'Server error') {
@@ -719,6 +740,9 @@ addComment(form: any){
 
 
    updateParticipant(form: any): Promise<any> {
+    $('.loader').show();
+    $('.word').hide();
+
     this.participant = {
       $class: 'org.ucsc.agriblockchain.Stakeholder',
       'name': this.name.value,
@@ -758,7 +782,7 @@ addComment(form: any){
       'rating' :this.rating.value
     };
 
-    return this.serviceStakeholder.updateParticipant(form.get('stakeholderId').value, this.participant)
+    return this.toggleLoad = this.serviceStakeholder.updateParticipant(form.get('stakeholderId').value, this.participant)
     .toPromise()
     .then(() => {
       this.errorMessage = null;
@@ -768,6 +792,15 @@ addComment(form: any){
       if(this.loggingType == 'CERTIFICATION'){
         this.loadALLNext();
       }
+
+      $('#updateParticipantModal .close').trigger('click');
+      swal(
+        'Success!',
+        'Updated successfully!',
+        'success'
+      )
+      $('.loader').hide();
+      $('.word').show();
     })
     .catch((error) => {
       if (error === 'Server error') {
@@ -804,6 +837,7 @@ addComment(form: any){
   }
 
   getForm(id: any): Promise<any> {
+    
 
     return this.serviceStakeholder.getparticipant(id)
     .toPromise()
@@ -1033,6 +1067,8 @@ addComment(form: any){
 
 
   resetForm(): void {
+    $('#stage1').trigger('click');
+    
     this.myForm.setValue({
       'stakeholderId': null,
       'name': null,

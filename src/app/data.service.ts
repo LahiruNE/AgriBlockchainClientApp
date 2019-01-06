@@ -12,8 +12,9 @@
  * limitations under the License.
  */
 
-import { Injectable } from '@angular/core';
+import { Injectable, Component } from '@angular/core';
 import { Http, Response, Headers } from '@angular/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs/Observable';
 import 'rxjs/add/operator/map';
 import 'rxjs/add/operator/catch';
@@ -26,7 +27,7 @@ export class DataService<Type> {
     private headers: Headers;
     private ns:string;
 
-    constructor(private http: Http) {
+    constructor(private http: Http, private httpClient: HttpClient) {
         this.actionUrl = '/api/';
         this.headers = new Headers();
         this.headers.append('Content-Type', 'application/json');
@@ -110,14 +111,28 @@ export class DataService<Type> {
           .map(this.extractData)
           .catch(this.handleError);          
     }
-    public issueIdentity(identity): Observable<Type> {
-        this.ns = 'system/identities/issue/'; 
+    public issueIdentity(identity) {
+        let ns = 'system/identities/issue/'; 
         console.log(identity)
-        console.log(this.actionUrl + this.ns);
+        console.log(this.actionUrl + ns);
 
-        return this.http.post(this.actionUrl + this.ns, identity)
+        return this.httpClient.post(this.actionUrl + ns, identity, {responseType: 'blob'});
+
+        /* return this.http.post(this.actionUrl + this.ns, identity)
           .map(this.extractData)
-          .catch(this.handleError);          
+          .catch(this.handleError); */          
+    }
+
+    public walletImport(formData, username){
+        let ns = 'wallet/import?name=' + username; 
+
+        const headers = new HttpHeaders();
+        headers.set('Content-Type', 'multipart/form-data');
+
+        return this.httpClient.post(this.actionUrl + ns, formData, {
+          withCredentials: true,
+          headers
+        });
     }
 
     public getStakeholders(type: String, certificationBody: String){

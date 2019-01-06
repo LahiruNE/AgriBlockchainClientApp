@@ -15,6 +15,7 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 import { HttpModule } from '@angular/http';
+import { HttpClientModule } from '@angular/common/http'; 
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { AppRoutingModule } from './app-routing.module';
 import { DataService } from './data.service';
@@ -97,6 +98,7 @@ import { DiaryComponent } from './diary/diary.component';
     FormsModule,
     ReactiveFormsModule,
     HttpModule,
+    HttpClientModule,
     AppRoutingModule,
     StorageServiceModule,
     CarouselModule.forRoot(),
