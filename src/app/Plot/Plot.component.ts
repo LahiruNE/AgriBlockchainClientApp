@@ -59,6 +59,7 @@ export class PlotComponent implements OnInit {
   private growCountArr = [];
   private withFruitCountArr = [];
   private destroyedCountArr = [];
+  private ECStatus = 0; 
 
   private userType = this.localStorageService.getFromLocal('currentUser').type;
 
@@ -77,6 +78,8 @@ export class PlotComponent implements OnInit {
   certificationactivity = new FormControl('');
   seed = new FormControl('');
   growthProgress = new FormControl('');
+  ECVar = new FormControl('');
+  ECAvailDates = new FormControl('');
 
   closerPlotsN = new FormControl('');
   closerPlotsS = new FormControl('');
@@ -93,9 +96,12 @@ export class PlotComponent implements OnInit {
   private destroyedCountData = [];
   private destroyedCountLabels = [];
   
-  public chartOptions:any = {responsive: true};
+  public chartOptions:any = {responsive: false};
   public chartLegend:boolean = true;
   public chartType:string = 'line';
+
+  public data:Array<any>;
+  public dataLabels:Array<any>;
 
   public growCountChartData:Array<any> = [
     {data: this.growCountData, label: 'Sprouted Plant Count'},
@@ -163,6 +169,8 @@ export class PlotComponent implements OnInit {
       certificationactivity : this.certificationactivity,
       seed : this.seed,
       growthProgress : this.growthProgress,
+      ECVar : this.ECVar,
+      ECAvailDates : this.ECAvailDates
     });
 
     this.commentForm = fb.group({
@@ -419,6 +427,8 @@ export class PlotComponent implements OnInit {
       'certificationBodyComments': this.certificationBodyComments.value,
       'status' : this.status.value,
       'farm': "resource:org.ucsc.agriblockchain.Farm#" + this.farm.value,
+      'ECVar': this.ECVar.value,
+      'ECAvailDates': this.ECAvailDates.value
     };
     
     return this.toggleLoad = this.servicePlot.updateAsset(form.get('plotId').value, this.asset)
@@ -498,6 +508,8 @@ export class PlotComponent implements OnInit {
         'certificationactivity' : null,
         'seed' : null,
         'growthProgress' : null,
+        'ECVar': null, 
+        'ECAvailDates':null
       };
 
       if (result.plotId) {
@@ -599,6 +611,18 @@ export class PlotComponent implements OnInit {
         formObject.growthProgress = null;
       }
 
+      if (result.ECVar) {
+        formObject.ECVar = result.ECVar;
+      } else {
+        formObject.ECVar = null;
+      }
+
+      if (result.ECAvailDates) {
+        formObject.ECAvailDates = result.ECAvailDates;
+      } else {
+        formObject.ECAvailDates = null;
+      }
+
       this.myForm.setValue(formObject);
 
     })
@@ -648,6 +672,8 @@ export class PlotComponent implements OnInit {
         'certificationactivity' : null,
         'seed' : null,
         'growthProgress' : null,
+        'ECVar': null, 
+        'ECAvailDates':null
       };
       console.log(result);
       if (result.plotId) {
@@ -780,7 +806,19 @@ export class PlotComponent implements OnInit {
             this.destroyedCountLabels.push(grow.date);
           }          
         });
-      } 
+      }
+      
+      if (result.ECVar) {
+        formObject.ECVar = result.ECVar;
+      } else {
+        formObject.ECVar = null;
+      }
+
+      if (result.ECAvailDates) {
+        formObject.ECAvailDates = result.ECAvailDates;
+      } else {
+        formObject.ECAvailDates = null;
+      }
       
       this.myForm.setValue(formObject);
 
@@ -897,6 +935,36 @@ export class PlotComponent implements OnInit {
         this.errorMessage = error;
       }
     });
+  }
+
+  generateECVar() {
+    let date = $("#varDate").val();
+     
+    if(this.ECAvailDates.value != "" && this.ECAvailDates.value.includes(date)){
+      this.ECStatus = 1;
+      let lab = [];
+      let dat = [];
+
+      this.ECVar.value.forEach(element => {
+        let ECDate = element.date.split("T")[0];
+
+        if(ECDate == date){
+          let ECTime = element.time.split("T")[1].split(".")[0];
+
+          lab.push(ECTime);
+          dat.push(element.value);
+        }
+      });    
+
+      this.data = [
+        {data: dat, label: 'EC variations'},
+      ];
+      this.dataLabels = lab;
+    }  
+    else{
+      this.ECStatus = 2; 
+    }  
+
   }
 
 }
