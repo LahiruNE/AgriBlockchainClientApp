@@ -648,12 +648,12 @@ export class ProductComponent implements OnInit {
   updateWaste(form: any){
     $('.loader').show();
     $('.word').hide();
-    console.log(form.get('productpath').value)
+    console.log(this.wastequantity.value)
 
     if(form.get('quantity').value > this.wastequantity.value){
       let parent = "";
-    let certImageArr = this.myForm.value['certImagesFormArr'];
-    let certImages = [];
+      let certImageArr = this.myForm.value['certImagesFormArr'];
+      let certImages = [];
 
     certImageArr.forEach((image)=>{
       let item = image.image;
@@ -677,7 +677,6 @@ export class ProductComponent implements OnInit {
       'quantity': this.quantity.value - this.wastequantity.value,
       'wastequantity':this.wastequantity.value,
       'wastecomment':this.wastecomment.value,
-      'productpath':this.productpath.value,
       'unit': this.unit.value,
       'divideStatus': this.divideStatus,
       'activeStatus': this.activeStatus,

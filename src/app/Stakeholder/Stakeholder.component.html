@@ -2170,9 +2170,9 @@
 
                   <th class="info">endDate</th>
               
-                  <th class="info">images</th>
+                  <th class="info">images</th> -->
               
-                  <th class="info">company</th> -->
+                  <th *ngIf = "StakeholderType == 'CERTIFICATION'" class="info" style="min-width: 170px">Company Name</th>
               
                  <!--  <th class="info" style="min-width: 150px">username</th> -->
               
@@ -2192,7 +2192,7 @@
 
                   
 
-                  <th  class="info" style="min-width: 120px">Status</th>
+                  <!-- <th  class="info" style="min-width: 120px">Status</th> -->
               
                 <th class="info-actions" style="min-width: 200px">Actions</th>
             </tr>
@@ -2217,15 +2217,15 @@
 
                   <td *ngIf = "StakeholderType !== 'CERTIFICATION'" class="participant-properties">{{participant.certification.certificationBody.name}}</td>
 
-                 <!--  <td class="participant-properties">{{participant.certification.from}}</td>
+                  <!-- <td class="participant-properties">{{participant.certification.from}}</td>
 
                   <td class="participant-properties">{{participant.certification.to}}</td>
               
                   <td class="participant-properties">{{participant.images}}</td>
               
-                  <td class="participant-properties">{{participant.company.name}}</td>
+                  <td class="participant-properties">{{participant.company.name}}</td> -->
               
-                  <td class="participant-properties">{{participant.username}}</td> -->
+                  <td *ngIf = "StakeholderType == 'CERTIFICATION'" class="participant-properties">{{participant.username}}</td>
               
                  <!--  <td class="participant-properties">{{participant.password}}</td>
               
@@ -2243,7 +2243,7 @@
 
          
 
-                  <td class="participant-properties">{{participant.rating}}</td>
+                  <!-- <td class="participant-properties">{{participant.rating}}</td> -->
               
                 <td style="background-color: #fff !important">
                   <button (click)="getForm(participant.stakeholderId)"  type="button" title="view" class="btn btn-update" data-toggle="modal" data-target="#requestform">
@@ -2257,7 +2257,7 @@
                       <img src="../../assets/comment.png" style="width: 20px;">
                     </button>
 
-                <button (click)="getForm(participant.stakeholderId);" type="button" class="btn btn-update" data-toggle="modal" data-target="#updateParticipantModal">
+                <button *ngIf = "loggingType !== 'CERTIFICATION'" (click)="getForm(participant.stakeholderId);" type="button" class="btn btn-update" data-toggle="modal" data-target="#updateParticipantModal">
                     <svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
                     width="12.8px" height="12.8px" viewBox="0 0 30.7 30.7" style="enable-background:new 0 0 30.7 30.7;" xml:space="preserve">
                  <g>

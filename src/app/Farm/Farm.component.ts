@@ -43,6 +43,8 @@ export class FarmComponent implements OnInit {
   imagesFormArr: FormArray;
   certImagesFormArr: FormArray;
 
+  loggingUser:string;
+  loggingType: string;
   private allAssets;
   private asset;
   private currentId;
@@ -167,7 +169,12 @@ export class FarmComponent implements OnInit {
     });
   };
 
-  ngOnInit(): void {    
+  ngOnInit(): void { 
+    this.loggingUser = this.localStorageService.getFromLocal('currentUser').name;
+    console.log('logname'+this.loggingUser)
+    this.loggingType = this.localStorageService.getFromLocal('currentUser').type;
+    console.log(this.loggingType)  
+
     this.loadAll();
     this.loadParticipants();
     $('.history').hide();

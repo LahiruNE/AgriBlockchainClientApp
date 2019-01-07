@@ -1311,7 +1311,7 @@
               <button type="button" title="view" (click)="getFormForComment(asset.farmId);" class="btn btn-update" data-toggle="modal" data-target="#addcomment">
                 <img src="../../assets/comment.png" style="width: 20px;">
               </button>
-              <button *ngIf="userType != 'FARMER'"  (click)="getFormForUpdate(asset.farmId);" type="button" title="edit" class="btn btn-update" data-toggle="modal" data-target="#updateAssetModal">
+              <button *ngIf = "loggingType !== 'CERTIFICATION'"  (click)="getFormForUpdate(asset.farmId);" type="button" title="edit" class="btn btn-update" data-toggle="modal" data-target="#updateAssetModal">
                   <svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
                   width="12.8px" height="12.8px" viewBox="0 0 30.7 30.7" style="enable-background:new 0 0 30.7 30.7;" xml:space="preserve">
                <g>
@@ -1324,7 +1324,7 @@
                </svg>
               </button>
 
-              <button *ngIf="userType != 'FARMER'"  (click)="setId(asset.farmId);" type="button" title="delete" class="btn btn-delete" data-toggle="modal" data-target="#deleteAssetModal">
+              <button *ngIf = "loggingType !== 'CERTIFICATION'"  (click)="setId(asset.farmId);" type="button" title="delete" class="btn btn-delete" data-toggle="modal" data-target="#deleteAssetModal">
                   <svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
                   width="13.8px" height="16px" viewBox="0 0 65.9 76.2" style="enable-background:new 0 0 65.9 76.2;" xml:space="preserve">
                <path d="M42.8,60.2V22.6c0-1.7-1.3-3-3-3s-3,1.3-3,3v37.6c0,1.7,1.3,3,3,3S42.8,61.9,42.8,60.2z M29.1,60.2V22.6c0-1.7-1.3-3-3-3
