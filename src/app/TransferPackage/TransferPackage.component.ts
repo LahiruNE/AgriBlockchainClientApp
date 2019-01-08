@@ -912,8 +912,22 @@ export class TransferPackageComponent implements OnInit {
             this.asset.parentProduct = result.parentProduct;   
           }
       
-          if(result.hasOwnProperty('productpath')) {                        
-            this.asset.productpath = result.productpath;   
+          if(result.hasOwnProperty('productpath')) {
+            let act = [];
+
+            result.productpath.forEach((path)=>{
+              let prodPath = {
+                $class: 'org.ucsc.agriblockchain.Trace',
+                'timestamp': path.timestamp,
+                'quantity': path.quantity,
+                'type': path.type,
+                "authperson": "resource:org.ucsc.agriblockchain.Stakeholder#" + path.authperson.stakeholderId
+              };
+
+              act.push(prodPath);
+            });
+            
+            this.asset.productpath = act;   
           }
 
           if(type == 1){
@@ -1005,6 +1019,7 @@ export class TransferPackageComponent implements OnInit {
         })
         .then((prod) => {
           if(type == 1){
+
             let asset = {
               "$class": "org.ucsc.agriblockchain.TransferPackage",
               "product": "resource:org.ucsc.agriblockchain.Product#" + prod.id,
@@ -1017,6 +1032,7 @@ export class TransferPackageComponent implements OnInit {
               return prod.error;
             })
             .catch((error) => {
+              alert(error);
               prod.error = 1;              
 
               if (error === 'Server error') {
