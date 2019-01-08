@@ -16,6 +16,10 @@ import { DataService } from '../data.service';
 })
 
 export class PlantGrowthComponent implements OnInit {
+
+  colorTheme = 'theme-dark-blue';
+  bsConfig = Object.assign({}, { containerClass: this.colorTheme },{dateInputFormat: 'YYYY-MM-DD'});
+
   myForm: FormGroup;
   plantCountForm: FormGroup;
   growthCountFormArr: FormArray;
@@ -551,8 +555,19 @@ export class PlantGrowthComponent implements OnInit {
 
     this.activities.value.forEach((activity)=>{
       let plot = "resource:org.ucsc.agriblockchain.Plot#" + activity.plot.plotId;
-      activity.plot = plot; 
 
+      if(activity.hasOwnProperty('fertilizer')){
+        let fert = "resource:org.ucsc.agriblockchain.Fertilizer#" + activity.fertilizer.fertilizerId;
+        activity.fertilizer = fert;
+      }
+
+      if(activity.hasOwnProperty('pesticide')){
+        let pest = "resource:org.ucsc.agriblockchain.Pesticide#" + activity.pesticide.pesticideId;
+        activity.pesticide = pest;
+      }
+
+      activity.plot = plot; 
+      
       act.push(activity);
     });
 
