@@ -918,13 +918,13 @@ addComment(form: any){
       }
 
       if (result.certification.from) {
-        formObject.from = result.certification.from;
+        formObject.from = result.certification.from.toString().split('T')[0];;
       } else {
         formObject.from = null;
       }
 
       if (result.certification.to) {
-        formObject.to = result.certification.to;
+        formObject.to = result.certification.to.toString().split('T')[0];;
       } else {
         formObject.to = null;
       }
