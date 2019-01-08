@@ -963,7 +963,7 @@ export class TransferPackageComponent implements OnInit {
               error = 1;
               return {'error':error, 'id':id, 'stakeholder': result.transferDetails.invokedBy.stakeholderId};
             }            
-            else if(result.transferDetails.status.toString() == "PENDING"){
+            else if(typeof result.transferDetails != 'undefined' && result.transferDetails.status.toString() == "PENDING"){
               swal({
                 type: 'error',
                 title: 'Oops...',
@@ -973,12 +973,8 @@ export class TransferPackageComponent implements OnInit {
               error = 1;
               return {'error':error, 'id':id, 'stakeholder': result.transferDetails.invokedBy.stakeholderId};
             }            
-            else{             
-              swal({
-                type: 'error',
-                title: 'Oops...',
-                text: 'The requested product is already in a tranfer process!'
-              });
+            else{
+              
               let trans = {
                 $class: "org.ucsc.agriblockchain.TransferDetails",
                 "status": "PENDING",
@@ -990,15 +986,20 @@ export class TransferPackageComponent implements OnInit {
               this.asset.issuer = "resource:org.ucsc.agriblockchain.Stakeholder#" + result.issuer.stakeholderId;
               
               this.asset.transferDetails = trans;
-            } 
-            
+            }
+                        
           }
           
           if(error == 0){
+            let stake = "";
+            if(typeof result.transferDetails != 'undefined'){
+              stake = result.transferDetails.invokedBy.stakeholderId;
+            }
+
             return this.serviceProduct.updateAsset(id, this.asset)
             .toPromise()
             .then(()=>{
-              return {'error':error, 'id':id, 'stakeholder': result.transferDetails.invokedBy.stakeholderId};
+              return {'error':error, 'id':id, 'stakeholder': stake};
             })
           }
         })
@@ -1036,6 +1037,7 @@ export class TransferPackageComponent implements OnInit {
           this.errorMessage = null;
           this.loadOwnedProducts();
           this.loadPendingRequests();
+          this.loadSubmittedRequests();
 
           if(err != 1){
             swal(
