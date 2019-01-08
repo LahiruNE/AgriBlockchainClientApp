@@ -1037,7 +1037,7 @@
                       <tbody>
                           <tr *ngFor = 'let items of activity'>
                               <td>{{items.time.split('T')[0]}}</td>
-                              <td>{{items.time.split('T')[1]}}</td>
+                              <td>{{items.time.split("T")[1].split(":")[0] + ":" +items.time.split("T")[1].split(":")[1]}}</td>
                               <td>{{items.activitytype}}</td>
                               <td *ngIf ="items.activitytype =='MANURING'" ><a style="cursor: pointer" data-toggle="modal" (click) = "getpro(items.transactionId)" data-target="#viewactivityModal">View More</a></td>
                              
@@ -1100,7 +1100,7 @@
                             <tbody>
                                 <tr *ngFor = 'let elment of plotcomments'>
                                     <td>{{elment.date.split('T')[0]}}</td>
-                                    <td>{{elment.time.split('T')[1]}}</td>
+                                    <td>{{elment.time.split("T")[1].split(":")[0]+ ":" +elment.time.split("T")[1].split(":")[1]}}</td>
                                     <td>{{elment.comment}}</td>
                                 
                                 </tr>

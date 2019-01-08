@@ -368,7 +368,7 @@
                                   <tbody>
                                       <tr *ngFor = 'let items of activity'>
                                           <td>{{items.time.split('T')[0]}}</td>
-                                          <td>{{items.time.split('T')[1]}}</td>
+                                          <td>{{items.time.split("T")[1].split(":")[0] + ":" +items.time.split("T")[1].split(":")[1]}}</td>
                                           <td>{{items.activitytype}}</td>
                                           <td *ngIf ="items.activitytype =='MANURING'" ><a style="cursor: pointer" data-toggle="modal" (click) = "getpro(items.transactionId)" data-target="#viewactivityModal">View More</a></td>
                                          
@@ -402,7 +402,7 @@
                                                         <tbody>
                                                             <tr *ngFor = 'let elment of farmcomments'>
                                                                 <td>{{elment.date.split('T')[0]}}</td>
-                                                                <td>{{elment.time.split('T')[1]}}</td>
+                                                                <td>{{elment.time.split("T")[1].split(":")[0]+ ":" +elment.time.split("T")[1].split(":")[1]}}</td>
                                                                 <td>{{elment.comment}}</td>
                                                             
                                                             </tr>
@@ -413,7 +413,7 @@
                                               </div>
                                               <div class="tab-pane fade" id="tab_default_2">
                                                 <div class="col-md-12">
-                                                        <div *ngIf ="plotcomments==''" class="alert alert-warning" role="alert" style="text-align: center; margin-top: 10px; padding: 5px;"><h4>No Farm Comments available!</h4></div>
+                                                        <div *ngIf ="plotcomments==''" class="alert alert-warning" role="alert" style="text-align: center; margin-top: 10px; padding: 5px;"><h4>No Plot Comments available!</h4></div>
                                                         <table *ngIf ="plotcomments !=''"  class="table table-striped">
                                                             <thead>
                                                             <th>Inspection Date</th>
@@ -423,7 +423,7 @@
                                                             <tbody>
                                                                 <tr *ngFor = 'let ement of plotcomments'>
                                                                     <td>{{ement.date.split('T')[0]}}</td>
-                                                                    <td>{{ement.date.split('T')[1]}}</td>
+                                                                    <td>{{ement.date.split("T")[1].split(":")[0]+ ":" +ement.date.split("T")[1].split(":")[1]}}</td>
                                                                     <td>{{ement.comment}}</td>
                                                                 
                                                                 </tr>

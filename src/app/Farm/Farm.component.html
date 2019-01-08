@@ -1373,7 +1373,7 @@
                                             <tbody>
                                                 <tr *ngFor = 'let elment of farmcomments'>
                                                     <td>{{elment.date.split('T')[0]}}</td>
-                                                    <td>{{elment.time.split('T')[1]}}</td>
+                                                    <td>{{elment.time.split("T")[1].split(":")[0]+ ":" +elment.time.split("T")[1].split(":")[1]}}</td>
                                                     <td>{{elment.comment}}</td>
                                                 
                                                 </tr>
