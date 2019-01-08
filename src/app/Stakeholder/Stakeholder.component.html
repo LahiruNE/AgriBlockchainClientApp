@@ -2184,20 +2184,17 @@
                           </tr>
                           <tr>
                               <td>From</td>
-                              <td>{{dataelements.certification.from}}</td>
+                              <td>{{dataelements.certification.from.split('T')[0]}}</td>
                             </tr>
                             <tr>
                                 <td>To</td>
-                                <td>{{dataelements.certification.to}}</td>
+                                <td>{{dataelements.certification.to.split('T')[0]}}</td>
                               </tr>
                               <tr>
                                   <td>Telephone</td>
                                   <td>{{dataelements.telephone}}</td>
                           </tr>
-                        <tr>
-                          <td>Rating</td>
-                          <td>{{dataelements.rating}}</td>
-                        </tr>
+                        
 
                 </table>
                 
@@ -2230,21 +2227,18 @@
                           </tr>
                           <tr>
                               <td>From</td>
-                              <td>{{dataelements.certification.from}}</td>
+                              <td>{{dataelements.certification.from.split('T')[0]}}</td>
                             </tr>
                             <tr>
                                 <td>To</td>
-                                <td>{{dataelements.certification.to}}</td>
+                                <td>{{dataelements.certification.to.split('T')[0]}}</td>
                               </tr>
                               <tr>
                                   <td>Telephone</td>
                                   <td>{{dataelements.telephone}}</td>
                           </tr>
                       
-                        <tr>
-                          <td>Rating</td>
-                          <td>{{dataelements.rating}}</td>
-                        </tr>
+                        
 
                 </table>
                 
@@ -2265,7 +2259,7 @@
                   </tr>
                   <tr>
                       <td>pluckedDate</td>
-                      <td>{{dataelements.pluckedDate}}</td>
+                      <td>{{dataelements.pluckedDate.split('T')[0]}}</td>
                     </tr>
                     <tr>
                         <td>CertificationNo</td>
@@ -2277,11 +2271,11 @@
                         </tr>
                         <tr>
                             <td>From</td>
-                            <td>{{dataelements.certification.from}}</td>
+                            <td>{{dataelements.certification.from.split('T')[0]}}</td>
                           </tr>
                           <tr>
                               <td>To</td>
-                              <td>{{dataelements.certification.to}}</td>
+                              <td>{{dataelements.certification.to.split('T')[0]}}</td>
                             </tr>
                             <tr>
                                 <td>CurrentOwner</td>
@@ -2407,15 +2401,15 @@
                   </tr>
                   <tr>
                       <td>ManufactureDate</td>
-                      <td>{{dataelements.manufactureDate}}</td>
+                      <td>{{dataelements.manufactureDate.split('T')[0]}}</td>
                     </tr>
                     <tr>
                         <td>ExpiryDate</td>
-                        <td>{{dataelements.expiryDate}}</td>
+                        <td>{{dataelements.expiryDate.split('T')[0]}}</td>
                       </tr>
                       <tr>
                           <td>DateOfSale</td>
-                          <td>{{dataelements.dateOfSale}}</td>
+                          <td>{{dataelements.dateOfSale.split('T')[0]}}</td>
                         </tr>
                         <tr>
                             <td>Amount</td>
@@ -2444,15 +2438,15 @@
                   </tr>
                   <tr>
                       <td>ManufactureDate</td>
-                      <td>{{dataelements.manufactureDate}}</td>
+                      <td>{{dataelements.manufactureDate.split('T')[0]}}</td>
                     </tr>
                     <tr>
                         <td>ExpiryDate</td>
-                        <td>{{dataelements.expiryDate}}</td>
+                        <td>{{dataelements.expiryDate.split('T')[0]}}</td>
                       </tr>
                       <tr>
                           <td>DateOfSale</td>
-                          <td>{{dataelements.dateOfSale}}</td>
+                          <td>{{dataelements.dateOfSale.split('T')[0]}}</td>
                         </tr>
                         <tr>
                             <td>Amount</td>
@@ -2481,7 +2475,7 @@
                   </tr>
                   <tr>
                       <td>Owner</td>
-                      <td>{{dataelements.owner}}</td>
+                      <td>{{dataelements.owner.split('#')[1]}}</td>
                     </tr>
                     <tr>
                         <td>CertificationNo</td>
@@ -2497,6 +2491,31 @@
             </div>
     
        </div> 
+       <div *ngIf = "(clas == 'org.ucsc.agriblockchain.Plot') && (TypeofTransaction == 'AddAsset')" class="col-md-12">
+        <div *ngFor = "let dataelements of alldata" class="col-md-12">
+            <table  class="table table-striped">
+              <tr>
+                <td>PlotId</td>
+                <td>{{dataelements.plotId}}</td>
+              </tr>
+              <tr>
+                  <td>FarmId</td>
+                  <td>{{dataelements.farm.split('#')[1]}}</td>
+                </tr>
+                <tr>
+                    <td>extent</td>
+                    <td>{{dataelements.extent}}</td>
+                  </tr>
+                  <tr>
+                      <td>cultivation Start Date</td>
+                      <td>{{dataelements.cultivationStartDate.split('T')[0]}}</td>
+                    </tr>
+                   
+            </table>
+            
+          </div>
+  
+     </div> 
        <div *ngIf = "(clas == 'org.ucsc.agriblockchain.Seed') && (TypeofTransaction == 'AddAsset')" class="col-md-12">
           <div *ngFor = "let dataelements of alldata" class="col-md-12">
               <table  class="table table-striped">
@@ -2514,15 +2533,15 @@
                     </tr>
                   <tr>
                       <td>ManufactureDate</td>
-                      <td>{{dataelements.manufactureDate}}</td>
+                      <td>{{dataelements.manufactureDate.split('T')[0]}}</td>
                     </tr>
                     <tr>
                         <td>ExpiryDate</td>
-                        <td>{{dataelements.expiryDate}}</td>
+                        <td>{{dataelements.expiryDate.split('T')[0]}}</td>
                       </tr>
                       <tr>
                           <td>DateOfSale</td>
-                          <td>{{dataelements.dateOfSale}}</td>
+                          <td>{{dataelements.dateOfSale.split('T')[0]}}</td>
                         </tr>
                         <tr>
                             <td>Amount</td>
