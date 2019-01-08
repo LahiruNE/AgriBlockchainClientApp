@@ -145,7 +145,6 @@ export class TransferPackageComponent implements OnInit {
     this.loadOwnedProducts();
     this.loadPendingRequests();
     this.loadSubmittedRequests();
-    this.loadOwnedProducts();
     this.loadParticipants();
     this.loadPlots();
 
@@ -975,7 +974,11 @@ export class TransferPackageComponent implements OnInit {
               return {'error':error, 'id':id, 'stakeholder': result.transferDetails.invokedBy.stakeholderId};
             }            
             else{             
-
+              swal({
+                type: 'error',
+                title: 'Oops...',
+                text: 'The requested product is already in a tranfer process!'
+              });
               let trans = {
                 $class: "org.ucsc.agriblockchain.TransferDetails",
                 "status": "PENDING",
@@ -987,9 +990,10 @@ export class TransferPackageComponent implements OnInit {
               this.asset.issuer = "resource:org.ucsc.agriblockchain.Stakeholder#" + result.issuer.stakeholderId;
               
               this.asset.transferDetails = trans;
-            }           
+            } 
+            
           }
-
+          
           if(error == 0){
             return this.serviceProduct.updateAsset(id, this.asset)
             .toPromise()

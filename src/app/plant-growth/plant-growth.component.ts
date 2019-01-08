@@ -547,6 +547,15 @@ export class PlantGrowthComponent implements OnInit {
 
     });
 
+    let act = [];
+
+    this.activities.value.forEach((activity)=>{
+      let plot = "resource:org.ucsc.agriblockchain.Plot#" + activity.plot.plotId;
+      activity.plot = plot; 
+
+      act.push(activity);
+    });
+
     let growthProgress = {
       $class: "org.ucsc.agriblockchain.GrowthProgress",
       'growCount': growCount,
@@ -569,15 +578,16 @@ export class PlantGrowthComponent implements OnInit {
       'seededAmount': this.seededAmount.value,
       'extent': this.extent.value,
       'closerplots' : plots,
-      'activities': this.activities.value,
+      'activities': act,
       'phReadings': this.phReadings.value,
       'certificationBodyComments': this.certificationBodyComments.value,
       'status' : this.status.value,
       'cultivatedType' : this.cultivatedType.value,
       'farm': "resource:org.ucsc.agriblockchain.Farm#" + this.farm.value,
       'growthProgress': growthProgress
-    };
+    }; 
     
+       
     return this.toggleLoad = this.servicePlot.updateAsset(this.myForm.get('plotId').value, this.asset)
     .toPromise()
     .then(()=>{
@@ -600,7 +610,7 @@ export class PlantGrowthComponent implements OnInit {
       } else {
         this.errorMessage = error;
       }
-    }); 
+    });
     
   }
 
