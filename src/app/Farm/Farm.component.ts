@@ -175,7 +175,17 @@ export class FarmComponent implements OnInit {
     this.loggingType = this.localStorageService.getFromLocal('currentUser').type;
     console.log(this.loggingType)  
 
-    this.loadAll();
+    if(this.loggingType == 'ADMIN'){
+      this.loadAll();
+    }
+    if(this.loggingType == 'FARMER'){
+      this.loadownedFarm();
+    }
+    if(this.loggingType == 'CERTIFICATION'){
+      this.loadALLNext();
+    }
+
+    console.log(this.loggingUser);
     this.loadParticipants();
     $('.history').hide();
     //setup wizard   
@@ -222,6 +232,56 @@ export class FarmComponent implements OnInit {
     
   }  
 
+  loadALLNext(){
+    const tempList = [];
+    return this.serviceFarm.getAll()
+    .toPromise()
+    .then((result) => {
+      console.log(result);
+      this.errorMessage = null;
+      result.forEach(asset => {
+        if(asset.certification.certificationBody.name == this.loggingUser){
+          tempList.push(asset);
+        }
+        
+      });
+      this.allAssets = tempList;
+    })
+    .catch((error) => {
+      if (error === 'Server error') {
+        this.errorMessage = 'Could not connect to REST server. Please check your configuration details';
+      } else if (error === '404 - Not Found') {
+        this.errorMessage = '404 - Could not find API route. Please check your available APIs.';
+      } else {
+        this.errorMessage = error;
+      }
+    });
+  }
+  loadownedFarm(){
+    const tempList = [];
+    return this.serviceFarm.getAll()
+    .toPromise()
+    .then((result) => {
+      console.log(result);
+      this.errorMessage = null;
+      result.forEach(asset => {
+        if(asset.owner.name == this.loggingUser){
+          tempList.push(asset);
+        }
+        
+      });
+      this.allAssets = tempList;
+    })
+    .catch((error) => {
+      if (error === 'Server error') {
+        this.errorMessage = 'Could not connect to REST server. Please check your configuration details';
+      } else if (error === '404 - Not Found') {
+        this.errorMessage = '404 - Could not find API route. Please check your available APIs.';
+      } else {
+        this.errorMessage = error;
+      }
+    });
+  }
   getFarmdata(farmid): Promise<any>{
     const plotsdata = [];
     return this.serviceFarm.getAsset(farmid)
@@ -385,7 +445,15 @@ export class FarmComponent implements OnInit {
     .toPromise()
     .then(() => {
       this.errorMessage = null;
-      this.loadAll();
+      if(this.loggingType == 'ADMIN'){
+        this.loadAll();
+      }
+      if(this.loggingType == 'FARMER'){
+        this.loadownedFarm();
+      }
+      if(this.loggingType == 'CERTIFICATION'){
+        this.loadALLNext();
+      }
 
       $('#addAssetModal .close').trigger('click');
       swal(
@@ -431,7 +499,15 @@ export class FarmComponent implements OnInit {
     .toPromise()
     .then(() => {
       this.errorMessage = null;
-      this.loadAll();
+      if(this.loggingType == 'ADMIN'){
+        this.loadAll();
+      }
+      if(this.loggingType == 'FARMER'){
+        this.loadownedFarm();
+      }
+      if(this.loggingType == 'CERTIFICATION'){
+        this.loadALLNext();
+      }
       $('#addcomment .close').trigger('click');
       swal(
         'Success!',
@@ -517,7 +593,15 @@ export class FarmComponent implements OnInit {
     .toPromise()
     .then(() => {
       this.errorMessage = null;
-      this.loadAll();
+      if(this.loggingType == 'ADMIN'){
+        this.loadAll();
+      }
+      if(this.loggingType == 'FARMER'){
+        this.loadownedFarm();
+      }
+      if(this.loggingType == 'CERTIFICATION'){
+        this.loadALLNext();
+      }
 
       $('#updateAssetModal .close').trigger('click');
       swal(
@@ -546,7 +630,15 @@ export class FarmComponent implements OnInit {
     .toPromise()
     .then(() => {
       this.errorMessage = null;
-      this.loadAll();
+      if(this.loggingType == 'ADMIN'){
+        this.loadAll();
+      }
+      if(this.loggingType == 'FARMER'){
+        this.loadownedFarm();
+      }
+      if(this.loggingType == 'CERTIFICATION'){
+        this.loadALLNext();
+      }
     })
     .catch((error) => {
       if (error === 'Server error') {

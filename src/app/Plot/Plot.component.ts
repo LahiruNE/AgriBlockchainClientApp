@@ -40,6 +40,8 @@ export class PlotComponent implements OnInit {
   myForm: FormGroup;
   commentForm:FormGroup;
 
+  loggingUser:string;
+  loggingType: string;
   private allAssets;
   private asset;
   private currentId;
@@ -184,7 +186,22 @@ export class PlotComponent implements OnInit {
   };
 
   ngOnInit(): void {
-    this.loadAll();
+    this.loggingUser = this.localStorageService.getFromLocal('currentUser').name;
+    console.log('logname'+this.loggingUser)
+    this.loggingType = this.localStorageService.getFromLocal('currentUser').type;
+    console.log(this.loggingType)  
+
+    if(this.loggingType == 'ADMIN'){
+      this.loadAll();
+    }
+    if(this.loggingType == 'FARMER'){
+      this.loadownedPlot();
+    }
+    if(this.loggingType == 'CERTIFICATION'){
+      this.loadALLNext();
+    }
+    
+  
     this.loadFarms();
 
     $('.history').hide();
@@ -273,6 +290,7 @@ export class PlotComponent implements OnInit {
     return this.servicePlot.getAll()
     .toPromise()
     .then((result) => {
+      console.log(result);
       this.errorMessage = null;
       result.forEach(asset => {
         tempList.push(asset);
@@ -289,7 +307,52 @@ export class PlotComponent implements OnInit {
       }
     });
   }
-
+  loadALLNext(){
+    const tempList = [];
+    return this.servicePlot.getAll()
+    .toPromise()
+    .then((result) => {
+      console.log(result);
+      this.errorMessage = null;
+      result.forEach(asset => {
+        if(asset.farm.certification.certificationBody.name == this.loggingUser)
+        tempList.push(asset);
+      });
+      this.allAssets = tempList;
+    })
+    .catch((error) => {
+      if (error === 'Server error') {
+        this.errorMessage = 'Could not connect to REST server. Please check your configuration details';
+      } else if (error === '404 - Not Found') {
+        this.errorMessage = '404 - Could not find API route. Please check your available APIs.';
+      } else {
+        this.errorMessage = error;
+      }
+    });
+  }
+  loadownedPlot(){
+    const tempList = [];
+    return this.servicePlot.getAll()
+    .toPromise()
+    .then((result) => {
+      console.log(result);
+      this.errorMessage = null;
+      result.forEach(asset => {
+        if(asset.farm.owner.name == this.loggingUser)
+        tempList.push(asset);
+      });
+      this.allAssets = tempList;
+    })
+    .catch((error) => {
+      if (error === 'Server error') {
+        this.errorMessage = 'Could not connect to REST server. Please check your configuration details';
+      } else if (error === '404 - Not Found') {
+        this.errorMessage = '404 - Could not find API route. Please check your available APIs.';
+      } else {
+        this.errorMessage = error;
+      }
+    });
+  }
   loadRecords(date): Promise<any>{
     this.allRecords = [];
 
@@ -380,7 +443,15 @@ export class PlotComponent implements OnInit {
     .then(() => {
       this.errorMessage = null;
       
-      this.loadAll();
+      if(this.loggingType == 'ADMIN'){
+        this.loadAll();
+      }
+      if(this.loggingType == 'FARMER'){
+        this.loadownedPlot();
+      }
+      if(this.loggingType == 'CERTIFICATION'){
+        this.loadALLNext();
+      }
 
       $('#addAssetModal .close').trigger('click');
       swal(
@@ -420,7 +491,15 @@ export class PlotComponent implements OnInit {
     .toPromise()
     .then(() => {
       this.errorMessage = null;
-      this.loadAll();
+      if(this.loggingType == 'ADMIN'){
+        this.loadAll();
+      }
+      if(this.loggingType == 'FARMER'){
+        this.loadownedPlot();
+      }
+      if(this.loggingType == 'CERTIFICATION'){
+        this.loadALLNext();
+      }
       $('#addcomment .close').trigger('click');
       swal(
         'Success!',
@@ -472,7 +551,15 @@ export class PlotComponent implements OnInit {
     .toPromise()
     .then(() => {
       this.errorMessage = null;
-      this.loadAll();
+      if(this.loggingType == 'ADMIN'){
+        this.loadAll();
+      }
+      if(this.loggingType == 'FARMER'){
+        this.loadownedPlot();
+      }
+      if(this.loggingType == 'CERTIFICATION'){
+        this.loadALLNext();
+      }
 
       $('#updateAssetModal .close').trigger('click');
       swal(
@@ -501,7 +588,15 @@ export class PlotComponent implements OnInit {
     .toPromise()
     .then(() => {
       this.errorMessage = null;
-      this.loadAll();
+      if(this.loggingType == 'ADMIN'){
+        this.loadAll();
+      }
+      if(this.loggingType == 'FARMER'){
+        this.loadownedPlot();
+      }
+      if(this.loggingType == 'CERTIFICATION'){
+        this.loadALLNext();
+      }
     })
     .catch((error) => {
       if (error === 'Server error') {

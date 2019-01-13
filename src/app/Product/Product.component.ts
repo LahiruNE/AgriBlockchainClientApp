@@ -50,6 +50,9 @@ export class ProductComponent implements OnInit {
 
   private userType = this.localStorageService.getFromLocal('currentUser').type;
 
+
+  loggingUser:string;
+  loggingType: string;
   private allAssets;
   private productspath; 
   private stakename; 
@@ -116,9 +119,6 @@ export class ProductComponent implements OnInit {
       certification: this.certification,
       productType: this.productType,
       quantity: this.quantity,
-      wastequantity:this.wastequantity,
-      lostquantity:this.lostquantity,
-      wastecomment: this.wastecomment,
       unit: this.unit,
       divideStatus: this.divideStatus,
       activeStatus: this.activeStatus,
@@ -192,12 +192,21 @@ export class ProductComponent implements OnInit {
   };
 
   ngOnInit(): void {
-    if(this.userType == "ADMIN"){
+    this.loggingUser = this.localStorageService.getFromLocal('currentUser').name;
+    console.log('logname'+this.loggingUser)
+    this.loggingType = this.localStorageService.getFromLocal('currentUser').type;
+    console.log(this.loggingType)  
+
+    if(this.loggingType == 'ADMIN'){
       this.loadAll();
     }
-    else{
+    if(this.loggingType == 'FARMER'){
       this.loadOwnedProducts();
-    }    
+    }
+    if(this.loggingType == 'CERTIFICATION'){
+      this.loadALLNext();
+    }
+     
     
     this.loadParticipants();
     this.loadPlots();
@@ -283,6 +292,30 @@ export class ProductComponent implements OnInit {
       this.errorMessage = null;
       result.forEach(asset => {
         if(asset.activeStatus.toString() != "CLOSED"){
+          tempList.push(asset);
+        }
+        
+      });
+      this.allAssets = tempList;
+    })
+    .catch((error) => {
+      if (error === 'Server error') {
+        this.errorMessage = 'Could not connect to REST server. Please check your configuration details';
+      } else if (error === '404 - Not Found') {
+        this.errorMessage = '404 - Could not find API route. Please check your available APIs.';
+      } else {
+        this.errorMessage = error;
+      }
+    });
+  }
+  loadALLNext(){
+    const tempList = [];
+    return this.serviceProduct.getAll()
+    .toPromise()
+    .then((result) => {
+      this.errorMessage = null;
+      result.forEach(asset => {
+        if(asset.certification.certificationBody.name == this.loggingUser){
           tempList.push(asset);
         }
         
@@ -605,9 +638,6 @@ export class ProductComponent implements OnInit {
       'certification': certi,
       'productType': this.productType.value,
       'quantity': this.quantity.value,
-      'wastequantity':this.wastequantity.value,
-      'lostquantity':this.lostquantity.value,
-      'wastecomment':this.wastecomment.value,
       'unit': this.unit.value,
       'divideStatus': 'ORIGINAL',
       'activeStatus': 'ACTIVE',
@@ -621,12 +651,15 @@ export class ProductComponent implements OnInit {
     .then(() => {
       this.errorMessage = null;   
 
-      if(this.userType == "ADMIN"){
+      if(this.loggingType == 'ADMIN'){
         this.loadAll();
       }
-      else{
+      if(this.loggingType == 'FARMER'){
         this.loadOwnedProducts();
-      }  
+      }
+      if(this.loggingType == 'CERTIFICATION'){
+        this.loadALLNext();
+      } 
 
       swal(
         'Success!',
@@ -697,12 +730,15 @@ export class ProductComponent implements OnInit {
     .toPromise()
     .then(() => {
       this.errorMessage = null;
-      if(this.userType == "ADMIN"){
+      if(this.loggingType == 'ADMIN'){
         this.loadAll();
       }
-      else{
+      if(this.loggingType == 'FARMER'){
         this.loadOwnedProducts();
-      }  
+      }
+      if(this.loggingType == 'CERTIFICATION'){
+        this.loadALLNext();
+      }
 
       $('#updateAssetModal .close').trigger('click');
       swal(
@@ -779,12 +815,15 @@ export class ProductComponent implements OnInit {
           .then(() => {
             this.errorMessage = null;   
 
-            if(this.userType == "ADMIN"){
+            if(this.loggingType == 'ADMIN'){
               this.loadAll();
             }
-            else{
+            if(this.loggingType == 'FARMER'){
               this.loadOwnedProducts();
-            }  
+            }
+            if(this.loggingType == 'CERTIFICATION'){
+              this.loadALLNext();
+            } 
 
             swal(
               'Success!',
@@ -860,12 +899,15 @@ export class ProductComponent implements OnInit {
     .toPromise()
     .then(() => {
       this.errorMessage = null;
-      if(this.userType == "ADMIN"){
+      if(this.loggingType == 'ADMIN'){
         this.loadAll();
       }
-      else{
+      if(this.loggingType == 'FARMER'){
         this.loadOwnedProducts();
-      }  
+      }
+      if(this.loggingType == 'CERTIFICATION'){
+        this.loadALLNext();
+      } 
 
       $('#updateAssetModal .close').trigger('click');
       swal(
@@ -894,12 +936,15 @@ export class ProductComponent implements OnInit {
     .toPromise()
     .then(() => {
       this.errorMessage = null;
-      if(this.userType == "ADMIN"){
+      if(this.loggingType == 'ADMIN'){
         this.loadAll();
       }
-      else{
+      if(this.loggingType == 'FARMER'){
         this.loadOwnedProducts();
-      }  
+      }
+      if(this.loggingType == 'CERTIFICATION'){
+        this.loadALLNext();
+      } 
     })
     .catch((error) => {
       if (error === 'Server error') {
@@ -1278,8 +1323,6 @@ export class ProductComponent implements OnInit {
       'certification': null,
       'productType': null,
       'quantity': null,
-      'wastequantity':null,
-      'lostquantity':null,
       'unit': null,
       'divideStatus': null,
       'activeStatus': null,
