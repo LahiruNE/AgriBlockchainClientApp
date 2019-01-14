@@ -303,3 +303,7 @@ div.bhoechie-tab-container{
       top: -40px;
       left: 0;
     }
+
+    agm-map {
+      height: 300px;
+    }

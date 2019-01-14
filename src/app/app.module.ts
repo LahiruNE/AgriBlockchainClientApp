@@ -63,6 +63,8 @@ import { PlantGrowthComponent } from './plant-growth/plant-growth.component';
 import { ChartsModule } from 'ng2-charts';
 import { DiaryComponent } from './diary/diary.component';
 
+import { AgmCoreModule } from '@agm/core';
+
   @NgModule({
   declarations: [
     AppComponent,
@@ -114,7 +116,10 @@ import { DiaryComponent } from './diary/diary.component';
     NgDatepickerModule,
     TimepickerModule.forRoot(),
     NgxQRCodeModule,
-    ChartsModule
+    ChartsModule,
+    AgmCoreModule.forRoot({
+      apiKey: 'AIzaSyCyR_fUMB2dy90BsoYsL3KaIa7MHs3G4w4'
+    })
   ],
   providers: [
     DataService,

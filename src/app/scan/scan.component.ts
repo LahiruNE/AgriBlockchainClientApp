@@ -44,6 +44,10 @@ export class ScanComponent implements OnInit {
   private withFruitCountLabels = [];
   private destroyedCountData = [];
   private destroyedCountLabels = [];
+
+  private lat = [];
+  private long = [];
+  private labels = [];
   
   public chartOptions:any = {responsive: true};
   public chartLegend:boolean = true;
@@ -160,6 +164,7 @@ getproduct(id){
     const productdata =[];
     const plotdata = [];
     const farmdata = [];
+
     return this.serviceProduct.getAsset(id)
     .toPromise()
     .then((result) => {
@@ -185,9 +190,24 @@ getproduct(id){
       console.log( this.plotdetails);
       console.log( this.farmdetails);
       this.days();
+
+      this.lat.push(parseFloat(result.plot.farm.lat));
+      this.long.push(parseFloat(result.plot.farm.long));
+      this.labels.push('1 - Farm');
+
+      let count = 2; 
+      this.productspath.forEach((path)=>{
+        this.lat.push(parseFloat(path.authperson.lat));
+        this.long.push(parseFloat(path.authperson.long));
+
+        this.labels.push(count + ' - ' + path.authperson.name);
+        count++;
+      });
+
     })
  
   }
+
   getFormForView(id: any): Promise<any> {
     this.growCountArr = [];
     this.withFruitCountArr = [];

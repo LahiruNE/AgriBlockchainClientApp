@@ -73,6 +73,8 @@ export class FarmComponent implements OnInit {
   certification = new FormControl('', Validators.required);
   owner = new FormControl('', Validators.required);
   farmers = new FormControl('');
+  long = new FormControl('');
+  lat = new FormControl('');
 
   nearFactoriesN = new FormControl('');
   nearFactoriesS = new FormControl('');
@@ -119,6 +121,8 @@ export class FarmComponent implements OnInit {
     this.viewForm = fb.group({
       farmId: this.farmId,
       FarmLocation: this.FarmLocation,
+      lat: this.lat,
+      long: this.long,
       images: this.images,
       waterSources: this.waterSources,
       nearFactories: this.nearFactories,
@@ -145,6 +149,8 @@ export class FarmComponent implements OnInit {
     this.updateForm = fb.group({
       farmId: this.farmId,
       FarmLocation: this.FarmLocation,
+      lat: this.lat,
+      long: this.long,
       waterSources: this.waterSources,
       nearFactories: this.nearFactories,
       otherDescription: this.otherDescription,
@@ -432,6 +438,8 @@ export class FarmComponent implements OnInit {
       $class: 'org.ucsc.agriblockchain.Farm',
       "farmId": this.farmId.value,
       'FarmLocation': this.FarmLocation.value,
+      'lat': this.lat.value.toString(),
+      'long': this.long.value.toString(),
       'images': images,
       'waterSources': water,
       'nearFactories': factory,
@@ -579,6 +587,8 @@ export class FarmComponent implements OnInit {
     this.asset = {
       $class: 'org.ucsc.agriblockchain.Farm',
       'FarmLocation': this.FarmLocation.value,
+      'lat': this.lat.value.toString(),
+      'long': this.long.value.toString(),
       'images': images,
       'waterSources': water,
       'nearFactories': factory,
@@ -781,6 +791,8 @@ export class FarmComponent implements OnInit {
       const formObject = {
         'farmId': null,
         'FarmLocation': null,
+        'lat': null,
+        'long': null,
         'waterSources': null,
         'nearFactories': null,
         'otherDescription': null,
@@ -814,6 +826,18 @@ export class FarmComponent implements OnInit {
         formObject.FarmLocation = result.FarmLocation;
       } else {
         formObject.FarmLocation = null;
+      }
+
+      if (result.lat) {
+        formObject.lat = result.lat;
+      } else {
+        formObject.lat = null;
+      }
+
+      if (result.long) {
+        formObject.long = result.long;
+      } else {
+        formObject.long = null;
       }
 
       if (result.images) {
@@ -932,6 +956,8 @@ export class FarmComponent implements OnInit {
       const formObject = {
         'farmId': null,
         'FarmLocation': null,
+        'lat': null,
+        'long': null,
         'images': null,
         'waterSources': null,
         'nearFactories': null,
@@ -965,6 +991,18 @@ export class FarmComponent implements OnInit {
         formObject.FarmLocation = result.FarmLocation;
       } else {
         formObject.FarmLocation = null;
+      }
+
+      if (result.lat) {
+        formObject.lat = result.lat;
+      } else {
+        formObject.lat = null;
+      }
+
+      if (result.long) {
+        formObject.long = result.long;
+      } else {
+        formObject.long = null;
       }
 
       if (result.images) {
@@ -1055,6 +1093,8 @@ export class FarmComponent implements OnInit {
       this.updateForm.setValue({
         'farmId': null,
         'FarmLocation': null,
+        'lat': null,
+        'long': null,
         'waterSources': null,
         'nearFactories': null,
         'otherDescription': null,

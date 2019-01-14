@@ -44,6 +44,8 @@ import {Event} from './org.hyperledger.composer.system';
    export class Farm extends Asset {
       farmId: string;
       FarmLocation: string;
+      lat: string;
+      long: string;
       images: string[];
       waterSources: Directions;
       nearFactories: Directions;
@@ -225,6 +227,8 @@ import {Event} from './org.hyperledger.composer.system';
       stakeholderId: string;
       name: string;
       address: Address;
+      lat: string;
+      long: string;
       email: string;
       telephone: string;
       certification: Certification;
