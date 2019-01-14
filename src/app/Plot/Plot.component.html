@@ -193,7 +193,7 @@
     
                         </td>
                         <td>
-                            <input formControlName="cultivationStartDate" class="form-control" bsDatepicker [bsConfig]="{ dateInputFormat: 'YYYY-MM-DD' }">  
+                            <input formControlName="cultivationStartDate" class="form-control" bsDatepicker [bsConfig]="bsConfig">  
                                   
                         </td>
                       </tr>
@@ -626,7 +626,7 @@
                             <label ><b>Date</b></label>
                         </td>
                         <td style="width: 200px">
-                            <input id="varDate" class="form-control" bsDatepicker [bsConfig]="{ dateInputFormat: 'YYYY-MM-DD' }">  
+                            <input id="varDate" class="form-control" bsDatepicker [bsConfig]="bsConfig">  
                         </td>
                         <td style="width: 100px; padding : 5px;">
                             <button [promiseBtn]="toggleLoad" (click)="generateECVar()" type="submit" class="btn btn-success" ><div class="word">Submit</div><div class="loader" style="display:none"></div></button>

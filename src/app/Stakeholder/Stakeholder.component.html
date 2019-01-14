@@ -2664,17 +2664,17 @@
               
                   <th class="info" style="min-width: 100px">Name</th>
               
-                 <!--  <th class="info">city</th>
+                  <th *ngIf = "StakeholderType == 'ADMIN'"  class="info">city</th>
 
-                  <th class="info">country</th>
+                  <!-- <th class="info">country</th> -->
               
-                  <th class="info">email</th>
+                  <th *ngIf = "StakeholderType == 'ADMIN'" class="info">email</th>
               
-                  <th class="info">telephone</th>
+                  <!-- <th class="info">telephone</th>
               
                   <th class="info">certificationNo</th> -->
 
-                  <th *ngIf = "StakeholderType !== 'CERTIFICATION'" class="info" style="min-width: 155px">Certification Body</th>
+                  <th *ngIf = "StakeholderType !== 'CERTIFICATION' && StakeholderType !== 'ADMIN' " class="info" style="min-width: 155px">Certification Body</th>
 
                   <!-- <th class="info">startDate</th>
 
@@ -2715,17 +2715,17 @@
               
                   <td class="participant-properties">{{participant.name}}</td>
               
-                 <!--  <td class="participant-properties">{{participant.address.city}}</td>
+                  <td *ngIf = "StakeholderType == 'ADMIN'" class="participant-properties">{{participant.address.city}}</td>
 
-                  <td class="participant-properties">{{participant.address.country}}</td>
+                  <!-- <td class="participant-properties">{{participant.address.country}}</td> -->
               
-                  <td class="participant-properties">{{participant.email}}</td>
+                  <td *ngIf = "StakeholderType == 'ADMIN'" class="participant-properties">{{participant.email}}</td>
               
-                  <td class="participant-properties">{{participant.telephone}}</td>
+                 <!--  <td class="participant-properties">{{participant.telephone}}</td>
               
                   <td class="participant-properties">{{participant.certification.certificationNo}}</td> -->
 
-                  <td *ngIf = "StakeholderType !== 'CERTIFICATION'" class="participant-properties">{{participant.certification.certificationBody.name}}</td>
+                  <td *ngIf = "StakeholderType !== 'CERTIFICATION' && StakeholderType !== 'ADMIN' " class="participant-properties">{{participant.certification.certificationBody.name}}</td>
 
                   <!-- <td class="participant-properties">{{participant.certification.from}}</td>
 

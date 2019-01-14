@@ -255,11 +255,11 @@ export class ProductComponent implements OnInit {
     if(this.loggingType == 'ADMIN'){
       this.loadAll();
     }
-    if(this.loggingType == 'FARMER'){
-      this.loadOwnedProducts();
-    }
     if(this.loggingType == 'CERTIFICATION'){
       this.loadALLNext();
+    }
+    else{
+      this.loadOwnedProducts();
     }
      
     
@@ -709,12 +709,12 @@ export class ProductComponent implements OnInit {
       if(this.loggingType == 'ADMIN'){
         this.loadAll();
       }
-      if(this.loggingType == 'FARMER'){
-        this.loadOwnedProducts();
-      }
       if(this.loggingType == 'CERTIFICATION'){
         this.loadALLNext();
-      } 
+      }
+      else{
+        this.loadOwnedProducts();
+      }
 
       swal(
         'Success!',
@@ -788,11 +788,11 @@ export class ProductComponent implements OnInit {
       if(this.loggingType == 'ADMIN'){
         this.loadAll();
       }
-      if(this.loggingType == 'FARMER'){
-        this.loadOwnedProducts();
-      }
       if(this.loggingType == 'CERTIFICATION'){
         this.loadALLNext();
+      }
+      else{
+        this.loadOwnedProducts();
       }
 
       $('#updateAssetModal .close').trigger('click');
@@ -873,11 +873,11 @@ export class ProductComponent implements OnInit {
             if(this.loggingType == 'ADMIN'){
               this.loadAll();
             }
-            if(this.loggingType == 'FARMER'){
-              this.loadOwnedProducts();
-            }
             if(this.loggingType == 'CERTIFICATION'){
               this.loadALLNext();
+            }
+            else{
+              this.loadOwnedProducts();
             } 
 
             swal(
@@ -957,11 +957,11 @@ export class ProductComponent implements OnInit {
       if(this.loggingType == 'ADMIN'){
         this.loadAll();
       }
-      if(this.loggingType == 'FARMER'){
-        this.loadOwnedProducts();
-      }
       if(this.loggingType == 'CERTIFICATION'){
         this.loadALLNext();
+      }
+      else{
+        this.loadOwnedProducts();
       } 
 
       $('#updateAssetModal .close').trigger('click');
@@ -994,11 +994,11 @@ export class ProductComponent implements OnInit {
       if(this.loggingType == 'ADMIN'){
         this.loadAll();
       }
-      if(this.loggingType == 'FARMER'){
-        this.loadOwnedProducts();
-      }
       if(this.loggingType == 'CERTIFICATION'){
         this.loadALLNext();
+      }
+      else{
+        this.loadOwnedProducts();
       } 
     })
     .catch((error) => {
