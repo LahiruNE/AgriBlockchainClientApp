@@ -61,7 +61,11 @@ export class PlantGrowthComponent implements OnInit {
   closerPlotsW = new FormControl('');
   wateringDate = new FormControl('');
   wateringTime = new FormControl('');
-
+  seed = new FormControl('');
+  ECVar = new FormControl('');
+  ECAvailDates = new FormControl('');
+  certificationactivity = new FormControl('');
+      
 
   private growCountData = [];
   private growCountLabels = [];
@@ -140,6 +144,10 @@ export class PlantGrowthComponent implements OnInit {
       closerPlotsW : this.closerPlotsW,
       wateringDate : this.wateringDate,
       wateringTime : this.wateringTime,
+      seed :this.seed,
+      ECVar : this.ECVar,
+      ECAvailDates : this.ECAvailDates, 
+      certificationactivity : this.certificationactivity
     });
 
     this.plantCountForm = fb.group({
@@ -271,7 +279,11 @@ export class PlantGrowthComponent implements OnInit {
       'closerPlotsE' : null,
       'closerPlotsW' : null, 
       'wateringDate' : null,
-      'wateringTime' : null
+      'wateringTime' : null, 
+      'seed' : null, 
+      'ECVar' : null, 
+      'ECAvailDates' : null, 
+      'certificationactivity' : null
     };
 
     const countFormObject = {
@@ -279,6 +291,7 @@ export class PlantGrowthComponent implements OnInit {
       'withFruitCountFormArr' : null,
       'destroyedCountFormArr' : null,
     }
+    
 
     if (plot.plotId) {
       formObject.plotId = plot.plotId;
@@ -297,6 +310,24 @@ export class PlantGrowthComponent implements OnInit {
       this.seededArr['date'] = plot.seededDate.toString().split('T')[0];
     } else {
       formObject.seededDate = null;      
+    }
+
+    if (plot.seed) {
+      formObject.seed = plot.seed;
+    } else {
+      formObject.seed = null;      
+    }
+
+    if (plot.ECVar) {
+      formObject.ECVar = plot.ECVar;
+    } else {
+      formObject.ECVar = null;      
+    }
+
+    if (plot.ECAvailDates) {
+      formObject.ECAvailDates = plot.ECAvailDates;
+    } else {
+      formObject.ECAvailDates = null;      
     }
 
     if (plot.seededAmount) {
@@ -365,6 +396,13 @@ export class PlantGrowthComponent implements OnInit {
     } else {
       formObject.cultivatedType = null;          
     }
+    
+    if (plot.certificationactivity) {
+      formObject.certificationactivity = plot.certificationactivity;
+    } else {
+      formObject.certificationactivity = null;          
+    }
+
     
     if(plot.growthProgress) {      
       this.growthCountNo = plot.growthProgress.growCount.length;
@@ -571,6 +609,29 @@ export class PlantGrowthComponent implements OnInit {
       act.push(activity);
     });
 
+    let comment = [];
+
+    this.certificationactivity.value.forEach((activity)=>{
+
+      if(activity.hasOwnProperty('plot')){
+        let plot = "resource:org.ucsc.agriblockchain.Plot#" + activity.plot.plotId;
+        activity.plot = plot;
+      }
+
+      if(activity.hasOwnProperty('stakeholder')){
+        let stake = "resource:org.ucsc.agriblockchain.Stakeholder#" + activity.stakeholder.stakeholderId;
+        activity.stakeholder = stake;
+      }
+
+      if(activity.hasOwnProperty('farm')){
+        let farm = "resource:org.ucsc.agriblockchain.Farm#" + activity.farm.farmId;
+        activity.farm = farm;
+      }
+      
+      comment.push(activity);
+    });
+
+
     let growthProgress = {
       $class: "org.ucsc.agriblockchain.GrowthProgress",
       'growCount': growCount,
@@ -590,6 +651,7 @@ export class PlantGrowthComponent implements OnInit {
       $class: 'org.ucsc.agriblockchain.Plot',
       'cultivationStartDate': this.cultivationStartDate.value,
       'seededDate': this.seededDate.value,
+      'seed': "resource:org.ucsc.agriblockchain.Seed#" + this.seed.value.seedId,
       'seededAmount': this.seededAmount.value,
       'extent': this.extent.value,
       'closerplots' : plots,
@@ -599,9 +661,13 @@ export class PlantGrowthComponent implements OnInit {
       'status' : this.status.value,
       'cultivatedType' : this.cultivatedType.value,
       'farm': "resource:org.ucsc.agriblockchain.Farm#" + this.farm.value,
-      'growthProgress': growthProgress
+      'growthProgress': growthProgress,
+      'certificationactivity': comment,
+      'ECVar': this.ECVar.value,
+      'ECAvailDates': this.ECAvailDates.value
     }; 
-    
+
+  
        
     return this.toggleLoad = this.servicePlot.updateAsset(this.myForm.get('plotId').value, this.asset)
     .toPromise()

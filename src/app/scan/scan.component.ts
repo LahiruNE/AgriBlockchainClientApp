@@ -183,14 +183,7 @@ getproduct(id){
       this.productdetails = productdata;
       this.plotdetails = plotdata;
       this.farmdetails = farmdata;
-      console.log(this.productspath) 
-      console.log(this.phread);
-      console.log(this.activity);
-      console.log(this.productdetails);
-      console.log( this.plotdetails);
-      console.log( this.farmdetails);
-      this.days();
-
+            
       this.lat.push(parseFloat(result.plot.farm.lat));
       this.long.push(parseFloat(result.plot.farm.long));
       this.labels.push('1 - Farm');
@@ -204,8 +197,11 @@ getproduct(id){
         count++;
       });
 
-    })
- 
+      console.log(this.lat);
+      console.log(this.long);
+      
+
+    }) 
   }
 
   getFormForView(id: any): Promise<any> {

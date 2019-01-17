@@ -55,6 +55,8 @@ export class HarvestingComponent implements OnInit {
   seed = new FormControl('');
   growthProgress = new FormControl('');
   seededAmount = new FormControl('');
+  ECVar = new FormControl('');
+  ECAvailDates = new FormControl('');
 
   constructor(private localStorageService: LocalStorageService, public servicePlot: PlotService, public serviceProduct: ProductService, fb: FormBuilder) {
     this.myForm = fb.group({
@@ -80,7 +82,9 @@ export class HarvestingComponent implements OnInit {
       certificationactivity : this.certificationactivity,
       seed : this.seed,
       growthProgress : this.growthProgress,
-      seededAmount : this.seededAmount
+      seededAmount : this.seededAmount,
+      ECVar : this.ECVar,
+      ECAvailDates : this.ECAvailDates, 
     });
   };
 
@@ -195,7 +199,9 @@ export class HarvestingComponent implements OnInit {
       'certificationactivity' : null,
       'seed' : null,
       'growthProgress' : null,
-      'seededAmount' : null
+      'seededAmount' : null,
+      'ECVar' : null, 
+      'ECAvailDates' : null, 
     };
 
     if (plot.plotId) {
@@ -208,6 +214,18 @@ export class HarvestingComponent implements OnInit {
       formObject.cultivationStartDate = plot.cultivationStartDate.toString().split('T')[0];
     } else {
       formObject.cultivationStartDate = null;
+    }
+
+    if (plot.ECVar) {
+      formObject.ECVar = plot.ECVar;
+    } else {
+      formObject.ECVar = null;      
+    }
+
+    if (plot.ECAvailDates) {
+      formObject.ECAvailDates = plot.ECAvailDates;
+    } else {
+      formObject.ECAvailDates = null;      
     }
 
     if (plot.seededDate) {
@@ -316,14 +334,57 @@ export class HarvestingComponent implements OnInit {
       "East": this.closerPlotsE.value,
       "South": this.closerPlotsS.value,
       "West": this.closerPlotsW.value,
-    }
+    };
+
+    let act = [];
+
+    this.activities.value.forEach((activity)=>{
+      let plot = "resource:org.ucsc.agriblockchain.Plot#" + activity.plot.plotId;
+
+      if(activity.hasOwnProperty('fertilizer')){
+        let fert = "resource:org.ucsc.agriblockchain.Fertilizer#" + activity.fertilizer.fertilizerId;
+        activity.fertilizer = fert;
+      }
+
+      if(activity.hasOwnProperty('pesticide')){
+        let pest = "resource:org.ucsc.agriblockchain.Pesticide#" + activity.pesticide.pesticideId;
+        activity.pesticide = pest;
+      }
+
+      activity.plot = plot; 
+      
+      act.push(activity);
+    });
+
+    let comment = [];
+
+    this.certificationactivity.value.forEach((activity)=>{
+
+      if(activity.hasOwnProperty('plot')){
+        let plot = "resource:org.ucsc.agriblockchain.Plot#" + activity.plot.plotId;
+        activity.plot = plot;
+      }
+
+      if(activity.hasOwnProperty('stakeholder')){
+        let stake = "resource:org.ucsc.agriblockchain.Stakeholder#" + activity.stakeholder.stakeholderId;
+        activity.stakeholder = stake;
+      }
+
+      if(activity.hasOwnProperty('farm')){
+        let farm = "resource:org.ucsc.agriblockchain.Farm#" + activity.farm.farmId;
+        activity.farm = farm;
+      }
+      
+      comment.push(activity);
+    });
+
 
     this.asset = {
       $class: 'org.ucsc.agriblockchain.Plot',
       'cultivationStartDate': this.cultivationStartDate.value,
       'extent': this.extent.value,
       'closerplots' : plots,
-      'activities': this.activities.value,
+      'activities': act,
       'phReadings': this.phReadings.value,
       'certificationBodyComments': this.certificationBodyComments.value,
       'status' : "HARVESTED",
@@ -331,9 +392,11 @@ export class HarvestingComponent implements OnInit {
       'seededDate': this.seededDate.value,
       'seededAmount': this.seededAmount.value,
       'seed': "resource:org.ucsc.agriblockchain.Seed#" + this.seed.value,
-      'certificationactivity': this.certificationactivity.value,
+      'certificationactivity': comment,
       'cultivatedType': this.cultivatedType.value,
       'growthProgress': this.growthProgress.value,
+      'ECVar': this.ECVar.value,
+      'ECAvailDates': this.ECAvailDates.value
     };
     
     return this.toggleLoad = this.servicePlot.updateAsset(form.get('plotId').value, this.asset)

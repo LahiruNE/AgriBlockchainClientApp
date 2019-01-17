@@ -49,6 +49,8 @@ export class SeedingComponent implements OnInit {
   closerPlotsW = new FormControl('');
   certificationactivity = new FormControl('');  
   growthProgress = new FormControl('');
+  ECVar = new FormControl('');
+  ECAvailDates = new FormControl('');
 
   constructor(private localStorageService: LocalStorageService, public servicePlot: PlotService, public serviceSeed: SeedService,fb: FormBuilder) {
     this.myForm = fb.group({
@@ -71,6 +73,8 @@ export class SeedingComponent implements OnInit {
       closerPlotsW : this.closerPlotsW,
       certificationactivity : this.certificationactivity,
       growthProgress : this.growthProgress,
+      ECVar : this.ECVar,
+      ECAvailDates : this.ECAvailDates, 
     });
   };
 
@@ -225,6 +229,8 @@ export class SeedingComponent implements OnInit {
       'closerPlotsW' : null, 
       'certificationactivity' : null,
       'growthProgress' : null,
+      'ECVar' : null, 
+      'ECAvailDates' : null, 
     };
 
     if (plot.plotId) {
@@ -243,6 +249,24 @@ export class SeedingComponent implements OnInit {
       formObject.seededDate = plot.seededDate.toString().split('T')[0];
     } else {
       formObject.seededDate = null;
+    }
+
+    if (plot.ECVar) {
+      formObject.ECVar = plot.ECVar;
+    } else {
+      formObject.ECVar = null;      
+    }
+
+    if (plot.ECAvailDates) {
+      formObject.ECAvailDates = plot.ECAvailDates;
+    } else {
+      formObject.ECAvailDates = null;      
+    }
+
+    if (plot.certificationactivity) {
+      formObject.certificationactivity = plot.certificationactivity;
+    } else {
+      formObject.certificationactivity = null;          
     }
 
     if (plot.seededAmount) {
@@ -340,6 +364,28 @@ export class SeedingComponent implements OnInit {
       "West": this.closerPlotsW.value,
     }
 
+    let comment = [];
+
+    this.certificationactivity.value.forEach((activity)=>{
+
+      if(activity.hasOwnProperty('plot')){
+        let plot = "resource:org.ucsc.agriblockchain.Plot#" + activity.plot.plotId;
+        activity.plot = plot;
+      }
+
+      if(activity.hasOwnProperty('stakeholder')){
+        let stake = "resource:org.ucsc.agriblockchain.Stakeholder#" + activity.stakeholder.stakeholderId;
+        activity.stakeholder = stake;
+      }
+
+      if(activity.hasOwnProperty('farm')){
+        let farm = "resource:org.ucsc.agriblockchain.Farm#" + activity.farm.farmId;
+        activity.farm = farm;
+      }
+      
+      comment.push(activity);
+    });
+
     this.asset = {
       $class: 'org.ucsc.agriblockchain.Plot',
       'cultivationStartDate': this.cultivationStartDate.value,
@@ -354,8 +400,10 @@ export class SeedingComponent implements OnInit {
       'status' : "SEEDED",
       'cultivatedType' : this.cultivatedType.value,
       'farm': "resource:org.ucsc.agriblockchain.Farm#" + this.farm.value,
-      'certificationactivity': this.certificationactivity.value,      
+      'certificationactivity': comment,      
       'growthProgress': this.growthProgress.value,
+      'ECVar': this.ECVar.value,
+      'ECAvailDates': this.ECAvailDates.value
     };
     
     return this.toggleLoad = this.servicePlot.updateAsset(form.get('plotId').value, this.asset)
