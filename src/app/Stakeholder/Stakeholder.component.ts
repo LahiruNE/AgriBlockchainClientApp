@@ -92,6 +92,8 @@ export class StakeholderComponent implements OnInit {
   branchNo = new FormControl('', Validators.required);
   comment = new FormControl('', Validators.required);
   rating = new FormControl('', Validators.required);
+  long = new FormControl('');
+  lat = new FormControl('');
 
   inspectiondate = new FormControl('');
   cercomments = new FormControl('');
@@ -103,6 +105,8 @@ export class StakeholderComponent implements OnInit {
       name: this.name,
       city: this.city,
       country: this.country,
+      lat: this.lat,
+      long: this.long,
       email: this.email,
       telephone: this.telephone,
       certificationNo:this.certificationNo,
@@ -577,6 +581,8 @@ $('#stage1').trigger('click');
         'city': this.city.value,
         'country': this.country.value
       },
+      'lat': this.lat.value,
+      'long':this.long.value,
       'email': this.email.value,
       'telephone': this.telephone.value,
       'certification': {
@@ -659,6 +665,8 @@ $('#stage1').trigger('click');
         'name': null,
         'city': null,
         'country': null,
+        'lat': null,
+        'long':null,
         'email': null,
         'telephone': null,
         'certificationNo': null,
@@ -751,6 +759,8 @@ addComment(form: any){
         'city': this.city.value,
         'country': this.country.value
       },
+      'lat': this.lat.value,
+      'long':this.long.value,
       'email': this.email.value,
       'telephone': this.telephone.value,
       'certification': {
@@ -848,6 +858,8 @@ addComment(form: any){
         'name': null,
         'city': null,
         'country': null,
+        'lat': null,
+        'long':null,
         'email': null,
         'telephone': null,
         'certificationNo': null,
@@ -892,7 +904,17 @@ addComment(form: any){
       } else {
         formObject.country = null;
       }
+      if (result.lat) {
+        formObject.lat = result.lat;
+      } else {
+        formObject.lat = null;
+      }
 
+      if (result.long) {
+        formObject.long = result.long;
+      } else {
+        formObject.long = null;
+      }
       if (result.email) {
         formObject.email = result.email;
       } else {
@@ -1074,6 +1096,8 @@ addComment(form: any){
       'name': null,
       'city': null,
       'country': null,
+      'lat': null,
+      'long':null,
       'email': null,
       'telephone': null,
       'certificationNo': null,

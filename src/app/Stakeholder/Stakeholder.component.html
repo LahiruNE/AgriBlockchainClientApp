@@ -453,10 +453,12 @@
                                 <input formControlName="country" type="text" class="form-control">
                             
                           </div>
-
+                          <div class="form-group text-left">
+                            <label for="coords"><b>Coordinates</b></label><br> 
+                          </div>
                           
-                        
                       </div>
+                      
                       <div class="col-md-6">
 
                           <div class="form-group text-left">
@@ -489,11 +491,37 @@
                                 <input formControlName="password" type="password" class="form-control">
                               
                             </div>
-                      
-            
-                        
-                          
+                            
+                    </div>
+                    <div class="col-md-12">
+                      <tr>
+                          <td colspan="2">
+                              <div class="col-md-6">    
+                                  <table>
+                                      <tr>
+                                          <td><label for="farmId">Latitude</label></td>
+                                          <td><input formControlName="lat" class="form-control">
+                                          </td>
+                                      </tr>                                    
+                                  </table>
+                              </div>
+                              <div class="col-md-6">
+                                  <table>
+                                      <tr>
+                                          <td><label for="farmId">Longitude</label></td>
+                                          <td><input formControlName="long" class="form-control"></td>
+                                      </tr>                                                                        
+                                  </table>
+                              </div>
+      
+                          </td>
+                      </tr>
+                    </div>
+                    <div class="col-md-12">
+                      <div class="col-md-6"></div>
+                      <div class="col-md-6">
                         <button class="btn btn-primary nextBtn btn-lg pull-right" type="button" >Next</button>
+                      </div>
                     </div>
                     
                 </div>
@@ -1351,8 +1379,34 @@
                     
       
                   </div>
+                  <div class="form-group text-left">
+                    <label for="telephone"><b>Coordinates</b></label>
+                  </div>
 
                   </table>
+                  <div class="col-md-12">
+                    <tr>
+                        <td colspan="2">
+                            <div class="col-md-6">    
+                                <table>
+                                    <tr>
+                                        <td><label for="farmId">Latitude</label></td>
+                                        <td><input formControlName="lat" class="form-control" >
+                                        </td>
+                                    </tr>                                    
+                                </table>
+                            </div>
+                            <div class="col-md-6">
+                                <table>
+                                    <tr>
+                                        <td><label for="farmId">Longitude</label></td>
+                                        <td><input formControlName="long" class="form-control" ></td>
+                                    </tr>                                                                        
+                                </table>
+                            </div>
+    
+                        </td>
+                    </tr></div>
                   <button class="btn btn-primary nextBtn btn-lg pull-right" type="button" >Next</button>
                
       
@@ -1822,9 +1876,34 @@
                                   <td style="width: 150px"><label for="username"><b>User Name</b></label></td>
                                   <td> <input [ngModel]="username"formControlName="username" type="text" class="form-control" readonly></td>
                                 </tr>
+                                <tr>
+                                  <td style="width: 150px"><label for="username"><b>Coordinates</b></label></td>
+                             </tr>
 
                       </table>
-            
+                      <div class="col-md-12">
+                        <tr>
+                            <td colspan="2">
+                                <div class="col-md-6">    
+                                    <table>
+                                        <tr>
+                                            <td><label for="farmId">Latitude</label></td>
+                                            <td><input [ngModel]="lat" formControlName="lat" class="form-control" readonly>
+                                            </td>
+                                        </tr>                                    
+                                    </table>
+                                </div>
+                                <div class="col-md-6">
+                                    <table>
+                                        <tr>
+                                            <td><label for="farmId">Longitude</label></td>
+                                            <td><input [ngModel]="long" formControlName="long" class="form-control" readonly></td>
+                                        </tr>                                                                        
+                                    </table>
+                                </div>
+        
+                            </td>
+                        </tr></div>
                    
           
                    
@@ -1923,14 +2002,8 @@
                                     <td><input [ngModel]="branchNo"formControlName="branchNo" type="text" class="form-control" readonly>
                                     </td>
                                 </tr>
-
+                                
                       </table>
-            
-                   
-                   
-                  
-          
-                    
                 </div>
             </div>
         </div>
